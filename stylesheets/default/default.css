@@ -1,0 +1,1192 @@
+body
+{
+	font-family		 : tahoma, arial, helvetica, sans-serif;
+	font-size		 : 8pt;
+	background-color : #88a6c0;	/* Overall Site	Background Color - Comment out to use an Image */
+	color			 : #000000;	/*	Change the overall font	color */
+	margin-left		 : 15%;
+	margin-top		 : 5px;
+	margin-right	 : 15%;
+	margin-bottom	 : 5px;
+}
+
+table
+{
+	border-collapse	 : collapse;
+	border			 : none;
+	background-color : #ece9d8;	/* Change the table	background color */
+}
+
+table.bottom
+{
+	background : transparent;
+}
+
+h1
+{
+	font-size  : 12pt;
+	text-align : center;
+}
+
+h2
+{
+	font-size	  :	10pt;
+	margin-bottom :	6px;
+	text-align	  :	center;
+}
+
+p
+{
+	font-size :	8pt;
+}
+
+td
+{
+	font-size :	8pt;
+	border	  :	1px	solid #000000;
+}
+
+td.std
+{
+	font-size :	8pt;
+	#border	  :	0px	solid;
+}
+
+td.comm
+{
+	font-size :	8pt;
+	border	  :	1px	solid #000000;
+}
+
+td.detail
+{
+	font-size	: 8pt;
+	font-weight	: bold;
+	border		: 1px solid	#000000;
+}
+
+td.embedded
+{
+	border	   : none;
+	padding	   : 0;
+	text-align : left;
+}
+
+td.forum
+{
+	#background-color	  :	#000000;
+	#border				  :	1px	solid #8B2500;
+	font-family			  :	Verdana, Helvetica,	sans-serif;
+	font-size			  :	11px;
+	padding				  :	1px;
+	-webkit-border-radius :	6px	!important;
+	-moz-border-radius	  :	6px	!important;
+}
+
+td.bottom
+{
+	border : none;
+}
+
+td.heading
+{
+	font-weight	: bold;
+}
+
+td.text
+{
+	padding	   : 10pt;
+	text-align : left;
+}
+
+td.comment
+{
+	padding	   : 10pt;
+	font-size  : 8pt;
+	text-align : left;
+}
+
+td.colhead
+{
+	font-weight		 : bold;
+	color			 : #000000;	/*	Change the font	color to match altlink_forum */
+	background-color : #d3b895;	/* Comment out to use an Image */
+}
+
+a.altlink_forum:visited
+{
+	font-weight		: bold;
+	color			: #000000; /*	Change the font	color to match altlink_forum */
+	text-decoration	: none;
+}
+
+a.altlink_forum:hover
+{
+	text-decoration	: none;
+	color			: #ff0000; /*	Change the font	color of the hover links in	forums */
+}
+
+td.rowhead
+{
+	font-size :	8pt;
+}
+
+td.rowhead_form
+{
+	font-weight	: bold;
+}
+
+td.navigation
+{
+	font-weight	: bold;
+	font-size	: 10pt;
+	border		: none;
+}
+
+td.clear
+{
+	padding	   : 0;
+	border	   : 0;
+	background : transparent;
+}
+
+td.track
+{
+	font-weight		: bold;
+	text-align		: left;
+	#vertical-align	: top;
+	border			: 0;
+}
+
+legend
+{
+	text-align : center;
+}
+
+form
+{
+	margin-top	  :	0;
+	margin-bottom :	0;
+}
+
+a:link,	a:visited
+{
+	text-decoration	: none;
+	color			: #000000; /*	Change the font	color of links */
+}
+
+a:hover
+{
+	color :	#ff0000; /*	Change the font	color of the hover links */
+}
+
+a.altlink:link,	a.altlink:visited
+{
+	font-weight		: bold;
+	color			: #a83838; /*	Change the font	color of the Edit, Delete (forums),	E, D (News on index) etc..*/
+	text-decoration	: none;
+}
+
+a.altlink:hover
+{
+	text-decoration	: none;
+}
+
+.red
+{
+	color :	#ee0000;
+}
+
+input, select, textarea
+{
+	font-size :	8pt;
+}
+
+.small
+{
+	font-size :	7pt;
+}
+
+li
+{
+	margin-top	  :	6pt;
+	margin-bottom :	6pt;
+}
+
+ul
+{
+	margin-left	  :	16pt;
+	margin-top	  :	0;
+	margin-bottom :	0;
+}
+
+fieldset
+{
+	width		: 95%;
+	border		: solid	#0F5C8E	1px;
+	padding		: 0	1em	1em	1em;
+	margin-left	: 15px;
+}
+
+a.catlink:link
+{
+	text-decoration	: none;
+}
+
+a.catlink:hover
+{
+	color :	#a83838;
+}
+
+/* font	sizes valid	*/
+.font_size_1
+{
+	font-size :	xx-small;
+}
+
+.font_size_2
+{
+	font-size :	x-small;
+}
+
+.font_size_3
+{
+	font-size :	small;
+}
+
+.font_size_4
+{
+	font-size :	medium;
+}
+
+.font_size_5
+{
+	font-size :	large;
+}
+
+.font_size_6
+{
+	font-size :	x-large;
+}
+
+.font_size_7
+{
+	font-size :	xx-large;
+}
+
+/* ------------------------------------- Start of Polls	-------------------------------------------------------	*/
+
+.poll
+{
+	background-color : #ece9d8;	/* Changes the background color	of the Polls*/
+}
+
+#poll_container
+{
+	border		: 1px solid	#333333;
+	font-family	: Verdana, Arial, Helvetica, sans-serif;
+	font-size	: 12px;
+	margin		: 5px;
+	padding		: 5px;
+	width		: 400px;
+}
+
+#poll_title
+{
+	border		: none;
+	font-size	: 14px;
+	font-weight	: bold;
+	text-align	: center;
+}
+
+.barmax, .bar
+{
+	border		  :	1px	solid #666666;
+	padding-left  :	2px;
+	padding-right :	2px;
+}
+
+.bar
+{
+	background : #cc4400;
+}
+
+.barmax
+{
+	background : #0033cc;
+}
+
+/* ------------------------------------- End of	Polls ---------------------------------------------------------	*/
+
+.roundedCorners
+{
+	border				  :	1px	solid #000;
+	-moz-border-radius	  :	6px;
+	-webkit-border-radius :	6px;
+}
+
+.codetop
+{
+	background	: #0099FF url(/images/bbcode/code.jpg) no-repeat right;
+	color		: #000;
+	font-weight	: bold;
+	margin		: 0	auto 0 auto;
+	padding		: 3px;
+	border		: 1px solid	#000;
+	width		: 470px;
+}
+
+.codemain
+{
+	background : #FFF;
+	border	   : 1px solid #000;
+	color	   : #000;
+	margin	   : 0 auto	0 auto;
+	padding	   : 3px;
+	width	   : 470px;
+	overflow   : auto;
+	height	   : 150px;
+}
+
+/* ------------------------------------- Start For Donation	Page - Align Offers	-------------------------------	*/
+.thumbnail
+{
+	float  : left;
+	width  : 225px;
+	height : 272px;
+}
+
+.clearboth
+{
+	clear :	both;
+}
+
+#wrapper
+{
+	padding	 : 0;
+	width	 : 675px;
+	height	 : auto;
+	position : relative;
+}
+
+/* ------------------------------------- End For Donation Page - Align Offers ---------------------------------	*/
+
+/* ------------------------------------	 Start OK Submit Buttons Styling  ------------------------------------	*/
+
+.btn
+{
+	display				  :	inline-block;
+	outline				  :	none;
+	cursor				  :	pointer;
+	text-align			  :	center;
+	text-decoration		  :	none;
+	/*font:	16px Helvetica,	sans-serif;*/
+	padding				  :	1px	2px;
+	text-shadow			  :	0 1px 1px rgba(0, 0, 0,	.3);
+	-webkit-border-radius :	5px;
+	-moz-border-radius	  :	5px;
+	border-radius		  :	5px;
+	-webkit-box-shadow	  :	0 1px 2px rgba(0, 0, 0,	.2);
+	-moz-box-shadow		  :	0 1px 2px rgba(0, 0, 0,	.2);
+	box-shadow			  :	0 1px 2px rgba(0, 0, 0,	.2);
+	color				  :	#000000; /*	Changes	the	font	color of the buttons */
+	background			  :	#d39c55; /*	Changes	the	top	color of the button	*/
+	/* Replace all #d39c55 with	your new top color.	 Replace all #d3af80 with you new bottom color.
+	 /*1st Value	Changes	the	background color of	the	top	layer of button. */
+	/* 2nd value changes the bottom	color layer	of button */
+	background			  :	-webkit-gradient(linear, left top, left	bottom,	from(#d39c55), to(#d3af80));
+	background			  :	-moz-linear-gradient(top, #d39c55, #d3af80);
+	filter				  :	progid:DXImaGETransform.Microsoft.gradient(startColorstr = '#d39c55', endColorstr =	'#d3af80');
+}
+
+.btn:hover
+{
+	background		: #d39c55; /*	Changes	the	top	color of the button	*/
+	/* 1st Value Changes the background	color of the top layer of button.*/
+	/* 2nd value changes the bottom	color layer	of button */
+	background		: -webkit-gradient(linear, left	top, left bottom, from(#d3af80), to(#d39c55));
+	background		: -moz-linear-gradient(top,	#d3af80, #d39c55);
+	filter			: progid:DXImaGETransform.Microsoft.gradient(startColorstr = '#d3af80',	endColorstr	= '#d39c55');
+	text-decoration	: none;
+	color			: #ffffff; /* Changes the font	color of the buttons on	hover*/
+}
+
+/* ------------------------------------	 End OK	Submit Buttons Styling	------------------------------------  */
+
+/* ------------------------------------	 Start Statusbar Styling  ------------------------------------	*/
+
+#statusbar
+{
+	background			  :	#88a6c0; /*	Changes	the	background color of	the	Statusbar */
+	border				  :	solid 1px #000000; /* Changes the border color of the Statusbar	*/
+	margin				  :	9px	9px	9px	9px;
+	padding				  :	0 5px 0	5px;
+	-webkit-border-radius :	6px	!important;
+	-moz-border-radius	  :	6px	!important;
+}
+
+#statusbar p
+{
+	background	   : transparent !important;
+	border		   : 0 !important;
+	font-size	   : 10px;
+	font-weight	   : bold;
+	letter-spacing : 1px;
+	margin		   : 0 !important;
+	padding		   : 3px 0 3px 0;
+	text-align	   : right;
+	font-weight	   : normal;
+	letter-spacing : 0;
+}
+
+#statusbar p.home
+{
+	float :	left;
+	color :	black;
+}
+
+/* ------------------------------------	 End Statusbar Styling	------------------------------------  */
+
+/* ------------------------------------	 Start DropDown	Menu Styling  ------------------------------  */
+
+.stn-menu,
+.stn-menu ul a:hover,
+.stn-menu ul li:hover >	a
+{
+	background			  :	#EC8D00;
+	background			  :	-moz-linear-gradient(top, #ffffff 0%, #FCB143 3%, #EC8D00 100%);
+	background			  :	-webkit-gradient(linear, left top, left	bottom,	color-stop(0, #FDD08C),	color-stop(0.03, #FCB143), color-stop(1, #EC8D00));
+	filter				  :	progid:DXImageTransform.Microsoft.gradient(startColorstr = '#FCB143', endColorstr =	'#EC8D00');
+	color				  :	#FFF !important;
+	border				  :	solid 1px #C67701;
+	-webkit-border-radius :	6px;
+	-moz-border-radius	  :	6px;
+}
+
+.stn-menu
+{
+	font-size		   : 13px;
+	line-height		   : 100%;
+	padding			   : 8px 10px 2px;
+	margin			   : 0;
+	-webkit-box-shadow : 1px 1px 3px rgba(0, 0,	0, .5);
+	-moz-box-shadow	   : 1px 1px 3px rgba(0, 0,	0, .5);
+}
+
+.stn-menu li
+{
+	list-style : none;
+	padding	   : 0 0 6px;
+	margin	   : 0 5px;
+	float	   : left;
+	position   : relative;
+	z-index	   : 2;
+}
+
+.stn-menu a
+{
+	font-weight			  :	bold;
+	color				  :	#FFF;
+	text-decoration		  :	none;
+	outline				  :	none !important;
+	display				  :	block;
+	padding				  :	8px	10px;
+	margin				  :	0;
+	border				  :	1px	solid transparent;
+	border-radius		  :	7px;
+	-webkit-border-radius :	7px;
+	-moz-border-radius	  :	7px;
+	text-shadow			  :	0 1px 1px rgba(0, 0, 0,	.5);
+}
+
+.stn-menu li.hasSubNav a
+{
+	border-radius					: 0px;
+	-webkit-border-radius			: 0px;
+	-moz-border-radius				: 0px;
+	-webkit-border-top-left-radius	: 4px;
+	-webkit-border-top-right-radius	: 4px;
+	-moz-border-radius-topleft		: 4px;
+	-moz-border-radius-topright		: 4px;
+	border-top-left-radius			: 4px;
+	border-top-right-radius			: 4px;
+}
+
+.stn-menu li.hasArrow a
+{
+	padding-right :	2.25em;
+}
+
+.stn-menu .arrow
+{
+	background : url(/images/nav-open.png) no-repeat 0 0;
+	width	   : 13px;
+	height	   : 5px;
+	display	   : block;
+	position   : absolute;
+	right	   : 10px;
+	top		   : 14px;
+	z-index	   : 1;
+}
+
+.stn-menu li:hover > a
+{
+	background	: #EEE;
+	background	: -webkit-gradient(linear, left	top, left bottom, from(#FFF), to(#EEE));
+	background	: -moz-linear-gradient(top,	#FFF 0%, #EEEEEE 100%);
+	display		: block;
+	color		: #444;
+	cursor		: pointer !important;
+	border		: solid	1px	#b4b4b4;
+	text-shadow	: 0	1px	1px	rgba(0,	0, 0, .1);
+}
+
+.stn-menu li:hover > ul
+{
+	display	: block	!important;
+}
+
+.stn-menu ul
+{
+	background					   : #EEE;
+	background					   : -webkit-gradient(linear, left top,	left bottom, from(#EEEEEE),	to(#DDDDDD));
+	background					   : -moz-linear-gradient(top, #eee, #ddd);
+	width						   : 175px;
+	display						   : none;
+	padding						   : .5em 5px;
+	margin						   : 0;
+	position					   : absolute;
+	top							   : 30px;
+	left						   : 0;
+	border						   : solid 1px #b4b4b4;
+	border-top					   : none;
+	-webkit-border-radius		   : 6px;
+	-webkit-border-top-left-radius : 0;
+	-moz-border-radius			   : 6px;
+	-moz-border-radius-topleft	   : 0;
+	border-radius				   : 4px;
+	border-top-left-radius		   : 0;
+	-webkit-box-shadow			   : 2px 2px 2px rgba(0, 0,	0, .1);
+	-moz-box-shadow				   : 2px 2px 2px rgba(0, 0,	0, .1);
+	box-shadow					   : 2px 2px 2px rgba(0, 0,	0, .1);
+}
+
+.stn-menu ul li
+{
+	padding	: 0;
+	margin	: 0;
+	float	: none;
+}
+
+.stn-menu ul a
+{
+	color		: #444 !important;
+	font-weight	: normal;
+	text-shadow	: none;
+	text-shadow	: 0	1px	1px	rgba(0,	0, 0, .25);
+}
+
+.stn-menu ul ul
+{
+	border-top			  :	solid 1px #b4b4b4;
+	left				  :	161px;
+	top					  :	-10px;
+	-webkit-border-radius :	4px;
+	-moz-border-radius	  :	4px;
+	border-radius		  :	4px;
+}
+
+.stn-menu ul .arrow
+{
+	z-index	: 0	!important;
+	top		: 15px !important;
+}
+
+.stn-menu:after
+{
+	content		: ".";
+	display		: block;
+	clear		: both;
+	visibility	: hidden;
+	line-height	: 0;
+	height		: 0;
+}
+
+.stn-menu.TSP,
+.stn-menu.TSP ul a:hover,
+.stn-menu.TSP ul li:hover >	a
+{
+	background			  :	#88a6c0	!important;
+	border				  :	solid 1px #000000 !important;
+	-webkit-border-radius :	6px	!important;
+	-moz-border-radius	  :	6px	!important;
+}
+
+/* ------------------------------------- End DropDown Menu Styling ---------------------------------- */
+
+/* ------------------------------------- Start Staff Tools Styling ----------------------------------- */
+
+.TSPbutton
+{
+	border				  :	2px	solid #88a6c0; /*Change	border color of	buttons*/
+	display				  :	block;
+	-moz-border-radius	  :	20px;
+	-webkit-border-radius :	20px;
+	width				  :	170px;
+	margin				  :	0 0	15px 0;
+}
+
+.TSPbutton span
+{
+	display				  :	block;
+	-moz-border-radius	  :	20px;
+	-webkit-border-radius :	20px;
+	padding				  :	15px 10px 15px 10px;
+	text-align			  :	center;
+	color				  :	#000000; /*Change font color	of buttons*/
+	font-size			  :	13px;
+	line-height			  :	1.3em;
+}
+
+.TSPbutton:hover
+{
+	background : #d3b895; /*	Change background color	of buttons while hovering */
+}
+
+.TSPbutton span:hover
+{
+	color :	#ff0000; /*Change font color	of buttons*/
+}
+
+/* ------------------------------------- End Staff Tools Styling -------------------------------------	*/
+
+/* ------------------------------------- Start Staff Panel Styling -------------------------------------  */
+.FreeTSPglidecontentwrapper
+{
+	position		 : relative; /*	Do not change this value	*/
+	width			 : 80%;
+	height			 : 300px; /* Set height	to	be able	to contain height of largest content shown*/
+	background-color : #ece9d8;	/* Change to	your table background color	*/
+	border			 : 1px solid #000000; /* Changes the color	of the outer border*/
+	margin			 : 1px auto;
+	overflow		 : hidden;
+}
+
+/*
+	Total wrapper width: 350px+5px+5px=360px
+	Or width of	wrapper	div	itself plus	any	left and right CSS border and padding
+	Adjust related containers below	according to comments
+	*/
+
+.FreeTSPglidecontent
+{
+	/*style	for	each glide content DIV within	wrapper.*/
+	position		 : absolute; /*	Do not change this value	*/
+	background-color : #ece9d8;	/* Change to	your table background color	*/
+	padding			 : 10px;
+	visibility		 : hidden;
+	width			 : 96%;
+}
+
+/*
+	 Total FreeTSPglidecontent width: 330px+10px+10px=350px
+	Or width of	wrapper	div	itself (not	counting wrapper border/padding)
+	*/
+
+.FreeTSPglidecontenttoggler
+{
+	/*style	for	DIV	used to	contain	toggler	links. */
+	width	   : 60%;
+	margin-top : 6px;
+	text-align : center;
+	/*How to align pagination links: "left", "center", or "right"
+	 background:	white; /*always	declare	an explicit	background color for fade effect to	properly render	in IE*/
+}
+
+/*
+	 Total contenttoggler width: 350px+5px+5px=360px
+	Or total width of wrapper div (counting	wrapper	border/padding)
+	*/
+
+.FreeTSPglidecontenttoggler	a
+{
+	/*style	for	every	navigational link within toggler */
+	border			: 0px solid	#000000; /*	Changes	the	color	of the tabs	border*/
+	padding			: 1px 3px;
+	margin-right	: 1px;
+	font-weight		: bold;
+	text-decoration	: none;
+}
+
+.FreeTSPglidecontenttoggler	a.toc
+{
+	/*style	for	individual toggler links (page 1,	page 2,	etc). ".toc" class auto	generated! */
+	background-color : #ece9d8;	/* Changes the color	of the tabs	background */
+	color			 : #000000;	/* Changes the color of	the	tabs text*/
+}
+
+/* ------------------------------------	End	Staff Panel	Styling	-------------------------------------  */
+
+/*-------------------------------------	Start Std Menu UserCP ---------------------------------------- */
+
+.FreeTSPglidecontentwrapper3
+{
+	position   : relative; /* Do not change	this value	*/
+	width	   : 80%;
+	height	   : 310px;	/* Set height to	be able	to contain height of largest content shown*/
+	background : #ece9d8; /*	Change to your table background	color */
+	border	   : 1px solid #000000;	/* Changes border color	*/
+	margin	   : 1px auto;
+	overflow   : hidden;
+}
+
+/*
+	Total wrapper width: 350px+5px+5px=360px
+	Or width of	wrapper	div	itself plus	any	left and right CSS border and padding
+	Adjust related containers below	according to comments
+	*/
+
+.FreeTSPglidecontent3
+{
+	/*style	for	each glide content DIV within	wrapper.*/
+	position   : absolute; /* Do not change	this value	*/
+	background : #ece9d8; /*	Change to your table background	color */
+	padding	   : 10px;
+	visibility : hidden;
+	width	   : 96%;
+}
+
+/*
+	 Total FreeTSPglidecontent width: 330px+10px+10px=350px
+	Or width of	wrapper	div	itself (not	counting wrapper border/padding)
+	*/
+
+.FreeTSPglidecontenttoggler3
+{
+	/*style	for	DIV	used to	contain	toggler	links. */
+	width	   : 100%;
+	margin-top : 6px;
+	text-align : center;
+	/*How to align pagination links: "left", "center", or "right"
+	 background:	#ece9d8; /*always declare an explicit background color for fade	effect to properly render in IE*/
+}
+
+/*
+	 Total contenttoggler width: 350px+5px+5px=360px
+	Or total width of wrapper div (counting	wrapper	border/padding)
+	*/
+
+.FreeTSPglidecontenttoggler3 a
+{
+	/*style	for	every	navigational link within toggler */
+	border			: 0px solid	#000000; /*	Changes	the	color	of the tabs	border*/
+	padding			: 1px 3px;
+	margin-right	: 2px;
+	font-weight		: bold;
+	text-decoration	: none;
+}
+
+.FreeTSPglidecontenttoggler3 a.toc
+{
+	/*style	for	individual toggler links (page 1,	page 2,	etc). ".toc" class auto	generated! */
+	background-color : #ece9d8;	/* Changes the color	of the tabs	background */
+	color			 : #000000;	/* Changes the color of	the	tabs text*/
+}
+
+/*-------------------------------------	End	Std	Menu UserCP	----------------------------------------- */
+
+/* ------------------------------------	Start Staff	Tools Sliding Content --------------------------- */
+
+.FreeTSPglidecontentwrapper4
+{
+	position   : relative; /* Do not change	this value	*/
+	width	   : 100%;
+	height	   : 310px;	/* Set height to	be able	to contain height of largest content shown*/
+	background : #ece9d8; /*	Change to your table background	color */
+	border	   : 1px solid #000000;
+	margin	   : 1px auto;
+	overflow   : hidden;
+}
+
+/*
+	Total wrapper width: 350px+5px+5px=360px
+	Or width of	wrapper	div	itself plus	any	left and right CSS border and padding
+	Adjust related containers below	according to comments
+	*/
+
+.FreeTSPglidecontent4
+{
+	/*style	for	each glide content DIV within	wrapper.*/
+	position   : absolute; /* Do not change	this value	*/
+	background : #ece9d8; /*	Change to your table background	color */
+	padding	   : 10px;
+	visibility : hidden;
+	width	   : 96%;
+
+}
+
+/*
+	 Total FreeTSPglidecontent width: 330px+10px+10px=350px
+	Or width of	wrapper	div	itself (not	counting wrapper border/padding)
+	*/
+
+.FreeTSPglidecontenttoggler4
+{
+	/*style	for	DIV	used to	contain	toggler	links. */
+	width	   : 100%;
+	margin-top : 6px;
+	text-align : center;
+	/*How to align pagination links: "left", "center", or "right"
+	 background:	#ece9d8; /*always declare an explicit background color for fade	effect to properly render in IE*/
+}
+
+/*
+	 Total contenttoggler width: 350px+5px+5px=360px
+	Or total width of wrapper div (counting	wrapper	border/padding)
+	*/
+
+.FreeTSPglidecontenttoggler4 a
+{
+	/*style	for	every	navigational link within toggler */
+	border			: 0px solid	#000000; /*	Changes	the	color	of the tabs	border*/
+	padding			: 1px 3px;
+	margin-right	: 2px;
+	font-weight		: bold;
+	text-decoration	: none;
+}
+
+.FreeTSPglidecontenttoggler4 a.toc
+{
+	/*style	for	individual toggler links (page 1,	page 2,	etc). ".toc" class auto	generated! */
+	background-color : #ece9d8;	/* Changes the color	of the tabs	background */
+	color			 : #000000;	/* Changes the color of	the	tabs text*/
+}
+
+/* ------------------------------------	End	Staff Tools	Sliding	Content	------------------------------ */
+
+/*-------------------------------------	Start Top Ten CSS -------------------------------------------- */
+
+.FreeTSPglidecontentwrapper5
+{
+	position   : relative; /* Do not change	this value	*/
+	width	   : 100%;
+	height	   : 450px;	/* Set height to	be able	to contain height of largest content shown*/
+	background : #ece9d8; /*	Change to your table background	color */
+	border	   : none; /* Changes border color */
+	margin	   : 1px auto;
+	overflow   : hidden;
+}
+
+/*
+	Total wrapper width: 350px+5px+5px=360px
+	Or width of	wrapper	div	itself plus	any	left and right CSS border and padding
+	Adjust related containers below	according to comments
+	*/
+
+.FreeTSPglidecontent5
+{
+	/*style	for	each glide content DIV within	wrapper.*/
+	position   : absolute; /* Do not change	this value	*/
+	background : #ece9d8; /*	Change to your table background	color */
+	padding	   : 10px;
+	visibility : hidden;
+	width	   : 96%;
+}
+
+/*
+	 Total FreeTSPglidecontent width: 330px+10px+10px=350px
+	Or width of	wrapper	div	itself (not	counting wrapper border/padding)
+	*/
+
+.FreeTSPglidecontenttoggler5
+{
+	/*style	for	DIV	used to	contain	toggler	links. */
+	width	   : 100%;
+	margin-top : 6px;
+	text-align : center;
+	/*How to align pagination links: "left", "center", or "right"
+	 background:	#ece9d8; /*always declare an explicit background color for fade	effect to properly render in IE*/
+}
+
+/*
+	 Total contenttoggler width: 350px+5px+5px=360px
+	Or total width of wrapper div (counting	wrapper	border/padding)
+	*/
+
+.FreeTSPglidecontenttoggler5 a
+{
+	/*style	for	every	navigational link within toggler */
+	border			: 0px solid	#000000; /*	Changes	the	color	of the tabs	border*/
+	padding			: 1px 3px;
+	margin-right	: 2px;
+	font-weight		: bold;
+	text-decoration	: none;
+}
+
+.FreeTSPglidecontenttoggler5 a.toc
+{
+	/*style	for	individual toggler links (page 1,	page 2,	etc). ".toc" class auto	generated! */
+	background-color : #ece9d8;	/* Changes the color	of the tabs	background */
+	color			 : #000000;	/* Changes the color of	the	tabs text*/
+}
+
+/*-------------------------------------	End	Top	Ten	CSS	---------------------------------------------- */
+
+/*-------------------------------------	Start Login/Signup CSS --------------------------------------- */
+
+.FreeTSPglidecontentwrapper7
+{
+	position   : relative; /* Do not change	this value	*/
+	width	   : 100%;
+	height	   : 400px;	/* Set height to	be able	to contain height of largest content shown*/
+	background : #ece9d8; /*	Change to your table background	color */
+	border	   : none; /* Changes border color */
+	margin	   : 1px auto;
+	overflow   : hidden;
+}
+
+.FreeTSPglidecontent7
+{
+	/*style	for	each glide content DIV within	wrapper.*/
+	position   : absolute; /* Do not change	this value	*/
+	background : #ece9d8; /*	Change to your table background	color */
+	padding	   : 10px;
+	visibility : hidden;
+	width	   : 96%;
+}
+
+.FreeTSPglidecontenttoggler7
+{
+	/*style	for	DIV	used to	contain	toggler	links. */
+	width	   : 100%;
+	margin-top : 6px;
+	text-align : left;
+	/*How	to align pagination	links: "left", "center", or	"right"
+	 background:	#ece9d8; /*always declare an explicit background color for fade	effect to properly render in IE*/
+}
+
+.FreeTSPglidecontenttoggler7 a
+{
+	/*style	for	every	navigational link within toggler */
+	border			: none;	/* Changes the color of	the	tabs border*/
+	padding			: 1px 3px;
+	font-weight		: bold;
+	text-decoration	: none;
+}
+
+.FreeTSPglidecontenttoggler7 a.toc
+{
+	/*style	for	individual toggler links (page 1,	page 2,	etc). ".toc" class auto	generated! */
+	color :	#a83838; /*	Changes	the	color of	the	tabs text*/
+}
+
+.FreeTSPglidecontenttoggler7 a.toc:hover
+{
+	text-decoration	: none;
+}
+
+/*-------------------------------------	End	Login/Signup CSS ------------------------------------------*/
+
+/* ------------------------------------	Start Sliding Userdetails Content --------------------------- */
+
+.FreeTSPglidecontentwrapper8
+{
+	position   : relative; /* Do not change	this value	*/
+	width	   : 80%;
+	height	   : 310px;	/* Set height to	be able	to contain height of largest content shown*/
+	background : #ece9d8; /*	Change to your table background	color */
+	border	   : 1px solid #000000;	/* Changes border color	*/
+	margin	   : 1px auto;
+	overflow   : hidden;
+}
+
+/*
+	Total wrapper width: 350px+5px+5px=360px
+	Or width of	wrapper	div	itself plus	any	left and right CSS border and padding
+	Adjust related containers below	according to comments
+	*/
+
+.FreeTSPglidecontent8
+{
+	/*style	for	each glide content DIV within	wrapper.*/
+	position   : absolute; /* Do not change	this value	*/
+	background : #ece9d8; /*	Change to your table background	color */
+	padding	   : 10px;
+	visibility : hidden;
+	width	   : 96%;
+}
+
+/*
+	 Total FreeTSPglidecontent width: 330px+10px+10px=350px
+	Or width of	wrapper	div	itself (not	counting wrapper border/padding)
+	*/
+
+.FreeTSPglidecontenttoggler8
+{
+	/*style	for	DIV	used to	contain	toggler	links. */
+	width	   : 100%;
+	margin-top : 6px;
+	text-align : center;
+	/*How to align pagination links: "left", "center", or "right"
+	 background:	#ece9d8; /*always declare an explicit background color for fade	effect to properly render in IE*/
+}
+
+/*
+	 Total contenttoggler width: 350px+5px+5px=360px
+	Or total width of wrapper div (counting	wrapper	border/padding)
+	*/
+
+.FreeTSPglidecontenttoggler8 a
+{
+	/*style	for	every	navigational link within toggler */
+	border			: 0px solid	#cccccc; /*	Changes	the	color	of the tabs	border*/
+	padding			: 1px 3px;
+	margin-right	: 2px;
+	font-weight		: bold;
+	text-decoration	: none;
+}
+
+.FreeTSPglidecontenttoggler8 a.toc
+{
+	/*style	for	individual toggler links (page 1,	page 2,	etc). ".toc" class auto	generated! */
+	background-color : #ece9d8;	/* Changes the color	of the tabs	background */
+	color			 : #000000;	/* Changes the color of	the	tabs text*/
+}
+
+/* ------------------------------------	Finish Sliding Userdetails Content --------------------------- */
+
+/*-------------------------------------	Start Error/Warning	Notices	------------------------------------*/
+.notice
+{
+	background			  :	url(/images/error/error-bg.png)	repeat-x 0 0;
+	color				  :	#FFF;
+	width				  :	83%;
+	font-weight			  :	normal;
+	padding				  :	4px	15px 0;
+	margin-bottom		  :	1.0em;
+	-moz-border-radius	  :	6px;
+	-webkit-border-radius :	6px;
+	border-radius		  :	6px;
+	-moz-box-shadow		  :	1px	1px	2px	rgba(0,	0, 0, .4);
+	-webkit-box-shadow	  :	1px	1px	2px	rgba(0,	0, 0, .4);
+	box-shadow			  :	1px	1px	2px	rgba(0,	0, 0, .4);
+	position			  :	relative;
+	left				  :	34px;
+	z-index				  :	1;
+}
+
+.notice	p
+{
+	margin-bottom :	1.5em;
+}
+
+.notice	p:last-child
+{
+	margin-bottom :	0;
+}
+
+.notice	ul
+{
+	margin-left	  :	8px;
+	margin-bottom :	1.5em;
+}
+
+.notice	ul:last-child
+{
+	margin-bottom :	0;
+}
+
+.notice	li
+{
+	background		: url(/images/error/error-tabs.png)	no-repeat 0	-95px;
+	list-style-type	: none;
+	padding-left	: 18px;
+	margin-bottom	: .75em;
+}
+
+.notice-success	li
+{
+	background-position	: 0	-95px;
+}
+
+.notice-warn li
+{
+	background-position	: 0	-895px;
+}
+
+.notice-error li
+{
+	background-position	: 0	-495px;
+}
+
+.notice-info li
+{
+	background-position	: 0	-1295px;
+}
+
+.notice	h5
+{
+	font-size	  :	14px;
+	font-weight	  :	bold;
+	margin-bottom :	.65em;
+}
+
+.notice	span
+{
+	background : url(/images/error/error-tabs.png) no-repeat 100% 0;
+	width	   : 33px;
+	height	   : 40px;
+	position   : absolute;
+	left	   : -34px;
+	top		   : 6px;
+}
+
+.notice-success
+{
+	background-color : #EEF4D4;
+	color			 : #596C26;
+	border			 : 1px solid #8FAD3D;
+}
+
+.notice-success	span
+{
+	background-position	: 100% 0;
+}
+
+.notice-warn
+{
+	background-color : #FFEA97;
+	color			 : #796100;
+	border			 : 1px solid #E1B500;
+}
+
+.notice-warn span
+{
+	background-position	: 100% -800px;
+}
+
+.notice-error
+{
+	background-color : #EFCEC9;
+	color			 : #933628;
+	border			 : 1px solid #AE3F2F;
+}
+
+.notice-error span
+{
+	background-position	: 100% -400px;
+}
+
+.notice-info
+{
+	background-color : #C6D8F0;
+	color			 : #285797;
+	border			 : 1px solid #4381CD;
+}
+
+.notice-info span
+{
+	background-position	: 100% -1200px;
+}
+
+/*-------------------------------------	End	Error/Warning Notices ------------------------------------*/

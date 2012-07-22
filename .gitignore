@@ -1,0 +1,11 @@
+.idea/
+/__MACOSX/
+/freetsp.bbprojectd/
+/FreeTSP.esproj/
+/ftsp themed/
+/*.txt
+/*.xml
+/*.DS_Store
+
+stylesheets/darkx
+stylesheets/darkx1

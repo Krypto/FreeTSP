@@ -1,0 +1,875 @@
+/*Classic CSS3 notification	boxes
+Copyright (c) 2011 Arrowthemes.com
+-------------------------------------------- */
+
+/*general css color	styling	for	css	notifications */
+
+.silver, .blue,	.olive,	.bluegrey, .yellow,	.redd, .orange
+{
+	font-size			  :	13px;
+	text-decoration		  :	none;
+	display				  :	inline-block;
+	padding				  :	7px	13px;
+	min-width			  :	200px;
+	margin				  :	auto auto 0px;
+	border-width		  :	5px	!important;
+	border-color		  :	rgba(255, 255, 255,	0.3) !important;
+	border-style		  :	solid;
+	position			  :	relative;
+	line-height			  :	1.5em;
+	box-shadow			  :	0px	1px	1px	#FFFFFF	inset, 0 0 1px rgba(0, 0, 0, 0.5);
+	-moz-box-shadow		  :	0px	1px	1px	#FFFFFF	inset, 0 0 1px rgba(0, 0, 0, 0.5);
+	-webkit-box-shadow	  :	0px	1px	1px	#FFFFFF	inset, 0 0 1px rgba(0, 0, 0, 0.5);
+	-o-box-shadow		  :	0px	1px	1px	#FFFFFF	inset, 0 0 1px rgba(0, 0, 0, 0.5);
+	-ms-box-shadow		  :	0px	1px	1px	#FFFFFF	inset, 0 0 1px rgba(0, 0, 0, 0.5);
+	-khtml-box-shadow	  :	0px	1px	1px	#FFFFFF	inset, 0 0 1px rgba(0, 0, 0, 0.5);
+	border-radius		  :	4px;
+	-moz-border-radius	  :	4px;
+	-webkit-border-radius :	4px;
+	-khtml-border-radius  :	4px;
+	-o-border-radius	  :	4px;
+	-ms-border-radius	  :	4px;
+	behavior			  :	url(css/PIE.htc)
+}
+
+/*shapes formating for css notifications*/
+
+.inset
+{
+	box-shadow		   : inset 0 1px 2px #6D6D6D !important;
+	-o-box-shadow	   : inset 0 1px 2px #6D6D6D !important;
+	-ms-box-shadow	   : inset 0 1px 2px #6D6D6D !important;
+	-webkit-box-shadow : inset 0 1px 2px #6D6D6D !important;
+	-moz-box-shadow	   : inset 0 1px 2px #6D6D6D !important;
+	-khtml-box-shadow  : inset 0 1px 2px #6D6D6D !important;
+	behavior		   : url(css/PIE.htc)
+}
+
+.round
+{
+	-moz-border-radius	  :	100px !important;
+	-webkit-border-radius :	100px !important;
+	-khtml-border-radius  :	100px !important;
+	-o-border-radius	  :	100px !important;
+	-ms-border-radius	  :	100px !important;
+	border-radius		  :	100px !important;
+	behavior			  :	url(css/PIE.htc)
+}
+
+.r-bullet
+{
+	-moz-border-radius	  :	7px	120px 120px	7px	!important;
+	-webkit-border-radius :	7px	120px 120px	7px	!important;
+	-khtml-border-radius  :	7px	120px 120px	7px	!important;
+	-o-border-radius	  :	7px	120px 120px	7px	!important;
+	-ms-border-radius	  :	7px	120px 120px	7px	!important;
+	border-radius		  :	5px	120px 120px	5px	!important;
+	behavior			  :	url(css/PIE.htc)
+}
+
+.l-bullet
+{
+	-moz-border-radius	  :	120px 7px 7px 120px	!important;
+	-webkit-border-radius :	120px 7px 7px 120px	!important;
+	-khtml-border-radius  :	120px 7px 7px 120px	!important;
+	-o-border-radius	  :	120px 7px 7px 120px	!important;
+	-ms-border-radius	  :	120px 7px 7px 120px	!important;
+	border-radius		  :	120px 7px 7px 120px	!important;
+	behavior			  :	url(css/PIE.htc)
+}
+
+.box
+{
+	border-radius		  :	0 !important;
+	-moz-border-radius	  :	0 !important;
+	-webkit-border-radius :	0 !important;
+	-o-border-radius	  :	0 !important;
+	-ms-border-radius	  :	0 !important;
+	-khtml-border-radius  :	0 !important
+}
+
+.left-b
+{
+	box-shadow		   : 0 1px 1px #FFFFFF inset, 1px 0	0 rgba(255,	255, 255, 0.7) inset, 0	0 1px rgba(255,	255, 255, 0.7),	80px 0 0px rgba(0, 0, 0, 0.05) inset !important;
+	-moz-box-shadow	   : 0 1px 1px #FFFFFF inset, 1px 0	0 rgba(255,	255, 255, 0.7) inset, 0	0 1px rgba(255,	255, 255, 0.7),	80px 0 0px rgba(0, 0, 0, 0.05) inset !important;
+	-webkit-box-shadow : 0 1px 1px #FFFFFF inset, 1px 0	0 rgba(255,	255, 255, 0.7) inset, 0	0 1px rgba(255,	255, 255, 0.7),	80px 0 0px rgba(0, 0, 0, 0.05) inset !important;
+	-o-box-shadow	   : 0 1px 1px #FFFFFF inset, 1px 0	0 rgba(255,	255, 255, 0.7) inset, 0	0 1px rgba(255,	255, 255, 0.7),	80px 0 0px rgba(0, 0, 0, 0.05) inset !important;
+	-ms-box-shadow	   : 0 1px 1px #FFFFFF inset, 1px 0	0 rgba(255,	255, 255, 0.7) inset, 0	0 1px rgba(255,	255, 255, 0.7),	80px 0 0px rgba(0, 0, 0, 0.05) inset !important;
+	-khtml-box-shadow  : 0 1px 1px #FFFFFF inset, 1px 0	0 rgba(255,	255, 255, 0.7) inset, 0	0 1px rgba(255,	255, 255, 0.7),	80px 0 0px rgba(0, 0, 0, 0.05) inset !important
+}
+
+.left-b	p
+{
+	padding	: 0	10px 0 90px	!important
+}
+
+.small p
+{
+	min-height : 20px !important;
+	padding	   : 0 10px	0 38px !important
+}
+
+.left-b.small p
+{
+	min-height : 20px !important;
+	padding	   : 0 10px	0 48px !important
+}
+
+.left-b.small
+{
+	box-shadow		   : 0 1px 1px #FFFFFF inset, 1px 0	0 rgba(255,	255, 255, 0.7) inset, 0	0 1px rgba(0, 0, 0,	0.5), 50px 0 0px rgba(0, 0,	0, 0.05) inset !important;
+	-moz-box-shadow	   : 0 1px 1px #FFFFFF inset, 1px 0	0 rgba(255,	255, 255, 0.7) inset, 0	0 1px rgba(0, 0, 0,	0.5), 50px 0 0px rgba(0, 0,	0, 0.05) inset !important;
+	-webkit-box-shadow : 0 1px 1px #FFFFFF inset, 1px 0	0 rgba(255,	255, 255, 0.7) inset, 0	0 1px rgba(0, 0, 0,	0.5), 50px 0 0px rgba(0, 0,	0, 0.05) inset !important;
+	-o-box-shadow	   : 0 1px 1px #FFFFFF inset, 1px 0	0 rgba(255,	255, 255, 0.7) inset, 0	0 1px rgba(0, 0, 0,	0.5), 50px 0 0px rgba(0, 0,	0, 0.05) inset !important;
+	-ms-box-shadow	   : 0 1px 1px #FFFFFF inset, 1px 0	0 rgba(255,	255, 255, 0.7) inset, 0	0 1px rgba(0, 0, 0,	0.5), 50px 0 0px rgba(0, 0,	0, 0.05) inset !important;
+	-khtml-box-shadow  : 0 1px 1px #FFFFFF inset, 1px 0	0 rgba(255,	255, 255, 0.7) inset, 0	0 1px rgba(0, 0, 0,	0.5), 50px 0 0px rgba(0, 0,	0, 0.05) inset !important;
+	behavior		   : url(css/PIE.htc)
+}
+
+.full
+{
+	width :	95%
+}
+
+/*color	formating for css notifications*/
+/*silver color*/
+
+.silver
+{
+	border-color	: #E0E0E0;
+	color			: #808080;
+	text-shadow		: 1px 1px 1px #FFFFFF;
+	background		: #EFEFEF;
+	background		: -moz-linear-gradient(top,	#F5F5F5	0%,	#e5e5e5	100%);
+	background		: -webkit-gradient(linear, left	top, left bottom, color-stop(0%, #F5F5F5), color-stop(100%,	#e5e5e5));
+	background		: -webkit-linear-gradient(top, #F5F5F5 0%, #e5e5e5 100%);
+	background		: -o-linear-gradient(top, #F5F5F5 0%, #e5e5e5 100%);
+	background		: -ms-linear-gradient(top, #F5F5F5 0%, #e5e5e5 100%);
+	-pie-background	: linear-gradient(#F5F5F5, #e5e5e5);
+	background		: linear-gradient(top, #F5F5F5 0%, #e5e5e5 100%)
+}
+
+.silver:hover
+{
+	background		: #e9e9e9;
+	background		: -moz-linear-gradient(top,	#f7f7f7	0%,	#e9e9e9	100%);
+	background		: -webkit-gradient(linear, left	top, left bottom, color-stop(0%, #f7f7f7), color-stop(100%,	#e9e9e9));
+	background		: -webkit-linear-gradient(top, #f7f7f7 0%, #e9e9e9 100%);
+	background		: -o-linear-gradient(top, #f7f7f7 0%, #e9e9e9 100%);
+	background		: -ms-linear-gradient(top, #f7f7f7 0%, #e9e9e9 100%);
+	-pie-background	: linear-gradient(#f7f7f7, #e9e9e9);
+	background		: linear-gradient(top, #f7f7f7 0%, #e9e9e9 100%)
+}
+
+/*blue color*/
+
+.blue
+{
+	border-color	: #A9C3DB;
+	color			: #50737E;
+	text-shadow		: 0	1px	#F5F8F9;
+	background		: #c3d1e1;
+	background		: -moz-linear-gradient(top,	#e6edf4	0%,	#c3d1e1	100%);
+	background		: -webkit-gradient(linear, left	top, left bottom, color-stop(0%, #e6edf4), color-stop(100%,	#c3d1e1));
+	background		: -webkit-linear-gradient(top, #e6edf4 0%, #c3d1e1 100%);
+	background		: -o-linear-gradient(top, #e6edf4 0%, #c3d1e1 100%);
+	background		: -ms-linear-gradient(top, #e6edf4 0%, #c3d1e1 100%);
+	-pie-background	: linear-gradient(#e6edf4, #c3d1e1);
+	background		: linear-gradient(top, #e6edf4 0%, #c3d1e1 100%)
+}
+
+.blue:hover
+{
+	background		: #D6E1EC;
+	background		: -moz-linear-gradient(top,	#eaf0f6	0%,	#ccd8e6	100%);
+	background		: -webkit-gradient(linear, left	top, left bottom, color-stop(0%, #eaf0f6), color-stop(100%,	#ccd8e6));
+	background		: -webkit-linear-gradient(top, #eaf0f6 0%, #ccd8e6 100%);
+	background		: -o-linear-gradient(top, #eaf0f6 0%, #ccd8e6 100%);
+	background		: -ms-linear-gradient(top, #eaf0f6 0%, #ccd8e6 100%);
+	-pie-background	: linear-gradient(#eaf0f6, #ccd8e6);
+	background		: linear-gradient(top, #eaf0f6 0%, #ccd8e6 100%)
+}
+
+/*olive	color*/
+
+.olive
+{
+	border-color	: #C2CDB9;
+	color			: #65715B;
+	text-shadow		: 0	1px	#E8EDE1;
+	background		: #cad3c2;
+	background		: -moz-linear-gradient(top,	#edefe6	0%,	#cad3c2	100%);
+	background		: -webkit-gradient(linear, left	top, left bottom, color-stop(0%, #edefe6), color-stop(100%,	#cad3c2));
+	background		: -webkit-linear-gradient(top, #edefe6 0%, #cad3c2 100%);
+	background		: -o-linear-gradient(top, #edefe6 0%, #cad3c2 100%);
+	background		: -ms-linear-gradient(top, #edefe6 0%, #cad3c2 100%);
+	-pie-background	: linear-gradient(#edefe6, #cad3c2);
+	background		: linear-gradient(top, #edefe6 0%, #cad3c2 100%)
+}
+
+.olive:hover
+{
+	background		: #cfd8c8;
+	background		: -moz-linear-gradient(top,	#eff1e9	0%,	#cfd8c8	100%);
+	background		: -webkit-gradient(linear, left	top, left bottom, color-stop(0%, #eff1e9), color-stop(100%,	#cfd8c8));
+	background		: -webkit-linear-gradient(top, #eff1e9 0%, #cfd8c8 100%);
+	background		: -o-linear-gradient(top, #eff1e9 0%, #cfd8c8 100%);
+	background		: -ms-linear-gradient(top, #eff1e9 0%, #cfd8c8 100%);
+	-pie-background	: linear-gradient(#eff1e9, #cfd8c8);
+	background		: linear-gradient(top, #eff1e9 0%, #cfd8c8 100%)
+}
+
+/*blue grey	color*/
+
+.bluegrey
+{
+	border-color	: #aab6bc;
+	color			: #50737E;
+	text-shadow		: 0	1px	#DEE5EA;
+	background		: #aab6bc;
+	background		: -moz-linear-gradient(top,	#e7eef3	0%,	#aab6bc	100%);
+	background		: -webkit-gradient(linear, left	top, left bottom, color-stop(0%, #e7eef3), color-stop(100%,	#aab6bc));
+	background		: -webkit-linear-gradient(top, #e7eef3 0%, #aab6bc 100%);
+	background		: -o-linear-gradient(top, #e7eef3 0%, #aab6bc 100%);
+	background		: -ms-linear-gradient(top, #e7eef3 0%, #aab6bc 100%);
+	-pie-background	: linear-gradient(#e7eef3, #aab6bc);
+	background		: linear-gradient(top, #e7eef3 0%, #aab6bc 100%)
+}
+
+.bluegrey:hover
+{
+	background		: #bbc4c9;
+	background		: -moz-linear-gradient(top,	#ecf2f6	0%,	#bbc4c9	100%);
+	background		: -webkit-gradient(linear, left	top, left bottom, color-stop(0%, #ecf2f6), color-stop(100%,	#bbc4c9));
+	background		: -webkit-linear-gradient(top, #ecf2f6 0%, #bbc4c9 100%);
+	background		: -o-linear-gradient(top, #ecf2f6 0%, #bbc4c9 100%);
+	background		: -ms-linear-gradient(top, #ecf2f6 0%, #bbc4c9 100%);
+	-pie-background	: linear-gradient(#ecf2f6, #bbc4c9);
+	background		: linear-gradient(top, #ecf2f6 0%, #bbc4c9 100%)
+}
+
+/*yellow color*/
+
+.yellow
+{
+	border-color	: #ffe3b5;
+	color			: #A96903;
+	text-shadow		: 0	1px	#FEFCEA;
+	background		: #ffe8c3;
+	background		: -moz-linear-gradient(top,	#f9f6c3	0%,	#ffe3b5	100%);
+	background		: -webkit-gradient(linear, left	top, left bottom, color-stop(0%, #f9f6c3), color-stop(100%,	#ffe3b5));
+	background		: -webkit-linear-gradient(top, #f9f6c3 0%, #ffe3b5 100%);
+	background		: -o-linear-gradient(top, #f9f6c3 0%, #ffe3b5 100%);
+	background		: -ms-linear-gradient(top, #f9f6c3 0%, #ffe3b5 100%);
+	-pie-background	: linear-gradient(#f9f6c3, #ffe3b5);
+	background		: linear-gradient(top, #f9f6c3 0%, #ffe3b5 100%)
+}
+
+.yellow:hover
+{
+	background		: #FFEFD5;
+	background		: -moz-linear-gradient(top,	#faf8d0	0%,	#ffe8c3	100%);
+	background		: -webkit-gradient(linear, left	top, left bottom, color-stop(0%, #faf8d0), color-stop(100%,	#ffe8c3));
+	background		: -webkit-linear-gradient(top, #faf8d0 0%, #ffe8c3 100%);
+	background		: -o-linear-gradient(top, #faf8d0 0%, #ffe8c3 100%);
+	background		: -ms-linear-gradient(top, #faf8d0 0%, #ffe8c3 100%);
+	-pie-background	: linear-gradient(#faf8d0, #ffe8c3);
+	background		: linear-gradient(top, #faf8d0 0%, #ffe8c3 100%)
+}
+
+/*orange color*/
+
+.orange
+{
+	border-color	: #ffcf91;
+	color			: #804602;
+	text-shadow		: 0	1px	#FBF0D7;
+	background		: #f7e0b2;
+	background		: -moz-linear-gradient(top,	#f7e0b2	0%,	#ffcf91	100%);
+	background		: -webkit-gradient(linear, left	top, left bottom, color-stop(0%, #f7e0b2), color-stop(100%,	#ffcf91));
+	background		: -webkit-linear-gradient(top, #f7e0b2 0%, #ffcf91 100%);
+	background		: -o-linear-gradient(top, #f7e0b2 0%, #ffcf91 100%);
+	background		: -ms-linear-gradient(top, #f7e0b2 0%, #ffcf91 100%);
+	-pie-background	: linear-gradient(#f7e0b2, #ffcf91);
+	background		: linear-gradient(top, #f7e0b2 0%, #ffcf91 100%)
+}
+
+.orange:hover
+{
+	background		: #f9e6c1;
+	background		: -moz-linear-gradient(top,	#f9e6c1	0%,	#ffd9a7	100%);
+	background		: -webkit-gradient(linear, left	top, left bottom, color-stop(0%, #f9e6c1), color-stop(100%,	#ffd9a7));
+	background		: -webkit-linear-gradient(top, #f9e6c1 0%, #ffd9a7 100%);
+	background		: -o-linear-gradient(top, #f9e6c1 0%, #ffd9a7 100%);
+	background		: -ms-linear-gradient(top, #f9e6c1 0%, #ffd9a7 100%);
+	-pie-background	: linear-gradient(#f9e6c1, #ffd9a7);
+	background		: linear-gradient(top, #f9e6c1 0%, #ffd9a7 100%)
+}
+
+/*redd color*/
+
+.redd
+{
+	border-color	: #EC9494;
+	color			: #AB4343;
+	text-shadow		: 0	1px	#EFD5D5;
+	background		: #f6a2a2;
+	background		: -moz-linear-gradient(top,	#f9bdb7	0%,	#f6a2a2	100%);
+	background		: -webkit-gradient(linear, left	top, left bottom, color-stop(0%, #f9bdb7), color-stop(100%,	#f6a2a2));
+	background		: -webkit-linear-gradient(top, #f9bdb7 0%, #f6a2a2 100%);
+	background		: -o-linear-gradient(top, #f9bdb7 0%, #f6a2a2 100%);
+	background		: -ms-linear-gradient(top, #f9bdb7 0%, #f6a2a2 100%);
+	-pie-background	: linear-gradient(#f9bdb7, #f6a2a2);
+	background		: linear-gradient(top, #f9bdb7 0%, #f6a2a2 100%)
+}
+
+.redd:hover
+{
+	background		: #f7b1b1;
+	background		: -moz-linear-gradient(top,	#fac7c2	0%,	#f7b1b1	100%);
+	background		: -webkit-gradient(linear, left	top, left bottom, color-stop(0%, #fac7c2), color-stop(100%,	#f7b1b1));
+	background		: -webkit-linear-gradient(top, #fac7c2 0%, #f7b1b1 100%);
+	background		: -o-linear-gradient(top, #fac7c2 0%, #f7b1b1 100%);
+	background		: -ms-linear-gradient(top, #fac7c2 0%, #f7b1b1 100%);
+	-pie-background	: linear-gradient(#fac7c2, #f7b1b1);
+	background		: linear-gradient(top, #fac7c2 0%, #f7b1b1 100%)
+}
+
+/*selection	color and emphasis*/
+
+.silver	::selection
+{
+	background	: #808080;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.silver	::-moz-selection
+{
+	background	: #808080;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.silver	::-webkit-selection
+{
+	background	: #808080;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.blue ::selection
+{
+	background	: #50737E;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.blue ::-moz-selection
+{
+	background	: #50737E;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.blue ::-webkit-selection
+{
+	background	: #50737E;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.olive ::selection
+{
+	background	: #65715B;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.olive ::-moz-selection
+{
+	background	: #65715B;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.olive ::-webkit-selection
+{
+	background	: #65715B;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.bluegrey ::selection
+{
+	background	: #50737E;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.bluegrey ::-moz-selection
+{
+	background	: #50737E;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.bluegrey ::-webkit-selection
+{
+	background	: #50737E;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.yellow	::selection
+{
+	background	: #A96903;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.yellow	::-moz-selection
+{
+	background	: #A96903;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.yellow	::-webkit-selection
+{
+	background	: #A96903;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.orange	::selection
+{
+	background	: #804602;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.orange	::-moz-selection
+{
+	background	: #804602;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.orange	::-webkit-selection
+{
+	background	: #804602;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.redd ::selection
+{
+	background	: #AB4343;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.redd ::-moz-selection
+{
+	background	: #AB4343;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.redd ::-webkit-selection
+{
+	background	: #AB4343;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+/*emphasis*/
+.silver	.emphasis, .blue .emphasis,	.olive .emphasis, .bluegrey	.emphasis, .yellow .emphasis, .orange .emphasis, .redd .emphasis
+{
+	border-radius		  :	5px;
+	-moz-border-radius	  :	5px;
+	-webkit-border-radius :	5px;
+	-ms-border-radius	  :	5px;
+	-o-border-radius	  :	5px;
+	-khtml-border-radius  :	5px;
+	padding				  :	2px	4px;
+	behavior			  :	url(css/PIE.htc)
+}
+
+.silver	.emphasis
+{
+	background	: #808080;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.blue .emphasis
+{
+	background	: #50737E;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.olive .emphasis
+{
+	background	: #65715B;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.bluegrey .emphasis
+{
+	background	: #50737E;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.yellow	.emphasis
+{
+	background	: #A96903;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.orange	.emphasis
+{
+	background	: #804602;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+.redd .emphasis
+{
+	background	: #AB4343;
+	color		: #FFF;
+	text-shadow	: none
+}
+
+/*end of color formating*/
+/*notifications	icons*/
+
+.tip p
+{
+	background : url(icons/tip.png)
+}
+
+.success_small p
+{
+	background : url(icons/success_24.png)
+}
+
+.success p
+{
+	background : url(icons/success.png)
+}
+
+.warning p
+{
+	background : url(icons/warning.png)
+}
+
+.error p
+{
+	background : url(icons/error.png)
+}
+
+.caution p
+{
+	background : url(icons/caution.png)
+}
+
+.update	p
+{
+	background : url(icons/update.png)
+}
+
+.note p
+{
+	background : url(icons/note.png)
+}
+
+.info p
+{
+	background : url(icons/info.png)
+}
+
+.member	p
+{
+	background : url(icons/user.png)
+}
+
+.mail p
+{
+	background : url(icons/mail.png)
+}
+
+.tip p,	.success p,	.success_small p, .warning p, .error p,	.caution p,	.update	p, .note p,	.info p, .member p,	.mail p
+{
+	padding				: 0	10px 0 65px;
+	background-repeat	: no-repeat;
+	background-position	: 2px 50%;
+	min-height			: 48px
+}
+
+.close
+{
+	color				  :	#808080;
+	background			  :	#e9e9e9;
+	background			  :	-moz-linear-gradient(top, #FBFBFB 0%, #e9e9e9 100%);
+	background			  :	-webkit-gradient(linear, left top, left	bottom,	color-stop(0%, #FBFBFB), color-stop(100%, #e9e9e9));
+	background			  :	-webkit-linear-gradient(top, #FBFBFB 0%, #e9e9e9 100%);
+	background			  :	-o-linear-gradient(top,	#FBFBFB	0%,	#e9e9e9	100%);
+	background			  :	-ms-linear-gradient(top, #FBFBFB 0%, #e9e9e9 100%);
+	-pie-background		  :	linear-gradient(#FBFBFB, #e9e9e9);
+	background			  :	linear-gradient(top, #FBFBFB 0%, #e9e9e9 100%);
+	border				  :	1px	solid #C0C0C0;
+	border-radius		  :	50px;
+	-webkit-border-radius :	50px;
+	-moz-border-radius	  :	50px;
+	-ms-border-radius	  :	50px;
+	-o-border-radius	  :	50px;
+	-khtml-border-radius  :	50px;
+	box-shadow			  :	0 0	5px	#C0C0C0, 1px 1px 1px #FFFFFF inset;
+	-moz-box-shadow		  :	0 0	5px	#C0C0C0, 1px 1px 1px #FFFFFF inset;
+	-webkit-box-shadow	  :	0 0	5px	#C0C0C0, 1px 1px 1px #FFFFFF inset;
+	-o-box-shadow		  :	0 0	5px	#C0C0C0, 1px 1px 1px #FFFFFF inset;
+	-ms-box-shadow		  :	0 0	5px	#C0C0C0, 1px 1px 1px #FFFFFF inset;
+	-khtml-box-shadow	  :	0 0	5px	#C0C0C0, 1px 1px 1px #FFFFFF inset;
+	cursor				  :	pointer;
+	float				  :	right;
+	font-size			  :	19px;
+	height				  :	29px;
+	margin-right		  :	-20px;
+	margin-top			  :	-20px;
+	min-height			  :	14px;
+	padding				  :	0 5px 5px;
+	position			  :	absolute;
+	right				  :	0;
+	text-align			  :	center;
+	text-shadow			  :	1px	1px	1px	#FFFFFF;
+	top					  :	0;
+	vertical-align		  :	middle;
+	width				  :	29px;
+	-moz-transition		  :	all	0.3s ease-out;
+	-webkit-transition	  :	all	0.3s ease-out;
+	-o-transition		  :	all	0.3s ease-out;
+	-ms-transition		  :	all	0.3s ease-out;
+	transition			  :	all	0.3s ease-out;
+	behavior			  :	url(css/PIE.htc)
+}
+
+.round .close
+{
+	margin-right : -10px;
+	margin-top	 : -10px
+}
+
+.close:hover
+{
+	box-shadow		   : 0 0 10px #c0c0c0;
+	-moz-box-shadow	   : 0 0 10px #c0c0c0;
+	-webkit-box-shadow : 0 0 10px #c0c0c0;
+	-ms-box-shadow	   : 0 0 10px #c0c0c0;
+	-o-box-shadow	   : 0 0 10px #c0c0c0;
+	-moz-transition	   : all 0.3s ease-out;
+	-webkit-transition : all 0.3s ease-out;
+	-o-transition	   : all 0.3s ease-out;
+	-ms-transition	   : all 0.3s ease-out;
+	transition		   : all 0.3s ease-out;
+	behavior		   : url(css/PIE.htc)
+}
+
+.close:active
+{
+	box-shadow		   : inset 0 1px 1px #6D6D6D !important;
+	-o-box-shadow	   : inset 0 1px 1px #6D6D6D !important;
+	-ms-box-shadow	   : inset 0 1px 1px #6D6D6D !important;
+	-webkit-box-shadow : inset 0 1px 1px #6D6D6D !important;
+	-moz-box-shadow	   : inset 0 1px 1px #6D6D6D !important;
+	behavior		   : url(css/PIE.htc)
+}
+
+.rtl .close
+{
+	left		: 0;
+	margin-left	: -20px
+}
+
+.rtl p
+{
+	background-position	: 98% 50%;
+	background-repeat	: no-repeat;
+	min-height			: 48px;
+	padding				: 0	70px 0 10px;
+	text-align			: right
+}
+
+.resizable
+{
+	width		   : 500px;
+	height		   : 90px;
+	overflow	   : hidden;
+	-moz-resize	   : both;
+	-webkit-resize : both;
+	-o-resize	   : both;
+	-ms-resize	   : both;
+	resize		   : both
+}
+
+/*notification shadows*/
+
+/*outer	bottom shadow*/
+/*------------------------------------*/
+
+.shadow-out
+{
+	width				  :	101%;
+	height				  :	45%;
+	content				  :	"";
+	position			  :	absolute;
+	z-index				  :	-2;
+	bottom				  :	0;
+	right				  :	-1px;
+	border-radius		  :	50px;
+	-webkit-border-radius :	50px;
+	-moz-border-radius	  :	50px;
+	-ms-border-radius	  :	50px;
+	-o-border-radius	  :	50px;
+	-webkit-box-shadow	  :	0px	10px 10px rgba(0, 0, 0,	0.1);
+	-moz-box-shadow		  :	0 10px 10px	rgba(0,	0, 0, 0.1);
+	box-shadow			  :	0px	10px 10px rgba(0, 0, 0,	0.1);
+	-o-box-shadow		  :	0px	10px 10px rgba(0, 0, 0,	0.1);
+	-ms-box-shadow		  :	0px	10px 10px rgba(0, 0, 0,	0.1);
+	-khtml-box-shadow	  :	0px	10px 10px rgba(0, 0, 0,	0.1);
+}
+
+.round .shadow-out
+{
+	right :	7px;
+	width :	96%
+}
+
+.shadow-out:after
+{
+	content				  :	"";
+	position			  :	absolute;
+	right				  :	0;
+	bottom				  :	0;
+	width				  :	150px;
+	height				  :	40px;
+	z-index				  :	-1;
+	border-radius		  :	50px;
+	-webkit-border-radius :	50px;
+	-moz-border-radius	  :	50px;
+	-ms-border-radius	  :	50px;
+	-o-border-radius	  :	50px;
+	-moz-box-shadow		  :	20px 30px 20px rgba(0, 0, 0, 0.2);
+	-webkit-box-shadow	  :	20px 30px 20px rgba(0, 0, 0, 0.2);
+	box-shadow			  :	20px 30px 20px rgba(0, 0, 0, 0.2);
+	-o-box-shadow		  :	20px 30px 20px rgba(0, 0, 0, 0.2);
+	-ms-box-shadow		  :	20px 30px 20px rgba(0, 0, 0, 0.2);
+	-khtml-box-shadow	  :	20px 30px 20px rgba(0, 0, 0, 0.2);
+	-moz-transform		  :	skew(10deg,	10deg) translate(-40px,	-15px);
+	-webkit-transform	  :	skew(10deg,	10deg) translate(-40px,	-15px);
+	-o-transform		  :	skew(10deg,	10deg) translate(-40px,	-15px);
+	-ms-transform		  :	skew(10deg,	10deg) translate(-40px,	-15px);
+	transform			  :	skew(10deg,	10deg) translate(-40px,	-15px);
+}
+
+.shadow-out:before
+{
+	content				  :	"";
+	position			  :	absolute;
+	left				  :	0;
+	bottom				  :	0;
+	width				  :	150px;
+	height				  :	40px;
+	z-index				  :	-1;
+	border-radius		  :	50px;
+	-webkit-border-radius :	50px;
+	-moz-border-radius	  :	50px;
+	-ms-border-radius	  :	50px;
+	-o-border-radius	  :	50px;
+	-moz-box-shadow		  :	-20px 30px 20px	rgba(0,	0, 0, 0.25);
+	-webkit-box-shadow	  :	-20px 30px 20px	rgba(0,	0, 0, 0.25);
+	box-shadow			  :	-20px 30px 20px	rgba(0,	0, 0, 0.25);
+	-o-box-shadow		  :	-20px 30px 20px	rgba(0,	0, 0, 0.25);
+	-ms-box-shadow		  :	-20px 30px 20px	rgba(0,	0, 0, 0.25);
+	-khtml-box-shadow	  :	-20px 30px 20px	rgba(0,	0, 0, 0.25);
+	-webkit-transform	  :	skew(-10deg, -10deg) translate(40px, -15px);
+	-moz-transform		  :	skew(-10deg, -10deg) translate(40px, -15px);
+	transform			  :	skew(-10deg, -10deg) translate(40px, -15px);
+	-o-transform		  :	skew(-10deg, -10deg) translate(40px, -15px);
+	-ms-transform		  :	skew(-10deg, -10deg) translate(40px, -15px);
+}
+
+/*inner	bottom shadow*/
+/*------------------------------------*/
+
+.shadow-in
+{
+	width	 : 100%;
+	height	 : 45%;
+	content	 : "";
+	position : absolute;
+	z-index	 : -2;
+	bottom	 : 0;
+	right	 : 0
+}
+
+.shadow-in:after
+{
+	content				  :	"";
+	position			  :	absolute;
+	right				  :	0;
+	bottom				  :	0;
+	width				  :	49%;
+	height				  :	12px;
+	z-index				  :	-1;
+	border-radius		  :	50px 50px 50px 50px;
+	-moz-border-radius	  :	50px 50px 50px 50px;
+	-webkit-border-radius :	50px 50px 50px 50px;
+	-o-border-radius	  :	50px 50px 50px 50px;
+	-ms-border-radius	  :	50px 50px 50px 50px;
+	-khtml-border-radius  :	50px 50px 50px 50px;
+	-moz-box-shadow		  :	0px	23px 21px rgba(0, 0, 0,	0.35);
+	-webkit-box-shadow	  :	0px	23px 21px rgba(0, 0, 0,	0.35);
+	box-shadow			  :	0px	23px 21px rgba(0, 0, 0,	0.35);
+	-o-box-shadow		  :	0px	23px 21px rgba(0, 0, 0,	0.35);
+	-ms-box-shadow		  :	0px	23px 21px rgba(0, 0, 0,	0.35);
+	-khtml-box-shadow	  :	0px	23px 21px rgba(0, 0, 0,	0.35);
+	-moz-transform		  :	skew(0deg, -4deg) translate(-6px, -14px);
+	-webkit-transform	  :	skew(0deg, -4deg) translate(-6px, -14px);
+	-o-transform		  :	skew(0deg, -4deg) translate(-6px, -14px);
+	-ms-transform		  :	skew(0deg, -4deg) translate(-6px, -14px);
+	transform			  :	skew(0deg, -4deg) translate(-6px, -14px);
+}
+
+.shadow-in:before
+{
+	content				  :	"";
+	position			  :	absolute;
+	left				  :	0;
+	bottom				  :	0;
+	width				  :	49%;
+	height				  :	12px;
+	z-index				  :	-1;
+	border-radius		  :	50px 50px 50px 50px;
+	-moz-border-radius	  :	50px 50px 50px 50px;
+	-webkit-border-radius :	50px 50px 50px 50px;
+	-o-border-radius	  :	50px 50px 50px 50px;
+	-ms-border-radius	  :	50px 50px 50px 50px;
+	-khtml-border-radius  :	50px 50px 50px 50px;
+	-moz-box-shadow		  :	-0px 23px 21px rgba(0, 0, 0, 0.35);
+	-webkit-box-shadow	  :	-0px 23px 21px rgba(0, 0, 0, 0.35);
+	box-shadow			  :	-0px 23px 21px rgba(0, 0, 0, 0.35);
+	-o-box-shadow		  :	-0px 23px 21px rgba(0, 0, 0, 0.35);
+	-ms-box-shadow		  :	-0px 23px 21px rgba(0, 0, 0, 0.35);
+	-khtml-box-shadow	  :	-0px 23px 21px rgba(0, 0, 0, 0.35);
+	-webkit-transform	  :	skew(0deg, 4deg) translate(10px, -14px);
+	-moz-transform		  :	skew(0deg, 4deg) translate(10px, -14px);
+	transform			  :	skew(0deg, 4deg) translate(10px, -14px);
+	-o-transform		  :	skew(0deg, 4deg) translate(10px, -14px);
+	-ms-transform		  :	skew(0deg, 4deg) translate(10px, -14px);
+}

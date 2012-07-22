@@ -1,0 +1,84 @@
+html, body, div, h1, p
+{
+    margin  : 0;
+    padding : 0;
+}
+
+/* PNG fix */
+img, div, a
+{
+    behavior : url(error-images/iepngfix.htc)
+}
+
+body
+{
+    background : #3B454F url(error-images/bg.jpg) no-repeat center;
+}
+
+#container
+{
+    background : url(error-images/center.png) no-repeat center;
+    width      : 622px;
+    height     : 485px;
+    margin     : 0 auto;
+    margin-top : 40px;
+}
+
+/* Error title */
+#container h1.title
+{
+    padding        : 0 10px 20px 10px;
+    text-align     : center;
+    font-family    : Verdana, sans-serif;
+    font-size      : 22px;
+    font-weight    : bold;
+    letter-spacing : -1px;
+    color          : #364046;
+}
+
+#container p.sub-title
+{
+    font-weight : bold;
+    color       : #444;
+    padding     : 0 19px 15px;
+}
+
+/* Error message */
+#container p
+{
+    padding        : 5px 35px;
+    font-family    : Verdana, sans-serif;
+    font-size      : 12px;
+    font-style     : normal;
+    font-weight    : normal;
+    letter-spacing : normal;
+    line-height    : 1.2em;
+    color          : #F5F4EF;
+}
+
+#container a
+{
+    color : #DBE2E8;
+}
+
+#container a:hover
+{
+    color : #FFF;
+}
+
+#container input.submit
+{
+    background : url(error-images/button.png) no-repeat;
+    display    : block;
+    width      : 158px;
+    height     : 42px;
+    margin     : 0 auto;
+    margin-top : 10px;
+    border     : 0;
+    cursor     : pointer;
+}
+
+#container input:hover
+{
+    background : url(error-images/button-hover.png) no-repeat;
+}

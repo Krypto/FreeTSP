@@ -151,7 +151,9 @@ if (isset($CURUSER))
 			fputs($fp, $output);
 			fclose($fp);
 		}
-	if ($news2)
+	if (empty($news2)){
+		
+	}else
 	{
 		print("<table width='100%' border='1' cellspacing='0' cellpadding='10'><tr><td class='text'>\n<ul>");
 		foreach ($news2 as $array)

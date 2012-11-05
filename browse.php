@@ -226,7 +226,9 @@ if (isset($cleansearchstr))
 	site_header("Search Results for '$searchstr'");
 else
 	site_header();
-
+if(empty($searchstr)){
+	$searchstr = '';
+}
 ?>
 
 <table class='bottom' width='100%'>
@@ -275,8 +277,11 @@ if ($lastrowcols != 0)
 		}
 	print("<td class='bottom' style='padding-left: 5px'>$alllink</td>\n");
 }
-
+if(empty($_GET["incldead"])){
+	$_GET["incldead"] = 0;
+}
 ?>
+
 					</tr>
 				</table>
 			</td>

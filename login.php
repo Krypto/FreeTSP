@@ -56,7 +56,7 @@ db_connect();
 <head>
 <meta http-equiv="Content-Type"	content="text/html;	charset=utf-8" />
 
-<title><? echo $site_name ?></title>
+<title><?php echo $site_name ?></title>
 
 <!-- STYLE SHEET GENERAL -->
 <link href="css/reset.css" rel="stylesheet"	type="text/css"	/>
@@ -208,7 +208,7 @@ db_connect();
 
 </body>
 </html>
-<?
+<?php
 
 //site_footer();
 

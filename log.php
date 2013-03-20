@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -48,43 +48,47 @@ logged_in();
 $secs = 24 * 60 * 60;
 
 if (get_user_class() < UC_MODERATOR)
-	error_message("warn", "Warning", "Permission Denied!");
+{
+    error_message("warn", "Warning", "Permission Denied!");
+}
 
 site_header("Site Log");
 
 sql_query("DELETE
-			FROM sitelog
-			WHERE " . gmtime() . " - UNIX_TIMESTAMP(added) > $secs") or sqlerr(__FILE__, __LINE__);
+            FROM sitelog
+            WHERE ".gmtime()." - UNIX_TIMESTAMP(added) > $secs") or sqlerr(__FILE__, __LINE__);
 
 $res = sql_query("SELECT added, txt
-					FROM sitelog
-					ORDER BY added DESC") or sqlerr(__FILE__, __LINE__);
+                    FROM sitelog
+                    ORDER BY added DESC") or sqlerr(__FILE__, __LINE__);
 
 echo("<h1>Site Log</h1>\n");
 
 if (mysql_num_rows($res) == 0)
-	echo("<span style='font-weight:bold;'>Log is empty</span>\n");
+{
+    echo("<span style='font-weight:bold;'>Log is empty</span>\n");
+}
 else
 {
-	echo("<table border='1' cellspacing='0' cellpadding='5'>\n");
-	echo("<tr>
-			<td class='colhead' align='left'>Date</td>
-			<td class='colhead' align='left'>Time</td>
-			<td class='colhead' align='left'>Event</td>
-		</tr>");
+    echo("<table border='1' cellspacing='0' cellpadding='5'>\n");
+    echo("<tr>
+            <td class='colhead' align='left'>Date</td>
+            <td class='colhead' align='left'>Time</td>
+            <td class='colhead' align='left'>Event</td>
+        </tr>");
 
-	while ($arr = mysql_fetch_assoc($res))
-	{
-		$date = substr($arr['added'], 0, strpos($arr['added'], " "));
-		$time = substr($arr['added'], strpos($arr['added'], " ") + 1);
+    while ($arr = mysql_fetch_assoc($res))
+    {
+        $date = substr($arr['added'], 0, strpos($arr['added'], " "));
+        $time = substr($arr['added'], strpos($arr['added'], " ") + 1);
 
-		echo("<tr>
-				<td class='rowhead'>$date</td>
-				<td class='rowhead'>$time</td>
-				<td class='rowhead' align='left'>".htmlentities($arr['txt'], ENT_QUOTES)."</td>
-			</tr>");
-	}
-	echo("</table>");
+        echo("<tr>
+                <td class='rowhead'>$date</td>
+                <td class='rowhead'>$time</td>
+                <td class='rowhead' align='left'>".htmlentities($arr['txt'], ENT_QUOTES)."</td>
+            </tr>");
+    }
+    echo("</table>");
 }
 echo("<p>Times are in GMT.</p>\n");
 

@@ -6,13 +6,13 @@
  */
 class title
 {
-	function title( $text='' )
-	{
-		$this->text = $text;
-	}
-	
-	/**
-	 * A css string. Can optionally contain:
+    function title ($text = '')
+    {
+        $this->text = $text;
+    }
+
+    /**
+     * A css string. Can optionally contain:
      * - font-size
      * - font-family
      * - font-weight
@@ -30,10 +30,10 @@ class title
      * - padding-top
      * - padding-bottom
      * just like the css we use all the time :-)
-	 */
-	function set_style( $css )
-	{
-		$this->style = $css;
-		//"{font-size: 20px; color:#0000ff; font-family: Verdana; text-align: center;}";		
-	}
+     */
+    function set_style ($css)
+    {
+        $this->style = $css;
+        //"{font-size: 20px; color:#0000ff; font-family: Verdana; text-align: center;}";
+    }
 }

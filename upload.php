@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -53,59 +53,66 @@ site_header("Upload");
 
 if (get_user_class() < UC_USER)
 {
-	error_message("warn", "Sorry...", "You are not Authorized to upload torrents.  (See <a href='faq.php#up'>Uploading</a> in the FAQ.)");
-	site_footer();
-	exit;
+    error_message("warn", "Sorry...", "You are not Authorized to upload torrents.  (See <a href='faq.php#up'>Uploading</a> in the FAQ.)");
+    site_footer();
+    exit;
 }
 
 ?>
 <div align='center'>
-	<form name='upload' enctype='multipart/form-data' action='takeupload.php' method='post'>
-		<input type='hidden' name='MAX_FILE_SIZE' value="<?php echo $max_torrent_size?>" />
-		<p>The tracker's announce url is <span style='font-weight:bold;'><?php echo  $announce_urls[0] ?></span></p>
-		<table width='100%' border='1' cellspacing='0' cellpadding='10'>
-<?php
+    <form name='upload' enctype='multipart/form-data' action='takeupload.php' method='post'>
+        <input type='hidden' name='MAX_FILE_SIZE' value="<?php echo $max_torrent_size?>" />
 
-		echo("<tr>
-			<td class='rowhead'>Torrent File</td>
-			<td class='rowhead'><input type='file' name='file' size='80' />\n</td>
-			</tr>\n");
+        <p>The tracker's announce url is <span style='font-weight:bold;'><?php echo $announce_urls[0] ?></span></p>
+        <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <?php
 
-		echo("<tr>
-			<td class='rowhead'>Torrent Name</td>
-			<td class='rowhead'><input type='text' name='name' size='80' /><br />
-			(Taken from filename if not specified. <strong>Please use descriptive names.</strong>)\n</td>
-			</tr>\n");
+            echo("<tr>
+            <td class='rowhead'>Torrent File</td>
+            <td class='rowhead'><input type='file' name='file' size='80' />\n</td>
+            </tr>\n");
 
-		echo("<tr>
-			<td class='rowhead'>NFO File</td>
-			<td class='rowhead'><input type='file' name='nfo' size='80' /><br />
-			(<strong>Required.</strong> Can only be viewed by Power Users.)\n</td>
-			</tr>\n");
+            echo("<tr>
+            <td class='rowhead'>Torrent Name</td>
+            <td class='rowhead'><input type='text' name='name' size='80' /><br />
+            (Taken from filename if not specified. <strong>Please use descriptive names.</strong>)\n</td>
+            </tr>\n");
 
-		echo("<tr>
-			<td class='rowhead' style='padding: 10px'>Description</td>
-			<td class='rowhead' align='center' style='padding: 3px'>".textbbcode("upload", "descr", htmlspecialchars($row["ori_descr"])) . "</td>
-			</tr>\n");
+            echo("<tr>
+            <td class='rowhead'>NFO File</td>
+            <td class='rowhead'><input type='file' name='nfo' size='80' /><br />
+            (<strong>Required.</strong> Can only be viewed by Power Users.)\n</td>
+            </tr>\n");
 
-			$s = "<select name='type'>\n<option value='0'>(choose one)</option>\n";
+            echo("<tr>
+            <td class='rowhead' style='padding: 10px'>Description</td>
+            <td class='rowhead' align='center' style='padding: 3px'>".textbbcode("upload", "descr", htmlspecialchars($row["ori_descr"]))."</td>
+            </tr>\n");
 
-			$cats = genrelist();
+            $s = "<select name='type'>\n<option value='0'>(choose one)</option>\n";
 
-			foreach ($cats as $row)
-				{
-				$s .= "<option value='" . $row["id"] . "'>" . htmlspecialchars($row["name"]) . "</option>\n";
-				}
-			$s .= "</select>\n";
+            $cats = genrelist();
 
-		echo("<tr>
-			<td class='rowhead'>Type</td>
-			<td class='rowhead'>$s</td></tr>");
+            foreach ($cats
+                     as
+                     $row)
+            {
+                $s .= "<option value='".$row["id"]."'>".htmlspecialchars($row["name"])."</option>\n";
+            }
 
-			?>
-			<tr><td class='std' align='center' colspan='2'><input type='submit' class='btn' value='Upload' /></td></tr>
-		</table>
-	</form>
+            $s .= "</select>\n";
+
+            echo("<tr>
+            <td class='rowhead'>Type</td>
+            <td class='rowhead'>$s</td></tr>");
+
+            ?>
+            
+            <tr>
+                <td class='std' align='center' colspan='2'><input type='submit' class='btn' value='Upload' /></td>
+            </tr>
+        </table>
+    </form>
 </div>
 <br />
 

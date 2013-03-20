@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -46,40 +46,43 @@ logged_in();
 
 site_header("Perform a Cleanup");
 
-if( get_user_class() != UC_SYSOP )
+if (get_user_class() != UC_SYSOP)
 {
-	error_message("warn", "Warning", "You are NOT Authorized.");
-	exit;
+    error_message("warn", "Warning", "You are NOT Authorized.");
+    exit;
 }
 
 $now = time();
 
 $res = sql_query("SELECT value_u
-					FROM avps
-					WHERE arg = 'lastcleantime'");
+                    FROM avps
+                    WHERE arg = 'lastcleantime'");
 
 $row = mysql_fetch_array($res);
 
 if (!$row)
 {
-	sql_query("INSERT INTO avps (arg, value_u)
-				VALUES ('lastcleantime',$now)");
+    sql_query("INSERT INTO avps (arg, value_u)
+                VALUES ('lastcleantime',$now)");
 
-	require_once("functions/function_cleanup.php");
+    require_once("functions/function_cleanup.php");
 
-	return;
+    return;
 }
+
 $ts = $row[0];
 
 sql_query("UPDATE avps
-			SET value_u=$now
-			WHERE arg='lastcleantime'
-			AND value_u = $ts");
+            SET value_u=$now
+            WHERE arg='lastcleantime'
+            AND value_u = $ts");
 
 require_once("functions/function_cleanup.php");
 
 if (!mysql_affected_rows())
-	return;
+{
+    return;
+}
 
 docleanup(true);
 

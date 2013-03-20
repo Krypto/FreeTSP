@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -47,33 +47,33 @@ logged_in();
 
 site_header("".htmlspecialchars($CURUSER["username"])."'s torrent's ");
 
-$where = "WHERE owner = " . $CURUSER["id"] . " and banned != 'yes'";
+$where = "WHERE owner = ".$CURUSER["id"]." and banned != 'yes'";
 
 $res = sql_query("SELECT COUNT(id)
-					FROM torrents $where");
+                    FROM torrents $where");
 
-$row	= mysql_fetch_array($res,MYSQL_NUM);
-$count	= $row[0];
+$row   = mysql_fetch_array($res, MYSQL_NUM);
+$count = $row[0];
 
 if (!$count)
 {
-	display_message("info", "No Torrents", "You haven't uploaded any torrents yet, so there's nothing to show you.");
+    display_message("info", "No Torrents", "You haven't uploaded any torrents yet, so there's nothing to show you.");
 }
 else
 {
-	list($pagertop, $pagerbottom, $limit) = pager(20, $count, "mytorrents.php?");
+    list($pagertop, $pagerbottom, $limit) = pager(20, $count, "mytorrents.php?");
 
-	$res = sql_query("SELECT torrents.type, torrents.comments, torrents.leechers, torrents.seeders, IF(torrents.numratings < $min_votes, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, torrents.id, categories.name AS cat_name, categories.image AS cat_pic, torrents.name, save_as, numfiles, added, size, views, visible, hits, times_completed, category
-						FROM torrents
-						LEFT JOIN categories ON torrents.category = categories.id $where
-						ORDER BY id DESC
-						$limit");
+    $res = sql_query("SELECT torrents.type, torrents.comments, torrents.leechers, torrents.seeders, IF(torrents.numratings < $min_votes, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, torrents.id, categories.name AS cat_name, categories.image AS cat_pic, torrents.name, save_as, numfiles, added, size, views, visible, hits, times_completed, category
+                        FROM torrents
+                        LEFT JOIN categories ON torrents.category = categories.id $where
+                        ORDER BY id DESC
+                        $limit");
 
-	print($pagertop);
+    print($pagertop);
 
-	torrenttable($res, "mytorrents");
+    torrenttable($res, "mytorrents");
 
-	print($pagerbottom);
+    print($pagerbottom);
 }
 
 site_footer();

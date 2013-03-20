@@ -9,3 +9,12 @@
 
 stylesheets/darkx
 stylesheets/darkx1
+/Build/
+/ftsp/
+/htaccess-builder/
+/ipb/
+/tsfm/
+/vbforum/
+/ftsp.sublime-project
+/ftsp.sublime-workspace
+/*.phptidy-cache

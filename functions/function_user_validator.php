@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -37,36 +37,40 @@
 *-------------------------------------------------------------------------------*
 */
 
-function validator( $context )
+function validator ($context)
 {
-	global $CURUSER;
+    global $CURUSER;
 
-	$timestamp	= time();
-	$hash		= hash_hmac( "sha1", $CURUSER['secret'], $context . $timestamp );
+    $timestamp = time();
+    $hash      = hash_hmac("sha1", $CURUSER['secret'], $context.$timestamp);
 
-	return substr( $hash, 0, 20 ) . dechex( $timestamp );
+    return substr($hash, 0, 20).dechex($timestamp);
 }
 
-function validatorForm( $context )
+function validatorForm ($context)
 {
-	return "<input type='hidden' name='validator' value='" . validator( $context ) . "'/>";
+    return "<input type='hidden' name='validator' value='".validator($context)."'/>";
 }
 
-function validate( $validator, $context, $seconds = 0 )
+function validate ($validator, $context, $seconds = 0)
 {
-	global $CURUSER;
+    global $CURUSER;
 
-	$timestamp = hexdec( substr( $validator, 20 ) );
+    $timestamp = hexdec(substr($validator, 20));
 
-	if ( $seconds && time() > $timestamp + $seconds )
-		return false;
+    if ($seconds && time() > $timestamp + $seconds)
+    {
+        return false;
+    }
 
-	$hash = substr( hash_hmac( "sha1", $CURUSER['secret'], $context . $timestamp ), 0, 20 );
+    $hash = substr(hash_hmac("sha1", $CURUSER['secret'], $context.$timestamp), 0, 20);
 
-	if ( substr( $validator, 0, 20 ) != $hash )
-		return false;
+    if (substr($validator, 0, 20) != $hash)
+    {
+        return false;
+    }
 
-	return true;
+    return true;
 }
 
 ?>

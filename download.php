@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -45,27 +45,33 @@ db_connect();
 logged_in();
 
 if (!preg_match(':^/(\d{1,10})/(.+)\.torrent$:', $_SERVER["PATH_INFO"], $matches))
-	httperr();
+{
+    httperr();
+}
 
 $id = 0 + $matches[1];
 
-if ( !is_valid_id($id) )
-	httperr();
+if (!is_valid_id($id))
+{
+    httperr();
+}
 
 $res = sql_query("SELECT name
-					FROM torrents
-					WHERE id = $id") or sqlerr(__FILE__, __LINE__);
+                    FROM torrents
+                    WHERE id = $id") or sqlerr(__FILE__, __LINE__);
 
 $row = mysql_fetch_assoc($res);
 
 $fn = "$torrent_dir/$id.torrent";
 
 if (!$row || !is_file($fn) || !is_readable($fn))
-	httperr();
+{
+    httperr();
+}
 
 sql_query("UPDATE torrents
-			SET hits = hits + 1
-			WHERE id = $id");
+            SET hits = hits + 1
+            WHERE id = $id");
 
 require_once(INCL_DIR.'function_benc.php');
 
@@ -73,14 +79,14 @@ global $CURUSER;
 
 if (strlen($CURUSER['passkey']) != 32)
 {
-	$CURUSER['passkey'] = md5($CURUSER['username'].get_date_time().$CURUSER['passhash']);
+    $CURUSER['passkey'] = md5($CURUSER['username'].get_date_time().$CURUSER['passhash']);
 
-	sql_query("UPDATE users
-				SET passkey='$CURUSER[passkey]'
-				WHERE id=$CURUSER[id]");
+    sql_query("UPDATE users
+                SET passkey = '$CURUSER[passkey]'
+                WHERE id = $CURUSER[id]");
 }
 
-$dict = bdec_file($fn, (1024*1024));
+$dict = bdec_file($fn, (1024 * 1024));
 
 $dict['value']['announce']['value'] = "$site_url/announce.php?passkey=$CURUSER[passkey]";
 

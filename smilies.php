@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -49,14 +49,16 @@ site_header();
 
 global $smilies, $site_url, $image_dir;
 
-begin_frame( "Smilies", true );
-begin_table( false, 5 );
+begin_frame("Smilies", true);
+begin_table(false, 5);
 
-print( "<tr><td class='colhead'>Type...</td><td class='colhead'>To make a...</td></tr>\n" );
+print("<tr><td class='colhead'>Type...</td><td class='colhead'>To make a...</td></tr>\n");
 
-while ( list( $code, $url ) = each( $smilies ) )
+while (list($code, $url) = each($smilies))
 
-print( "<tr><td>$code</td><td><img src='{$image_dir}smilies/{$url}' border='0' alt='' title='0' /></td></tr>\n" );
+{
+    print("<tr><td>$code</td><td><img src='{$image_dir}smilies/{$url}' border='0' alt='' title='0' /></td></tr>\n");
+}
 
 end_table();
 end_frame();

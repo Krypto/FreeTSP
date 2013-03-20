@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -49,47 +49,59 @@ site_header("Search");
 ?>
 
 <table width='100%' class='main' border='0' cellspacing='0' cellpadding='0'>
-	<tr>
-		<td class='embedded'>
-			<form method='get' action='browse.php'>
-				<p align='center'>
-				Search:
-				<input type='text' name='search' size='40' value='<?php echo  htmlspecialchars($searchstr) ?>' />
-				in
-					<select name='cat'>
-						<option value='0'>(all types)</option>
+    <tr>
+        <td class='embedded'>
+            <form method='get' action='browse.php'>
+                <p align='center'>
+                    Search:
+                    <input type='text' name='search' size='40' value='<?php echo  htmlspecialchars($searchstr) ?>' />
+                    in
+                    <select name='cat'>
+                        <option value='0'>(all types)</option>
 
-<?php
+                        <?php
 
-$cats			= genrelist();
-$catdropdown	= "";
+                        $cats        = genrelist();
+                        $catdropdown = "";
 
-foreach ($cats as $cat)
-{
-	$catdropdown	.= "<option value='" . $cat["id"] . "'";
-	$getcat			= (isset($_GET["cat"])?$_GET["cat"]:'');
+                        foreach ($cats
+                                 as
+                                 $cat)
+                        {
+                            $catdropdown .= "<option value='".$cat["id"]."'";
+                            $getcat = (isset($_GET["cat"]) ? $_GET["cat"] : '');
 
-	if ($cat["id"] == $getcat)
+                            if ($cat["id"] == $getcat)
 
-	$catdropdown .= " selected='selected'";
-	$catdropdown .= ">" . htmlspecialchars($cat["name"]) . "</option>\n";
-}
+                            {
+                                $catdropdown .= " selected='selected'";
+                            }
 
-	$deadchkbox = "<input type='checkbox' name='incldead' value='1'";
+                            $catdropdown .= ">".htmlspecialchars($cat["name"])."</option>\n";
+                        }
 
-if (isset($_GET["incldead"]))
+                        $deadchkbox = "<input type='checkbox' name='incldead' value='1'";
 
-	$deadchkbox .= " checked='checked'";
-	$deadchkbox .= " /> including dead torrents\n";
+                        if (isset($_GET["incldead"]))
+                        {
+                            $deadchkbox .= " checked='checked'";
+                        }
 
-	$catdropdown ?>
-					</select>
-	<?php echo $deadchkbox ?>
-					<input type='submit' class='btn' value='Search!' />
-				</p>
-			</form>
-		</td>
-	</tr>
+                        $deadchkbox .= " /> including dead torrents\n";
+
+                        $catdropdown 
+
+                        ?>
+
+                    </select>
+
+                    <?php echo $deadchkbox ?>
+                    
+                    <input type='submit' class='btn' value='Search!' />
+                </p>
+            </form>
+        </td>
+    </tr>
 </table>
 
 <?php

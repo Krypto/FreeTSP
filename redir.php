@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -42,29 +42,43 @@ require_once(INCL_DIR.'function_vfunctions.php');
 
 db_connect(false);
 
-if(!isset($CURUSER))
-	die();
+if (!isset($CURUSER))
+{
+    die();
+}
 
 $url = '';
 
-while (list($var,$val) = each($_GET))
+while (list($var, $val) = each($_GET))
 
-$url .= "&$var=$val";
+{
+    $url .= "&$var=$val";
+}
 
-if(preg_match( "/([<>'\"]|&#039|&#33;|&#34|%27|%22|%3E|%3C|&#x27|&#x22|&#x3E|&#x3C|\.js)/i", $url ))
-	header("Location: http://www.urbandictionary.com/define.php?term=twat");
+if (preg_match("/([<>'\"]|&#039|&#33;|&#34|%27|%22|%3E|%3C|&#x27|&#x22|&#x3E|&#x3C|\.js)/i", $url))
+{
+    header("Location: http://www.urbandictionary.com/define.php?term=twat");
+}
 
 $i = strpos($url, "&url=");
 
 if ($i !== false)
-	$url = substr($url, $i + 5);
+{
+    $url = substr($url, $i + 5);
+}
 
 if (substr($url, 0, 4) == "www.")
-	$url = "http://" . $url;
+{
+    $url = "http://".$url;
+}
 
-if (strlen($url) < 10) die();
-	echo("<html><head><meta http-equiv='refresh' content='3;url=$url'></head><body>\n");
-	echo("<div style='width:100%;text-align:center;background: #E9D58F;border: 1px solid #CEAA49;margin: 5px 0 5px 0;padding: 0 5px 0 5px;font-weight: bold;'>Redirecting you to:<br />\n");
-	echo(htmlentities($url)."</div></body></html>\n");
+if (strlen($url) < 10)
+{
+    die();
+}
+
+echo("<html><head><meta http-equiv='refresh' content='3;url=$url'></head><body>\n");
+echo("<div style='width:100%;text-align:center;background: #E9D58F;border: 1px solid #CEAA49;margin: 5px 0 5px 0;padding: 0 5px 0 5px;font-weight: bold;'>Redirecting you to:<br />\n");
+echo(htmlentities($url)."</div></body></html>\n");
 
 ?>

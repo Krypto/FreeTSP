@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and/or modify    --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -45,42 +45,52 @@ db_connect();
 logged_in();
 
 if (get_user_class() < UC_SYSOP)
-	error_message("warn", "Warning", "Access Denied.");
+{
+    error_message("warn", "Warning", "Access Denied.");
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
-	if ($_POST["username"] == "" || $_POST["password"] == "" || $_POST["email"] == "")
-		error_message("error", "Error", "Missing Data.");
+    if ($_POST["username"] == "" || $_POST["password"] == "" || $_POST["email"] == "")
+    {
+        error_message("error", "Error", "Missing Data.");
+    }
 
-	if ($_POST["password"] != $_POST["password2"])
-		error_message("error", "Error", "Passwords Mismatch.");
+    if ($_POST["password"] != $_POST["password2"])
+    {
+        error_message("error", "Error", "Passwords Mismatch.");
+    }
 
-	if (!validemail($_POST['email']))
-		error_message("error", "Error", "Not a Valid Email");
+    if (!validemail($_POST['email']))
+    {
+        error_message("error", "Error", "Not a Valid Email");
+    }
 
-	$username	= sqlesc($_POST["username"]);
-	$password	= $_POST["password"];
-	$email		= sqlesc($_POST["email"]);
-	$secret		= mksecret();
-	$passhash	= sqlesc(md5($secret . $password . $secret));
-	$secret		= sqlesc($secret);
+    $username = sqlesc($_POST["username"]);
+    $password = $_POST["password"];
+    $email    = sqlesc($_POST["email"]);
+    $secret   = mksecret();
+    $passhash = sqlesc(md5($secret.$password.$secret));
+    $secret   = sqlesc($secret);
 
-	sql_query("INSERT INTO users (added, last_access, secret, username, passhash, status, email)
-				VALUES(NOW(), NOW(), $secret, $username, $passhash, 'confirmed', $email)") OR sqlerr(__FILE__, __LINE__);
+    sql_query("INSERT INTO users (added, last_access, secret, username, passhash, status, email)
+                VALUES(NOW(), NOW(), $secret, $username, $passhash, 'confirmed', $email)") or sqlerr(__FILE__, __LINE__);
 
-	$res = sql_query("SELECT id
-						FROM users
-						WHERE username = $username");
+    $res = sql_query("SELECT id
+                        FROM users
+                        WHERE username = $username");
 
-	$arr = mysql_fetch_row($res);
+    $arr = mysql_fetch_row($res);
 
-	if (!$arr)
-		error_message("error", "Error", "Sorry, I'm unable to create the account, the username you submitted is already in use.");
+    if (!$arr)
+    {
+        error_message("error", "Error", "Sorry, I'm unable to create the account, the username you submitted is already in use.");
+    }
 
-	$id = 0 + $arr["0"];
+    $id = 0 + $arr["0"];
 
-	header("Location: $site_url/userdetails.php?id=$arr[0]");
-	die;
+    header("Location: $site_url/userdetails.php?id=$arr[0]");
+    die;
 }
 
 site_header("Add User");
@@ -91,28 +101,38 @@ print("<form method='post' action='adduser.php'>");
 print("<table border='1' align='center' cellspacing='0' cellpadding='5'>");
 
 print("<tr>
-		<td class='rowhead'><label for='username'>User Name</label></td>
-		<td class='rowhead'><input type='text' name='username' id='username' size='40' /></td>
-	</tr>");
+        <td class='rowhead'><label for='username'>User Name</label></td>
+        <td class='rowhead'>
+            <input type='text' name='username' id='username' size='40' />
+        </td>
+    </tr>");
 
 print("<tr>
-		<td class='rowhead'><label for='password'>Password</label></td>
-		<td class='rowhead'><input type='password' name='password' id='password' size='40' /></td>
-	</tr>");
+        <td class='rowhead'><label for='password'>Password</label></td>
+        <td class='rowhead'>
+            <input type='password' name='password' id='password' size='40' /><
+        /td>
+    </tr>");
 
 print("<tr>
-		<td class='rowhead'><label for='password2'>Re-type Password</label></td>
-		<td class='rowhead'><input type='password' name='password2' id='password2' size='40' /></td>
-	</tr>");
+        <td class='rowhead'><label for='password2'>Re-type Password</label></td>
+        <td class='rowhead'>
+            <input type='password' name='password2' id='password2' size='40' />
+        </td>
+    </tr>");
 
 print("<tr>
-		<td class='rowhead'><label for='email'>E-Mail</label></td>
-		<td class='rowhead'><input type='text' name='email' id='email' size='40' /></td>
-	</tr>");
+        <td class='rowhead'><label for='email'>E-Mail</label></td>
+        <td class='rowhead'>
+            <input type='text' name='email' id='email' size='40' />
+        </td>
+    </tr>");
 
 print("<tr>
-		<td class='std' colspan='2' align='center'><input type='submit' class='btn' value='Okay' /></td>
-	</tr>");
+        <td class='std' colspan='2' align='center'>
+            <input type='submit' class='btn' value='Okay' />
+        </td>
+    </tr>");
 
 print("</table>");
 print("</form>");

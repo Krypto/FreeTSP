@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -43,28 +43,28 @@ require_once(INCL_DIR.'function_vfunctions.php');
 
 db_connect(false);
 
-$r = "d" . benc_str("files") . "d";
+$r = "d".benc_str("files")."d";
 
 $fields = "info_hash, times_completed, seeders, leechers";
 
 if (!isset($_GET["info_hash"]))
-	$query = "SELECT $fields
-				FROM torrents
-				ORDER BY info_hash";
+{
+    $query = "SELECT $fields
+                FROM torrents
+                ORDER BY info_hash";
+}
 else
-	$query = "SELECT $fields
-				FROM torrents
-				WHERE " . hash_where("info_hash", unesc($_GET["info_hash"]));
+{
+    $query = "SELECT $fields
+                FROM torrents
+                WHERE ".hash_where("info_hash", unesc($_GET["info_hash"]));
+}
 
 $res = sql_query($query);
 
 while ($row = mysql_fetch_assoc($res))
 {
-	$r .= "20:" . hash_pad($row["info_hash"]) . "d" .
-	benc_str("complete") . "i" . $row["seeders"] . "e" .
-	benc_str("downloaded") . "i" . $row["times_completed"] . "e" .
-	benc_str("incomplete") . "i" . $row["leechers"] . "e" .
-	"e";
+    $r .= "20:".hash_pad($row["info_hash"])."d".benc_str("complete")."i".$row["seeders"]."e".benc_str("downloaded")."i".$row["times_completed"]."e".benc_str("incomplete")."i".$row["leechers"]."e"."e";
 }
 
 $r .= "ee";

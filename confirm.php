@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -41,41 +41,49 @@ require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARAT
 require_once(INCL_DIR.'function_user.php');
 require_once(INCL_DIR.'function_vfunctions.php');
 
-$id = 0 + $_GET["id"];
+$id  = 0 + $_GET["id"];
 $md5 = $_GET["secret"];
 
 if (!$id)
-	httperr();
+{
+    httperr();
+}
 
 db_connect();
 
 $res = sql_query("SELECT passhash, editsecret, status
-					FROM users
-					WHERE id = $id");
+                    FROM users
+                    WHERE id = $id");
 
 $row = mysql_fetch_assoc($res);
 
 if (!$row)
-	httperr();
+{
+    httperr();
+}
 
 if ($row["status"] != "pending")
 {
-	header("Refresh: 0; url=ok.php?type=confirmed");
-	exit();
+    header("Refresh: 0; url=ok.php?type=confirmed");
+    exit();
 }
 
 $sec = hash_pad($row["editsecret"]);
 
 if ($md5 != md5($sec))
-	httperr();
+{
+    httperr();
+}
 
 sql_query("UPDATE users
-			SET status='confirmed', editsecret=''
-			WHERE id=$id
-			AND status='pending'");
+            SET status = 'confirmed', editsecret = ''
+            WHERE id = $id
+            AND status =' pending'");
 
 if (!mysql_affected_rows())
-	httperr();
+{
+    httperr();
+}
 
 logincookie($id, $row["passhash"]);
 

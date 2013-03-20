@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -42,41 +42,53 @@ require_once(INCL_DIR.'function_user.php');
 require_once(INCL_DIR.'function_vfunctions.php');
 
 if (!preg_match(':^/(\d{1,10})/([\w]{32})/(.+)$:', $_SERVER["PATH_INFO"], $matches))
-	httperr();
+{
+    httperr();
+}
 
-$id		= 0 + $matches[1];
-$md5	= $matches[2];
-$email	= urldecode($matches[3]);
+$id    = 0 + $matches[1];
+$md5   = $matches[2];
+$email = urldecode($matches[3]);
 
 if (!$id)
-	httperr();
+{
+    httperr();
+}
 
 db_connect();
 
 $res = sql_query("SELECT editsecret
-					FROM users
-					WHERE id = $id");
+                    FROM users
+                    WHERE id = $id");
 
 $row = mysql_fetch_assoc($res);
 
 if (!$row)
-	httperr();
+{
+    httperr();
+}
 
 $sec = hash_pad($row["editsecret"]);
 
 if (preg_match('/^ *$/s', $sec))
-	httperr();
+{
+    httperr();
+}
 
-if ($md5 != md5($sec . $email . $sec))
-	httperr();
+if ($md5 != md5($sec.$email.$sec))
+{
+    httperr();
+}
 
 sql_query("UPDATE users
-			SET editsecret='', email=" . sqlesc($email) . "
-			WHERE id=$id
-			AND editsecret=" . sqlesc($row["editsecret"]));
+            SET editsecret = '', email = ".sqlesc($email)."
+            WHERE id = $id
+            AND editsecret = ".sqlesc($row["editsecret"]));
 
 if (!mysql_affected_rows())
-	httperr();
+{
+    httperr();
+}
 
 header("Refresh: 0; url=my.php?emailch=1");
 

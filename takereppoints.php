@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -51,31 +51,33 @@ logged_in();
 $id = 0 + $_GET['id'];
 
 $res = sql_query("SELECT id
-					FROM users
-					WHERE id = ".sqlesc($id)) or die();
+                    FROM users
+                    WHERE id = ".sqlesc($id)) or die();
 
 $row = mysql_fetch_assoc($res) or error_message("error", "Error", "User was not found");
 
 $userid = $row['id'];
 
 if ($userid == $CURUSER['id'])
-	error_message("warn", "Sorry", "You cant give yourself Reputation Points!!");
+{
+    error_message("warn", "Sorry", "You cant give yourself Reputation Points!!");
+}
 
-	site_header();
+site_header();
 {
 
-	//Lets update the database with new reputation points do not alter if you do not know what you are doing - Subzero
-	sql_query ("UPDATE users
-				SET reputation=reputation+1
-				WHERE id = '$id'") or sqlerr(__FILE__, __LINE__);
+    //Lets update the database with new reputation points do not alter if you do not know what you are doing - Subzero
+    sql_query("UPDATE users
+                SET reputation=reputation+1
+                WHERE id = '$id'") or sqlerr(__FILE__, __LINE__);
 
-	begin_frame("Adding Reputation Point");
+    begin_frame("Adding Reputation Point");
 
-	display_message("success", "Success", "You Added A Reputation Point To This User!!");
+    display_message("success", "Success", "You Added A Reputation Point To This User!!");
 
-	header("Refresh: 3; url='userdetails.php?id=$id'");
+    header("Refresh: 3; url='userdetails.php?id=$id'");
 
-	end_frame();
+    end_frame();
 }
 
 site_footer();

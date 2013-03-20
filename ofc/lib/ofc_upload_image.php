@@ -6,7 +6,7 @@
 //
 
 /*
- 
+
 print_r( $_GET );
 print_r( $_POST );
 print_r( $_FILES );
@@ -20,12 +20,15 @@ print_r( $GLOBALS["HTTP_RAW_POST_DATA"] );
 // default path for the image to be stored //
 $default_path = '../tmp-upload-images/';
 
-if (!file_exists($default_path)) mkdir($default_path, 0777, true);
+if (!file_exists($default_path))
+{
+    mkdir($default_path, 0777, true);
+}
 
 // full path to the saved image including filename //
-$destination = $default_path . basename( $_GET[ 'name' ] ); 
+$destination = $default_path.basename($_GET['name']);
 
-echo 'Saving your image to: '. $destination;
+echo 'Saving your image to: '.$destination;
 // print_r( $_POST );
 // print_r( $_SERVER );
 // echo $HTTP_RAW_POST_DATA;
@@ -54,15 +57,21 @@ exit();
 // default path for the image to be stored //
 $default_path = 'tmp-upload-images/';
 
-if (!file_exists($default_path)) mkdir($default_path, 0777, true);
+if (!file_exists($default_path))
+{
+    mkdir($default_path, 0777, true);
+}
 
 // full path to the saved image including filename //
-$destination = $default_path . basename( $_FILES[ 'Filedata' ][ 'name' ] ); 
+$destination = $default_path.basename($_FILES['Filedata']['name']);
 
 // move the image into the specified directory //
-if (move_uploaded_file($_FILES[ 'Filedata' ][ 'tmp_name' ], $destination)) {
-    echo "The file " . basename( $_FILES[ 'Filedata' ][ 'name' ] ) . " has been uploaded;";
-} else {
+if (move_uploaded_file($_FILES['Filedata']['tmp_name'], $destination))
+{
+    echo "The file ".basename($_FILES['Filedata']['name'])." has been uploaded;";
+}
+else
+{
     echo "FILE UPLOAD FAILED";
 }
 

@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -46,202 +46,248 @@ db_connect(false);
 logged_in();
 
 if (get_user_class() < UC_SYSOP)
-	error_message("warn", "Warning", "Permission Denied!");
+{
+    error_message("warn", "Warning", "Permission Denied!");
+}
 
-$vactg		= array("delete","edit", "" );
-$actiong	= (isset($_GET["action"]) ? $_GET["action"] : "" );
+$vactg   = array("delete",
+                 "edit",
+                 "");
 
-if (!in_array($actiong , $vactg))
-	error_message("error", "Error", "Not an Valid Action!");
+$actiong = (isset($_GET["action"]) ? $_GET["action"] : "");
 
-if (($actiong == "edit" || $actiong == "delete") && $_GET["cid"] == 0 )
-	error_message("error", "Error", "Missing Argument Category ID");
+if (!in_array($actiong, $vactg))
+{
+    error_message("error", "Error", "Not an Valid Action!");
+}
+
+if (($actiong == "edit" || $actiong == "delete") && $_GET["cid"] == 0)
+{
+    error_message("error", "Error", "Missing Argument Category ID");
+}
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
-	$vaction	= array( "edit", "add" , "delete");
-	$action		= ((isset($_POST["action"]) && in_array($_POST["action"], $vaction)) ? $_POST["action"] : "" );
+    $vaction = array("edit",
+                     "add",
+                     "delete");
 
-	if (!$action)
-		error_message("error", "Error", "Something Missing");
+    $action  = ((isset($_POST["action"]) && in_array($_POST["action"], $vaction)) ? $_POST["action"] : "");
 
-	if ($action== "add") //add new category
-	{
-		$name = htmlentities($_POST["cname"]);
+    if (!$action)
+    {
+        error_message("error", "Error", "Something Missing");
+    }
 
-		if (empty($name))
-			error_message("error", "Error", "Missing Category Name!");
+    if ($action == "add") //add new category
+    {
+        $name = htmlentities($_POST["cname"]);
 
-		$image = htmlentities($_POST["cimage"]);
+        if (empty($name))
+        {
+            error_message("error", "Error", "Missing Category Name!");
+        }
 
-		if (empty($image))
-			error_message("error", "Error", "Missing Category Image!");
+        $image = htmlentities($_POST["cimage"]);
 
-		$add = sql_query("INSERT INTO categories ( name ,image )
-							VALUES ( ".sqlesc($name).", ".sqlesc($image).") ") or sqlerr(__FILE__, __LINE__);
+        if (empty($image))
+        {
+            error_message("error", "Error", "Missing Category Image!");
+        }
 
-		if ($add)
-			error_message("success", "Success", "New Category Created.  Go <a href=\"".$site_url."/category.php\">back</a> and Create more!");
-	}//end action add
+        $add = sql_query("INSERT INTO categories ( name ,image )
+                            VALUES ( ".sqlesc($name).", ".sqlesc($image).") ") or sqlerr(__FILE__, __LINE__);
 
-	if ($action == "edit")
-	{ //edit action
+        if ($add)
+        {
+            error_message("success", "Success", "New Category Created.  Go <a href=\"".$site_url."/category.php\">back</a> and Create more!");
+        }
+    }
+    //end action add
 
-		$cid		= (isset($_POST["cid"]) ? 0 + $_POST["cid"] : "");
-		$cname_edit = htmlentities($_POST["cname_edit"]);
+    if ($action == "edit")
+    { //edit action
+        $cid        = (isset($_POST["cid"]) ? 0 + $_POST["cid"] : "");
+        $cname_edit = htmlentities($_POST["cname_edit"]);
 
-		if (empty($cname_edit))
-			error_message("error", "Error", "Missing Category Name!");
+        if (empty($cname_edit))
+        {
+            error_message("error", "Error", "Missing Category Name!");
+        }
 
-		$cimage_edit = htmlentities($_POST["cimage_edit"]);
+        $cimage_edit = htmlentities($_POST["cimage_edit"]);
 
-		if (empty($cimage_edit))
-			error_message("error", "Error", "Missing Category Image!");
+        if (empty($cimage_edit))
+        {
+            error_message("error", "Error", "Missing Category Image!");
+        }
 
-		$edit = sql_query("UPDATE categories
-							SET name=".sqlesc($cname_edit).", image=".sqlesc($cimage_edit)."
-							WHERE id=".sqlesc($cid)." ") or sqlerr(__FILE__, __LINE__);
+        $edit = sql_query("UPDATE categories
+                            SET name=".sqlesc($cname_edit).", image=".sqlesc($cimage_edit)."
+                            WHERE id=".sqlesc($cid)." ") or sqlerr(__FILE__, __LINE__);
 
-		if ($edit)
-			error_message("success", "Success", "Category Successfully Edited! Go <a href=\"".$site_url."/category.php\">back</a>");
-	}//end action edit
+        if ($edit)
+        {
+            error_message("success", "Success", "Category Successfully Edited! Go <a href=\"".$site_url."/category.php\">back</a>");
+        }
+    }
+    //end action edit
 }
 
-if ($actiong == "edit" )
+if ($actiong == "edit")
 {
-	$catid = (isset($_GET["cid"]) ? 0 + $_GET["cid"] : "");
+    $catid = (isset($_GET["cid"]) ? 0 + $_GET["cid"] : "");
 
-	site_header("Edit Category");
+    site_header("Edit Category");
 
-	$res = sql_query("SELECT id,name, image
-						FROM categories
-						WHERE id=".sqlesc($catid)."
-						LIMIT 1 ") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT id,name, image
+                        FROM categories
+                        WHERE id=".sqlesc($catid)."
+                        LIMIT 1 ") or sqlerr(__FILE__, __LINE__);
 
-	$arr	= mysql_fetch_assoc($res);
-	$cname	= htmlentities($arr["name"]);
-	$cimage	= htmlentities($arr["image"]);
+    $arr    = mysql_fetch_assoc($res);
+    $cname  = htmlentities($arr["name"]);
+    $cimage = htmlentities($arr["image"]);
 
-	begin_frame("Edit Category");
+    begin_frame("Edit Category");
 
-	print('<form action="category.php" method="post">');
-	print('<table class="main" border="1" cellspacing="0" align="center" cellpadding="5">');
+    print('<form action="category.php" method="post">');
+    print('<table class="main" border="1" cellspacing="0" align="center" cellpadding="5">');
 
-	print('<tr>
-			<td class="colhead"><label for="cname_edit">Cat Name</label></td>
-			<td class="rowhead" align="left"><input type="text" name="cname_edit" size="50" id="cname_edit" value="'.$cname."\" onclick=\"select()\" /></td>
-		</tr>");
+    print('<tr>
+            <td class="colhead"><label for="cname_edit">Cat Name</label></td>
+            <td class="rowhead" align="left">
+                <input type="text" name="cname_edit" size="50" id="cname_edit" value="'.$cname."\" onclick=\"select()\" />
+            </td>
+        </tr>");
 
-	print('<tr>
-			<td class="colhead"><label for="cimage_edit">Cat Image</label></td>
-			<td class="rowhead" align="left"><input type="text" name="cimage_edit" id="cimage_edit" size="50" value="'.$cimage."\" onclick=\"select()\" /></td>
-		</tr>");
+    print('<tr>
+            <td class="colhead"><label for="cimage_edit">Cat Image</label></td>
+            <td class="rowhead" align="left">
+                <input type="text" name="cimage_edit" id="cimage_edit" size="50" value="'.$cimage."\" onclick=\"select()\" />
+            </td>
+        </tr>");
 
-	print('<tr>
-			<td class="std" align="center" colspan="2"><input type="submit" class="btn" name="submit" value="Edit Category" /><input type="hidden" name="action" value="edit" /><input type="hidden" name="cid" value="'.$arr["id"]."\" /></td>");
+    print('<tr>
+            <td class="std" align="center" colspan="2">
+                <input type="submit" class="btn" name="submit" value="Edit Category" />
+                <input type="hidden" name="action" value="edit" />
+                <input type="hidden" name="cid" value="'.$arr["id"]."\" />
+            </td>");
 
-	print("</tr>");
-	print("</table>");
-	print("</form>");
+    print("</tr>");
+    print("</table>");
+    print("</form>");
 
-	end_frame();
-	site_footer();
+    end_frame();
+    site_footer();
 }
 elseif ($actiong == "delete")
 {
-	$catid = (isset($_GET["cid"]) ? 0 + $_GET["cid"] : "");
+    $catid = (isset($_GET["cid"]) ? 0 + $_GET["cid"] : "");
 
-	$res = sql_query("SELECT id, name
-						FROM categories
-						WHERE id=".sqlesc($catid)."") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT id, name
+                        FROM categories
+                        WHERE id=".sqlesc($catid)."") or sqlerr(__FILE__, __LINE__);
 
-	$arr	= mysql_fetch_assoc($res);
-	$count	= mysql_num_rows($res);
+    $arr   = mysql_fetch_assoc($res);
+    $count = mysql_num_rows($res);
 
-	if ($count == 1)
-	{
-		$delete = sql_query("DELETE
-								FROM categories
-								WHERE id=".sqlesc($catid)."") or sqlerr(__FILE__, __LINE__);
+    if ($count == 1)
+    {
+        $delete = sql_query("DELETE
+                                FROM categories
+                                WHERE id=".sqlesc($catid)."") or sqlerr(__FILE__, __LINE__);
 
-		if ($delete)
-		{
-			write_log("".$CURUSER["username"]." Deleted Category ".$arr["name"]."");
-			error_message("success", "Success", "Category Successfully Deleted! Go <a href=\"".$site_url."/category.php\">Back</a>");
-		}
-	}
-else
-	error_message("error", "Error", "No Category with that ID!");
+        if ($delete)
+        {
+            write_log("".$CURUSER["username"]." Deleted Category ".$arr["name"]."");
+            error_message("success", "Success", "Category Successfully Deleted! Go <a href=\"".$site_url."/category.php\">Back</a>");
+        }
+    }
+    else
+    {
+        error_message("error", "Error", "No Category with that ID!");
+    }
 }
 else
 {
-	site_header("Categories");
+    site_header("Categories");
 
-	//add categories form
-	begin_frame("Add a Category");
+    //add categories form
+    begin_frame("Add a Category");
 
-	print('<form action="category.php" method="post">');
-	print('<table class="main" border="1" cellspacing="0" align="center" cellpadding="5">');
+    print('<form action="category.php" method="post">');
+    print('<table class="main" border="1" cellspacing="0" align="center" cellpadding="5">');
 
-	print('<tr>
-			<td class="colhead"><label for="cname">Cat Name</label></td>
-			<td class="rowhead" align="left"><input type="text" name="cname" id="cname" size="50" /></td>
-		</tr>');
+    print('<tr>
+            <td class="colhead"><label for="cname">Cat Name</label></td>
+            <td class="rowhead" align="left">
+                <input type="text" name="cname" id="cname" size="50" />
+            </td>
+        </tr>');
 
-	print('<tr>
-			<td class="colhead"><label for="cimage">Cat Image</label></td>
-			<td class="rowhead" align="left"><input type="text" name="cimage" id="cimage" size="50" /></td>
-		</tr>');
+    print('<tr>
+            <td class="colhead"><label for="cimage">Cat Image</label></td>
+            <td class="rowhead" align="left">
+                <input type="text" name="cimage" id="cimage" size="50" />
+            </td>
+        </tr>');
 
-	print('<tr>
-			<td align="center" colspan="2"><input type="submit" name="submit" value="Add Category" class=\'btn\' /><input type="hidden" name="action" value="add" /></td>');
-	print("</tr>");
+    print('<tr>
+            <td align="center" colspan="2">
+                <input type="submit" name="submit" value="Add Category" class=\'btn\' />
+                <input type="hidden" name="action" value="add" />
+            </td>');
+    print("</tr>");
 
-	print("</table>");
-	print("</form>");
+    print("</table>");
+    print("</form>");
 
-	end_frame();
+    end_frame();
 
-	//print existing catergories
-	begin_frame("Categories");
+    //print existing catergories
+    begin_frame("Categories");
 
-	$res = sql_query("SELECT id, name, image
-						FROM categories
-						ORDER BY id ASC") or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT id, name, image
+                        FROM categories
+                        ORDER BY id ASC") or sqlerr(__FILE__, __LINE__);
 
-	$count = mysql_num_rows($res);
+    $count = mysql_num_rows($res);
 
-	if ($count > 0)
-	{
-		print("<table class='main' border='1' cellspacing='0' align='center' cellpadding='5'>");
-		print("<tr>");
-		print("<td class='colhead'>ID</td>");
-		print("<td class='colhead'>Cat Name</td>");
-		print("<td class='colhead'>Cat Image</td>");
-		print("<td class='colhead' colspan='2'>Action</td>");
-		print("</tr>");
+    if ($count > 0)
+    {
+        print("<table class='main' border='1' cellspacing='0' align='center' cellpadding='5'>");
+        print("<tr>");
+        print("<td class='colhead'>ID</td>");
+        print("<td class='colhead'>Cat Name</td>");
+        print("<td class='colhead'>Cat Image</td>");
+        print("<td class='colhead' colspan='2'>Action</td>");
+        print("</tr>");
 
-			while ($arr = mysql_fetch_assoc($res))
-			{
-				$edit = "<a href='/category.php?action=edit&amp;cid=".$arr["id"]."'><img src='".$image_dir."button_edit2.gif' width='16' height='16' border='0' alt='Edit Category' title='Edit Category' style='border:none;padding:3px;' /></a>";
+        while ($arr = mysql_fetch_assoc($res))
+        {
+            $edit = "<a href='/category.php?action=edit&amp;cid=".$arr["id"]."'><img src='".$image_dir."button_edit2.gif' width='16' height='16' border='0' alt='Edit Category' title='Edit Category' style='border:none;padding:3px;' /></a>";
 
-				$delete = "<a href='/category.php?action=delete&amp;cid=".$arr["id"]."'><img src='".$image_dir."del.png' width='16' height='16' border='0' alt='Drop Category' title='Drop Category' style='border:none;padding:3px;' /></a>";
+            $delete = "<a href='/category.php?action=delete&amp;cid=".$arr["id"]."'><img src='".$image_dir."del.png' width='16' height='16' border='0' alt='Drop Category' title='Drop Category' style='border:none;padding:3px;' /></a>";
 
-				print("<tr>");
-				print("<td class='rowhead' align='center'><a href='/browse.php?cat=".$arr["id"]."'>".$arr["id"]."</a></td>");
-				print("<td class='rowhead' align='center'><a href='/browse.php?cat=".$arr["id"]."'>".$arr["name"]."</a></td>");
-				print("<td class='rowhead' align='center'><a href='/browse.php?cat=".$arr["id"]."'><img src='".$image_dir."caticons/".$arr["image"]."' width='60' height='54' border='0' alt='".$arr["name"]."' title='".$arr["name"]."'/></a></td>");
-				print("<td class='rowhead' align='center'>$edit</td><td class='rowhead' align='center'>$delete</td>");
-				print("</tr>");
-			}
-		print("</table>");
-	}
-	else
-		display_message("info", "Sorry", "No Categories were found!");
+            print("<tr>");
+            print("<td class='rowhead' align='center'><a href='/browse.php?cat=".$arr["id"]."'>".$arr["id"]."</a></td>");
+            print("<td class='rowhead' align='center'><a href='/browse.php?cat=".$arr["id"]."'>".$arr["name"]."</a></td>");
+            print("<td class='rowhead' align='center'><a href='/browse.php?cat=".$arr["id"]."'><img src='".$image_dir."caticons/".$arr["image"]."' width='60' height='54' border='0' alt='".$arr["name"]."' title='".$arr["name"]."'/></a></td>");
+            print("<td class='rowhead' align='center'>$edit</td><td class='rowhead' align='center'>$delete</td>");
+            print("</tr>");
+        }
+        print("</table>");
+    }
+    else
+    {
+        display_message("info", "Sorry", "No Categories were found!");
+    }
 
-	end_frame();
+    end_frame();
 
-	site_footer();
+    site_footer();
 }
 
 ?>

@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -37,37 +37,43 @@
 *-------------------------------------------------------------------------------*
 */
 
-function begin_frame( $caption = "", $center = false, $padding = 10 )
+function begin_frame ($caption = "", $center = false, $padding = 10)
 {
-	$tdextra = "";
+    $tdextra = "";
 
-	if ( $caption )
-		print( "<h2>$caption</h2>\n" );
+    if ($caption)
+    {
+        print("<h2>$caption</h2>\n");
+    }
 
-	if ( $center )
-		$tdextra .= " align='center'";
+    if ($center)
+    {
+        $tdextra .= " align='center'";
+    }
 
-	print( "<table width='100%' cellspacing='0' cellpadding='$padding' border='1'><tr><td $tdextra>\n" );
+    print("<table width='100%' cellspacing='0' cellpadding='$padding' border='1'><tr><td $tdextra>\n");
 }
 
-function end_frame()
+function end_frame ()
 {
-	print( "</td></tr></table>\n" );
+    print("</td></tr></table>\n");
 }
 
-function begin_table( $fullwidth = false, $padding = 5 )
+function begin_table ($fullwidth = false, $padding = 5)
 {
-	$width = "";
+    $width = "";
 
-	if ( $fullwidth )
-		$width .= " width='100%'";
+    if ($fullwidth)
+    {
+        $width .= " width='100%'";
+    }
 
-	print( "<table class='main' $width cellspacing='0' cellpadding='$padding' border='1'>\n" );
+    print("<table class='main' $width cellspacing='0' cellpadding='$padding' border='1'>\n");
 }
 
-function end_table()
+function end_table ()
 {
-	echo( "</table>\n" );
+    echo("</table>\n");
 }
 
 ?>

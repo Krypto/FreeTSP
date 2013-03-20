@@ -12,7 +12,7 @@
 *-------------------   The Alternate BitTorrent Source   -----------------------*
 *-------------------------------------------------------------------------------*
 *-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify   --*
+*--   This program is free software; you can redistribute it and / or modify  --*
 *--   it under the terms of the GNU General Public License as published by    --*
 *--   the Free Software Foundation; either version 2 of the License, or       --*
 *--   (at your option) any later version.                                     --*
@@ -29,7 +29,7 @@
 *-------------------------------------------------------------------------------*
 *------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
 *-------------------------------------------------------------------------------*
-*-------------           Developed By: Krypto, Fireknight           ------------*
+*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
 *-------------------------------------------------------------------------------*
 *-----------------       First Release Date August 2010      -------------------*
 *-----------                 http://www.freetsp.info                 -----------*
@@ -46,37 +46,41 @@
 
 class page_verify
 {
-	function page_verify ()
-	{
-		if ( session_id () == '' )
-		{
-			session_start ();
-		}
-	}
+    function page_verify ()
+    {
+        if (session_id() == '')
+        {
+            session_start();
+        }
+    }
 
-	function create ( $task_name = 'Default' )
-	{
-		global $CURUSER;
+    function create ($task_name = 'Default')
+    {
+        global $CURUSER;
 
-		$_SESSION['Task_Time'] = time ();
-		$_SESSION['Task'] = md5( 'user_id:' . $CURUSER['id'] . '::taskname-' . $task_name . '::' . $_SESSION['Task_Time'] );
-		$_SESSION['HTTP_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'];
-	}
+        $_SESSION['Task_Time']       = time();
+        $_SESSION['Task']            = md5('user_id:'.$CURUSER['id'].'::taskname-'.$task_name.'::'.$_SESSION['Task_Time']);
+        $_SESSION['HTTP_USER_AGENT'] = $_SERVER['HTTP_USER_AGENT'];
+    }
 
-	function check ( $task_name = 'Default' )
-	{
-		global $CURUSER, $site_url;
+    function check ($task_name = 'Default')
+    {
+        global $CURUSER, $site_url;
 
-		$returl = ( isset( $CURUSER )?htmlspecialchars( $_SERVER['HTTP_REFERER'] ):$site_url . "/login.php" );
-		$returl = str_replace( '&', '&', $returl );
+        $returl = (isset($CURUSER) ? htmlspecialchars($_SERVER['HTTP_REFERER']) : $site_url."/login.php");
+        $returl = str_replace('&', '&', $returl);
 
-		if ( isset( $_SESSION['HTTP_USER_AGENT'] ) && $_SESSION['HTTP_USER_AGENT'] != $_SERVER['HTTP_USER_AGENT'] )
-			error_message("error", "Error", "Please resubmit the form. <a href='" . $returl . "'>Click HERE</a>", false );
+        if (isset($_SESSION['HTTP_USER_AGENT']) && $_SESSION['HTTP_USER_AGENT'] != $_SERVER['HTTP_USER_AGENT'])
+        {
+            error_message("error", "Error", "Please resubmit the form. <a href='".$returl."'>Click HERE</a>", false);
+        }
 
-		if ( $_SESSION['Task'] != md5( 'user_id:' . $CURUSER['id'] . '::taskname-' . $task_name . '::' . $_SESSION['Task_Time'] ) )
-			error_message("error", "Error", "Please resubmit the form. <a href='" . $returl . "'>Click HERE</a>", false );
-		$this->create ();
-	}
+        if ($_SESSION['Task'] != md5('user_id:'.$CURUSER['id'].'::taskname-'.$task_name.'::'.$_SESSION['Task_Time']))
+        {
+            error_message("error", "Error", "Please resubmit the form. <a href='".$returl."'>Click HERE</a>", false);
+        }
+        $this->create();
+    }
 }
 
 ?>

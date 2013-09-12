@@ -1,43 +1,18 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
-//== Geshi highlighter by putyn
+//-- Geshi Highlighter By putyn --//
 function source_highlighter ($code)
 {
     require_once(INCL_DIR.'function_geshi.php');
@@ -83,7 +58,6 @@ function source_highlighter ($code)
     $return .= $geshi->parse_code();
     $return .= "\n</div>\n";
     return $return;
-
 }
 
 $smilies = array(":)"                       => "happy.png",
@@ -164,16 +138,17 @@ $smilies = array(":)"                       => "happy.png",
     ":hslocked:"    => "hslocked.gif",
 );
 */
-function scale ($src)
+
+//-- Uncomment To Use the scale Function Instead Of Lightbox --//
+/*
+function scale($src)
 {
     $max = 350;
 
     if (!isset($max, $src))
-    {
         return;
-    }
 
-    $src      = str_replace(" ", "%20", $src[1]);
+    $src      = str_replace("", "%20", $src[1]);
     $info     = @getimagesize($src);
     $sw       = $info[0];
     $sh       = $info[1];
@@ -183,42 +158,40 @@ function scale ($src)
     if ($max < max($sw, $sh))
     {
         if ($sw > $sh)
-        {
-            $new = array($max_em."em",
-                         "auto");
-        }
+
+            $new = array($max_em."em", "auto");
+
 
         if ($sw < $sh)
-        {
-            $new = array("auto",
-                         $max_em."em");
-        }
-        $addclass = true;
+
+            $new      = array("auto", $max_em."em");
+            $addclass = true;
+
     }
     else
-    {
-        $new = array("auto",
-                     "auto");
-    }
-    $id = mt_rand(0000, 9999);
+
+        $new = array("auto", "auto");
+        $id  = mt_rand(0000, 9999);
+
 
     if ($new[0] == "auto" && $new[1] == "auto")
-    {
-        $img = "<img src=\"".$src."\" border=\"0\" alt=\"\" title=\"\" />";
-    }
-    else
-    {
-        $img = "<img src=\"".$src."\" id=\"r".$id."\" style=\"width:".$new[0].";height:".$new[1]."; border=\"0\" alt=\"\" title=\"\"  ".($addclass ? "class=\"resized\"" : "")." \" />";
-    }
-    return $img;
-}
 
-// Set this to the line break character sequence of your system
+        $img = "<img src=\"{$src}\" border=\"0\" alt=\"\" />";
+
+    else
+
+        $img = "<a href=\"{$src}\" onclick=\"return false;\"><img id=\"r{$id}\" border=\"0\" alt=\"\" src=\"{$src}\" ".($addclass ? "class=\"resized\"" : "")." style=\"width:{$new[0]};height:{$new[1]};\" /></a>";
+        return $img;
+
+}
+*/
+
+//-- Set This To The Line Break Character Sequence Of Your System --//
 $linebreak = "\r\n";
 
 function format_urls ($s)
 {
-    return preg_replace("/(\A|[^=\]'\"a-zA-Z0-9])((http|ftp|https|ftps|irc):\/\/[^<>\s]+)/i","\\1<a target=_blank href=redir.php?url=\\2>\\2</a>", $s);
+    return preg_replace("/(\A|[^=\]'\"a-zA-Z0-9])((http|ftp|https|ftps|irc):\/\/[^<>\s]+)/i","\\1<a target='_blank' href='redir.php?url=\\2'>\\2</a>", $s);
 
 }
 
@@ -230,7 +203,7 @@ function format_quotes ($s)
     {
         $old_s = $s;
 
-        //find first occurrence of [/quote]
+        //-- Find First Occurrence Of [/quote]
         $close = strpos($s, "[/quote]");
 
         if ($close === false)
@@ -238,8 +211,8 @@ function format_quotes ($s)
             return $s;
         }
 
-        //find last [quote] before first [/quote]
-        //note that there is no check for correct syntax
+        //-- Find Last [quote] Before First [/quote] --//
+        //-- Note That There Is No Check For Correct Syntax --//
         $open = _strlastpos(substr($s, 0, $close), "[quote");
 
         if ($open === false)
@@ -249,11 +222,11 @@ function format_quotes ($s)
 
         $quote = substr($s, $open, $close - $open + 8);
 
-        //[quote]Text[/quote]
+        //-- [quote]Text[/quote] --//
         $quote = preg_replace("/\[quote\]\s*((\s|.)+?)\s*\[\/quote\]\s*/i", "<span class='sub'><strong>Quote:</strong></span><table class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>\\1</td></tr></table><br />", $quote);
 
-        //[quote=Author]Text[/quote]
-        $quote = preg_replace("/\[quote=(.+?)\]\s*((\s|.)+?)\s*\[\/quote\]\s*/i", "<span class='sub'><strong>\\1 wrote:</strong></span><table   class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>\\2</td></tr></table><br />", $quote);
+        //-- [quote=Author]Text[/quote] --//
+        $quote = preg_replace("/\[quote=(.+?)\]\s*((\s|.)+?)\s*\[\/quote\]\s*/i", "<span class='sub'><strong>\\1 wrote:</strong></span><table class='main' border='1' cellspacing='0' cellpadding='10'><tr><td style='border: 1px black dotted'>\\2</td></tr></table><br />", $quote);
 
         $s = substr($s, 0, $open).$quote.substr($s, $close + 8);
     }
@@ -267,11 +240,13 @@ function format_comment ($text, $strip_html = true)
     $s = $text;
 
     unset($text);
-    // This fixes the extraneous ;) smilies problem. When there was an html escaped
-    // char before a closing bracket - like >), "), ... - this would be encoded
-    // to &xxx;), hence all the extra smilies. I created a new :wink: label, removed
-    // the ;) one, and replace all genuine ;) by :wink: before escaping the body.
-    // (What took us so long? :blush:)- wyz
+    /*
+        This Fixes The Extraneous ;) Smilies Problem. When There Was An Html Escaped
+        Char Before A Closing Bracket - Like >), "), ... - This Would Be Encoded
+        To &xxx;), Hence All The Extra Smilies. I Created A New :wink: Label, Removed
+        The ;) One, And Replace All Genuine ;) By :wink: Before Escaping The Body.
+        (what Took Us So Long? :blush:)- wyz
+    */
 
     $s = str_replace(";)", ":wink:", $s);
 
@@ -292,172 +267,179 @@ function format_comment ($text, $strip_html = true)
         $s = str_replace("$", "&#36;", $s);
     }
 
-    // [*]
+    //-- [*] --//
     if (stripos($s, '[*]') !== false)
     {
         $s = preg_replace("/\[\*\]/", "<img src=\"".$image_dir."list.gif\" alt=\"List\" title=\"List\" class=\"listitem\" />", $s);
     }
 
-    // [b]Bold[/b]
+    //-- [b]Bold[/b] --//
     if (stripos($s, '[b]') !== false)
     {
         $s = preg_replace('/\[b\](.+?)\[\/b\]/is', "<span style='font-weight:bold;'>\\1</span>", $s);
     }
 
-    // [i]Italic[/i]
+    //-- [i]Italic[/i] --//
     if (stripos($s, '[i]') !== false)
     {
         $s = preg_replace('/\[i\](.+?)\[\/i\]/is', "<span style='font-style: italic;'>\\1</span>", $s);
     }
 
-    // [u]Underline[/u]
+    //-- [u]Underline[/u] --//
     if (stripos($s, '[u]') !== false)
     {
         $s = preg_replace('/\[u\](.+?)\[\/u\]/is', "<span style='text-decoration:underline;'>\\1</span>", $s);
     }
 
-    // [color=blue]Text[/color]
+    //-- [color=blue]Text[/color] --//
     if (stripos($s, '[color=') !== false)
     {
         $s = preg_replace('/\[color=([a-zA-Z]+)\](.+?)\[\/color\]/is', '<span style="color: \\1">\\2</span>', $s);
 
-        // [color=#ffcc99]Text[/color]
-        $s = preg_replace('/\[color=(#[a-f0-9]{6})\](.+?)\[\/color\]/is', '<span    style="color: \\1">\\2</span>', $s);
-
+        //-- [color=#ffcc99]Text[/color] --//
+        $s = preg_replace('/\[color=(#[a-f0-9]{6})\](.+?)\[\/color\]/is', '<span style="color: \\1">\\2</span>', $s);
     }
 
-    //==Media tag
+    //-- Media Tag --//
     if (stripos($s, '[media=') !== false)
     {
         $s = preg_replace("#\[media=(youtube|liveleak|GameTrailers|imdb)\](.+?)\[/media\]#ies", "_MediaTag('\\2','\\1')", $s);
         $s = preg_replace("#\[media=(youtube|liveleak|GameTrailers|vimeo)\](.+?)\[/media\]#ies", "_MediaTag('\\2','\\1')", $s);
     }
 
-    //--img
+    //-- Uncomment To Use The Scale Function Instead Of Lightbox --//
+    //-- Img Using Image-Resize And Function Scale  --//
+    //-- [img=http://www/image.gif]  --//
+    /*
+        if (stripos($s, '[img') !== false) {
+        $s = preg_replace_callback("/\[img\](http:\/\/[^\s'\"<>]+(\.(jpg|gif|png)))\[\/img\]/i", "scale", $s);
+        // [img=http://www/image.gif]
+        $s = preg_replace_callback("/\[img=(http:\/\/[^\s'\"<>]+(\.(gif|jpg|png)))alt=\"\"\]/i", "scale", $s);
+        }
+    */
+
+    //-- Img Using Lightbox --//
+    //-- [img=http://www/image.gif] --//
     if (stripos($s, '[img') !== false)
     {
-        $s = preg_replace_callback("/\[img\](http:\/\/[^\s'\"<>]+(\.(jpg|gif|png)))\[\/img\]/i", "scale", $s);
-        $s = preg_replace_callback("/\[img=(http:\/\/[^\s'\"<>]+(\.(gif|jpg|png)))\]/i", "scale", $s);
+        $s = preg_replace("/\[img\]((http|https):\/\/[^\s'\"<>]+(\.(jpg|gif|png|bmp|jpeg)))\[\/img\]/i", "<a href=\"\\1\" rel=\"lightbox\"><img src=\"\\1\" alt=\"\" class=\"image-resize\" /></a>", $s);
+
+        $s = preg_replace("/\[img=((http|https):\/\/[^\s'\"<>]+(\.(gif|jpg|png|bmp|jpeg)))\]/i", "<a href=\"\\1\" rel=\"lightbox\"><img src=\"\\1\" alt=\"\"  class=\"image-resize\" /></a>", $s);
     }
 
-    // [size=4]Text[/size]
+    //-- [size=4]Text[/size] --//
     if (stripos($s, '[size=') !== false)
     {
         $s = preg_replace('/\[size=([1-7])\](.+?)\[\/size\]/is', '<span class="font_size_\1">\2</span>', $s);
     }
 
-    // [font=Arial]Text[/font]
+    //-- [font=Arial]Text[/font] --//
     if (stripos($s, '[font=') !== false)
     {
         $s = preg_replace('/\[font=([a-zA-Z ,]+)\](.+?)\[\/font\]/is', '<span style="font-family: \\1">\\2</span>', $s);
     }
 
-    // [s]Stroke[/s]
+    //-- [s]Stroke[/s] --//
     if (stripos($s, '[s]') !== false)
     {
         $s = preg_replace("/\[s\](.+?)\[\/s\]/is", "<s>\\1</s>", $s);
     }
 
-    // the [you] tag
-    if (stripos($s, '[you]') !== false)
-    {
-        $s = preg_replace("/\[you\]/i", $CURUSER['username'], $s);
-    }
+     //-- Dynamic Vars --//
 
-    // Dynamic Vars
-
-    // [Spoiler]TEXT[/Spoiler]
+    //-- [Spoiler]TEXT[/Spoiler] --//
     if (stripos($s, '[spoiler]') !== false)
     {
         $s = preg_replace("/\[spoiler\](.+?)\[\/spoiler\]/is", "<div class=\"smallfont\" align=\"left\"><input type=\"button\" value=\"Show\" style=\"width:75px;font-size:10px;margin:0px;padding:0px;\" onclick=\"if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') {this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = '';this.innerText = ''; this.value = 'Hide'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = 'Show'; }\" /><div style=\"margin: 10px; padding: 10px; border: 1px inset;\" align=\"left\"><div style=\"display: none;\">\\1</div></div></div>", $s);
     }
 
-    // [mcom]Text[/mcom]
+    //-- [mcom]Text[/mcom] --//
     if (stripos($s, '[mcom]') !== false)
     {
-        $s = preg_replace("/\[mcom\](.+?)\[\/mcom\]/is", "<div style=\"font-size: 18pt; line-height:    50%;\"><div style=\"border-color: red; background-color: red; color: white; text-align: center; font-weight: bold; font-size: large;\"><strong>\\1</strong></div></div>", $s);
+        $s = preg_replace("/\[mcom\](.+?)\[\/mcom\]/is", "<div style=\"font-size: 18pt; line-height: 50%;\"><div style=\"border-color: red; background-color: red; color: white; text-align: center; font-weight: bold; font-size: large;\"><strong>\\1</strong></div></div>", $s);
     }
 
-    // the [you] tag
+    //-- The [you] Tag --//
     if (stripos($s, '[you]') !== false)
     {
         $s = preg_replace("/\[you\]/i", $CURUSER['username'], $s);
     }
 
-    // [php]php code[/php]
+    //-- [php]PHP Code[/php] --//
     if (stripos($s, '[php]') !== false)
     {
         $s = preg_replace_callback("/\[php\](.+?)\[\/php\]/ims", "source_highlighter", $s);
     }
 
-    // [sql]sql code[/sql]
+    //-- [sql]SQL Code[/sql] --//
     if (stripos($s, '[sql]') !== false)
     {
         $s = preg_replace_callback("/\[sql\](.+?)\[\/sql\]/ims", "source_highlighter", $s);
     }
 
-    // [html]html code[/html]
+    //-- [html]HTML Code[/html] --//
     if (stripos($s, '[html]') !== false)
     {
         $s = preg_replace_callback("/\[html\](.+?)\[\/html\]/ims", "source_highlighter", $s);
     }
 
-    //[mail]mail[/mail]
+    //-- [mail]Mail[/mail] --//
     if (stripos($s, '[mail]') !== false)
     {
-        $s = preg_replace("/\[mail\](.+?)\[\/mail\]/is", "<a    href=\"mailto:\\1\" target=\"_blank\">\\1</a>", $s);
+        $s = preg_replace("/\[mail\](.+?)\[\/mail\]/is", "<a href=\"mailto:\\1\" target=\"_blank\">\\1</a>", $s);
     }
 
-    //[align=(center|left|right|justify)]text[/align]
+    //--[Align=(center|left|right|justify)]Text[/align] --//
     if (stripos($s, '[align=') !== false)
     {
-        $s = preg_replace("/\[align=([a-zA-Z]+)\](.+?)\[\/align\]/is", "<div    style=\"text-align:\\1\">\\2</div>", $s);
+        $s = preg_replace("/\[align=([a-zA-Z]+)\](.+?)\[\/align\]/is", "<div style=\"text-align:\\1\">\\2</div>", $s);
     }
 
-    // Quotes
+    //-- Quotes --//
     $s = format_quotes($s);
 
-    // URLs
+    //-- URLs --//
     $s = format_urls($s);
 
     if (stripos($s, '[url') !== false)
     {
-        // [url=http://www.example.com]Text[/url]
+        //-- [url=http://www.example.com]Text[/url] --//
         $s = preg_replace("/\[url=([^()<>\s]+?)\]((\s|.)+?)\[\/url\]/i","<a target=_blank href=redir.php?url=\\1>\\2</a>", $s);
 
 
-        // [url]http://www.example.com[/url]
+        //-- [url]http://www.example.com[/url] --//
         $s = preg_replace("/\[url\]([^()<>\s]+?)\[\/url\]/i","<a target=_blank href=redir.php?url=\\1>\\1</a>", $s);
     }
 
-    // Linebreaks
+    //-- Linebreaks --//
     $s = nl2br($s);
 
-    // [pre]Preformatted[/pre]
+    //-- [pre]Preformatted[/pre] --//
     if (stripos($s, '[pre]') !== false)
     {
         $s = preg_replace("/\[pre\](.+?)\[\/pre\]/is", "<tt><span style=\"white-space: nowrap;\">\\1</span></tt>", $s);
     }
 
-    // [nfo]NFO-preformatted[/nfo]
+    //-- [nfo]NFO-preformatted[/nfo] --//
     if (stripos($s, '[nfo]') !== false)
     {
         $s = preg_replace("/\[nfo\](.+?)\[\/nfo\]/i", "<tt><span style=\"white-space: nowrap;\"><font face='MS Linedraw' size='2' style='font-size: 10pt; line-height: "."10pt'>\\1</font></span></tt>", $s);
     }
 
-    // Maintain spacing
+    //-- Maintain Spacing --//
     $s = str_replace("  ", " &nbsp;", $s);
 
     reset($smilies);
     while (list($code, $url) = each($smilies))
     {
-        $s = str_replace($code, "<img src='".$image_dir."smilies/{$url}' width='' height='' border='0' alt='".htmlspecialchars($code)."' title='".htmlspecialchars($code)."' />", $s);
+        $s = str_replace($code, "<img src='".$image_dir."smilies/{$url}' width='16' height='16' border='0' alt='".htmlspecialchars($code)."' title='".htmlspecialchars($code)."' />", $s);
     }
 
-    //reset($privatesmilies);
-    //while (list($code, $url) = each($privatesmilies))
-    //$s = str_replace($code, "<img src='".$image_dir."smilies/{$url}' width='' height='' border='0' alt='' title='' />", $s);
-
+    /*
+        reset($privatesmilies);
+        while (list($code, $url) = each($privatesmilies))
+        $s = str_replace($code, "<img src='".$image_dir."smilies/{$url}' width='16' height='16' border='0' alt='' title='' />", $s);
+    */
     return $s;
 }
 
@@ -473,23 +455,23 @@ function _MediaTag ($content, $type)
     switch ($type)
     {
         case 'youtube':
-            $return = preg_replace("#^http://(?:|www\.)youtube\.com/watch\?v=([\-_a-zA-Z0-9]+)+?$#i", "<object type='application/x-shockwave-flash' height='355'    width='425' data='http://www.youtube.com/v/\\1'><param name='movie' value='http://www.youtube.com/v/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#FFFFFF' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
+            $return = preg_replace("#^http://(?:|www\.)youtube\.com/watch\?v=([\-_a-zA-Z0-9]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.youtube.com/v/\\1'><param name='movie' value='http://www.youtube.com/v/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#FFFFFF' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
             break;
 
         case 'liveleak':
-            $return = preg_replace("#^http://(?:|www\.)liveleak\.com/view\?i=([_a-zA-Z0-9]+)+?$#i", "<object    type='application/x-shockwave-flash' height='355' width='425' data='http://www.liveleak.com/e/\\1'><param name='movie' value='http://www.liveleak.com/e/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#FFFFFF' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
+            $return = preg_replace("#^http://(?:|www\.)liveleak\.com/view\?i=([_a-zA-Z0-9]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.liveleak.com/e/\\1'><param name='movie' value='http://www.liveleak.com/e/\\1' /><param name='allowScriptAccess' value='sameDomain' /><param name='quality' value='best' /><param name='bgcolor' value='#FFFFFF' /><param name='scale' value='noScale' /><param name='salign' value='TL' /><param name='FlashVars' value='playerMode=embedded' /><param name='wmode' value='transparent' /></object>", $content);
             break;
 
         case 'GameTrailers':
-            $return = preg_replace("#^http://(?:|www\.)gametrailers\.com/video/([\-_a-zA-Z0-9]+)+?/([0-9]+)+?$#i", "<object type='application/x-shockwave-flash'    height='355' width='425' data='http://www.gametrailers.com/remote_wrap.php?mid=\\2'><param name='movie' value='http://www.gametrailers.com/remote_wrap.php?mid=\\2' /><param name='allowScriptAccess' value='sameDomain' /> <param name='allowFullScreen' value='true' /><param name='quality' value='high' /></object>", $content);
+            $return = preg_replace("#^http://(?:|www\.)gametrailers\.com/video/([\-_a-zA-Z0-9]+)+?/([0-9]+)+?$#i", "<object type='application/x-shockwave-flash' height='355' width='425' data='http://www.gametrailers.com/remote_wrap.php?mid=\\2'><param name='movie' value='http://www.gametrailers.com/remote_wrap.php?mid=\\2' /><param name='allowScriptAccess' value='sameDomain' /> <param name='allowFullScreen' value='true' /><param name='quality' value='high' /></object>", $content);
             break;
 
         case 'imdb':
-            $return = preg_replace("#^http://(?:|www\.)imdb\.com/video/screenplay/([_a-zA-Z0-9]+)+?$#i", "<div class='\\1'><div style=\"padding:    3px; background-color: transparent; border: none; width:690px;\"><div style=\"text-transform: uppercase; border-bottom: 1px solid #CCCCCC; margin-bottom: 3px; font-size: 0.8em; font-weight: bold; display: block;\"><span onclick=\"if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerHTML = '<strong>Imdb Trailer: </strong><a href=\'#\' onclick=\'return false;\'>hide</a>'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerHTML = '<b>Imdb Trailer: </b><a href=\'#\' onclick=\'return false;\'>show</a>'; }\" ><b>Imdb Trailer: </b><a href=\"#\" onclick=\"return false;\">show</a></span></div><div class=\"quotecontent\"><div style=\"display: none;\"><iframe style='vertical-align: middle;' src='http://www.imdb.com/video/screenplay/\\1/player' scrolling='no' width='660' height='490' frameborder='0'></iframe></div></div></div></div>", $content);
+            $return = preg_replace("#^http://(?:|www\.)imdb\.com/video/screenplay/([_a-zA-Z0-9]+)+?$#i", "<div class='\\1'><div style=\"padding: 3px; background-color: transparent; border: none; width:690px;\"><div style=\"text-transform: uppercase; border-bottom: 1px solid #CCCCCC; margin-bottom: 3px; font-size: 0.8em; font-weight: bold; display: block;\"><span onclick=\"if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerHTML = '<strong>Imdb Trailer: </strong><a href=\'#\' onclick=\'return false;\'>hide</a>'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerHTML = '<b>Imdb Trailer: </b><a href=\'#\' onclick=\'return false;\'>show</a>'; }\" ><b>Imdb Trailer: </b><a href=\"#\" onclick=\"return false;\">show</a></span></div><div class=\"quotecontent\"><div style=\"display: none;\"><iframe style='vertical-align: middle;' src='http://www.imdb.com/video/screenplay/\\1/player' scrolling='no' width='660' height='490' frameborder='0'></iframe></div></div></div></div>", $content);
             break;
 
         case 'vimeo':
-            $return = preg_replace("#^http://(?:|www\.)vimeo\.com/([0-9]+)+?$#i", "<object type='application/x-shockwave-flash' width='425' height='355'    data='http://vimeo.com/moogaloop.swf?clip_id=\\1&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1'>
+            $return = preg_replace("#^http://(?:|www\.)vimeo\.com/([0-9]+)+?$#i", "<object type='application/x-shockwave-flash' width='425' height='355' data='http://vimeo.com/moogaloop.swf?clip_id=\\1&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1'>
             <param name='allowFullScreen' value='true' />
             <param name='allowScriptAccess' value='sameDomain' />
             <param name='movie' value='http://vimeo.com/moogaloop.swf?clip_id=\\1&amp;server=vimeo.com&amp;show_title=1&amp;show_byline=1&amp;show_portrait=0&amp;color=&amp;fullscreen=1' />
@@ -505,8 +487,8 @@ function _MediaTag ($content, $type)
     return $return;
 }
 
-//Finds last occurrence of needle in haystack
-//in PHP5 use strripos() instead of this
+//-- Finds Last Occurrence Of Needle In Haystack --//
+//-- In PHP5 Use strripos() Instead Of This --//
 function _strlastpos ($haystack, $needle, $offset = 0)
 {
     $addLen = strlen($needle);
@@ -522,7 +504,7 @@ function _strlastpos ($haystack, $needle, $offset = 0)
     return ($endPos >= 0) ? $endPos : false;
 }
 
-//this is made by putyn
+//-- Credits To putyn --//
 function textbbcode ($form, $text, $content = "")
 {
     global $CURUSER, $image_dir;
@@ -540,7 +522,7 @@ function textbbcode ($form, $text, $content = "")
 
     <div id="pickerholder"></div>
 
-    <table cellpadding="5" cellspacing="0" align="center"  border="1">
+    <table border="1" align="center" cellpadding="5" cellspacing="0">
         <tr>
             <td width="100%" style="padding:0" colspan="2">
                 <div style="float:left;padding:4px 0px 0px 2px;">
@@ -549,7 +531,7 @@ function textbbcode ($form, $text, $content = "")
                     <img src="{$image_dir}bbcode/underline.png" width="16" height="16" border="0" alt="U" title="Underline" onclick="tag('u')" />
                     <img src="{$image_dir}bbcode/strike.png" width="16" height="16" border="0" alt="S" title="Strike" onclick="tag('s')" />
                     <img src="{$image_dir}bbcode/link.png" width="16" height="16" border="0" alt="Link" title="Link" onclick="clink()" />
-                    <img src="{$image_dir}bbcode/picture.png" width="16" height="16" border="0" alt="Image" title="Add Image"  onclick="cimage()" />
+                    <img src="{$image_dir}bbcode/picture.png" width="16" height="16" border="0" alt="Image" title="Add Image" onclick="cimage()" />
                     <img src="{$image_dir}bbcode/email.png" width="16" height="16" border="0" alt="Email" title="Add Email" onclick="mail()" />
 HTML;
 
@@ -565,13 +547,13 @@ HTML;
 
     $bbcodebody .= <<<HTML
                 </div>
-                <div style="float:right;padding:4px 2px 0px 0px;"> <img src="{$image_dir}bbcode/align_left.png" width="16" height="16" border="0" alt="Left" title="Align - Left" onclick="wrap('align', '', 'Left')" /> <img src="{$image_dir}bbcode/align_center.png" width="16" height="16" border="0" alt="Center" title="Align - Center" onclick="wrap('align', '', 'center')" /> <img src="{$image_dir}bbcode/align_justify.png"  width="16" height="16" border="0" alt="justify" title="Align - Justify" onclick="wrap('align', '', 'justify')" /> <img src="{$image_dir}bbcode/align_right.png" width="16" height="16" border="0" alt="Right" title="Align - Right" onclick="wrap('align', '' ,'right')" /> </div>
+                <div style="float:right;padding:4px 2px 0px 0px;"> <img src="{$image_dir}bbcode/align_left.png" width="16" height="16" border="0" alt="Left" title="Align - Left" onclick="wrap('align', '', 'Left')" /> <img src="{$image_dir}bbcode/align_center.png" width="16" height="16" border="0" alt="Center" title="Align - Center" onclick="wrap('align', '', 'center')" /> <img src="{$image_dir}bbcode/align_justify.png" width="16" height="16" border="0" alt="justify" title="Align - Justify" onclick="wrap('align', '', 'justify')" /> <img src="{$image_dir}bbcode/align_right.png" width="16" height="16" border="0" alt="Right" title="Align - Right" onclick="wrap('align', '' ,'right')" /> </div>
             </td>
         </tr>
         <tr>
             <td width="100%" style="padding:0;" colspan="2">
                 <div style="float:left;padding:4px 0px 0px 2px;">
-                    <select name="fontfont" id="fontfont"  onchange="font('font',this.value);" title="Font Face">
+                    <select name="fontfont" id="fontfont" onchange="font('font',this.value);" title="Font Face">
                         <option value="0">Font</option>
                         <option value="Arial" style="font-family: Arial;">Arial</option>
                         <option value="Arial Black" style="font-family: Arial Black;">Arial Black</option>
@@ -622,7 +604,7 @@ HTML;
         <tr>
             <td><textarea id="{$text}" name="{$text}" rows="2" cols="2" style="width:450px; height:250px;font-size:12px;">{$content}</textarea></td>
             <td align="center" valign="top">
-                <table width="0" cellpadding="2" border="1" class="em_holder" cellspacing="2">
+                <table class="em_holder" border="1" width="0" cellpadding="2" cellspacing="2">
                     <tr>
                         <td align="center"><a href="javascript:em(':)');"><img src="{$image_dir}smilies/happy.png" width="16" height="16" border="0" alt="Smilies" title="" /></a></td>
                         <td align="center"><a href="javascript:em(':(');"><img src="{$image_dir}smilies/sad.png" width="16" height="16" border="0" alt="Smilies" title="" /></a></td>
@@ -639,7 +621,7 @@ HTML;
                         <td align="center"><a href="javascript:em('8-)');"><img src="{$image_dir}smilies/cool.png" width="16" height="16" border="0" alt="Smilies" title="" /></a></td>
                         <td align="center"><a href="javascript:em(':O');"><img src="{$image_dir}smilies/surprised.png" width="16" height="16" border="0" alt="Smilies" title="" /></a></td>
                         <td align="center"><a href="javascript:em(':asleep:');"><img src="{$image_dir}smilies/asleep.png" width="16" height="16" border="0" alt="Smilies" title="" /></a></td>
-                        <td align="center"><a href="javascript:em(':bashful:');"><img src="{$image_dir}smilies/bashful.png" width="16" height="16"border="0"  alt="Smilies" title="" /></a></td>
+                        <td align="center"><a href="javascript:em(':bashful:');"><img src="{$image_dir}smilies/bashful.png" width="16" height="16"border="0" alt="Smilies" title="" /></a></td>
                     </tr>
                     <tr>
                         <td align="center"><a href="javascript:em(':bashfulcute:');"><img src="{$image_dir}smilies/bashfulcute.png" width="16" height="16" border="0" alt="Smilies" title="" /></a></td>

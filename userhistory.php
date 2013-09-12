@@ -1,47 +1,22 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify    --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
-require_once(INCL_DIR.'function_torrenttable.php');
-require_once(INCL_DIR.'function_bbcode.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_torrenttable.php');
+require_once(FUNC_DIR.'function_bbcode.php');
 
 db_connect(false);
 logged_in();
@@ -58,15 +33,13 @@ if (get_user_class() < UC_POWER_USER || ($CURUSER["id"] != $userid && get_user_c
     error_message("warn", "Warning", "Permission Denied");
 }
 
-$page   = (isset($_GET['page']) ? $_GET["page"] : ''); // not used?
+$page   = (isset($_GET['page']) ? $_GET["page"] : ''); //-- Not Used? --//
 $action = (isset($_GET['action']) ? $_GET["action"] : '');
 
-//-- Global variables
-
+//-- Global Variables --//
 $perpage = 25;
 
-//-- Action: View   posts
-
+//-- Action: View Posts --//
 if ($action == "viewposts")
 {
     $select_is = "COUNT(DISTINCT p.id)";
@@ -74,24 +47,22 @@ if ($action == "viewposts")
                     LEFT JOIN topics AS t ON p.topicid = t.id
                     LEFT JOIN forums AS f ON t.forumid = f.id";
 
-    $where_is = "p.userid = $userid and f.minclassread <= ".$CURUSER['class'];
+    $where_is = "p.userid = $userid AND f.minclassread <= ".$CURUSER['class'];
     $order_is = "p.id DESC";
 
     $query = "SELECT $select_is
                 FROM $from_is
                 WHERE $where_is";
 
-    $res = sql_query($query) or    sqlerr(__FILE__, __LINE__);
-    $arr = mysql_fetch_row($res) or    error_message("error", "Error", "No  Posts Found");
+    $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
+    $arr = mysql_fetch_row($res) or error_message("error", "Error", "No Posts Found");
 
     $postcount = $arr[0];
 
-    //-- Make page menu
-
+    //-- Make Page Menu --//
     list($pagertop, $pagerbottom, $limit) = pager($perpage, $postcount, $_SERVER["PHP_SELF"]."?action=viewposts&id=$userid&");
 
-    //-- Get user data
-
+    //-- Get User Data --//
     $res = sql_query("SELECT username, donor, warned, enabled
                         FROM users
                         WHERE id = $userid") or sqlerr(__FILE__, __LINE__);
@@ -107,14 +78,13 @@ if ($action == "viewposts")
         $subject = "unknown[$userid]";
     }
 
-    //-- Get posts
-
-    $from_is = "posts as p
+    //-- Get Posts --//
+    $from_is = "posts AS p
                     LEFT JOIN topics AS t ON p.topicid = t.id
                     LEFT JOIN forums AS f ON t.forumid = f.id
                     LEFT JOIN readposts AS r ON p.topicid = r.topicid and p.userid = r.userid";
 
-    $select_is = "f.id AS f_id, f.name, t.id as t_id, t.subject, t.lastpost, r.lastpostread, p.*";
+    $select_is = "f.id AS f_id, f.name, t.id AS t_id, t.subject, t.lastpost, r.lastpostread, p.*";
 
     $query = "SELECT $select_is
                 FROM $from_is
@@ -138,8 +108,7 @@ if ($action == "viewposts")
         echo    $pagertop;
     }
 
-    //-- Print table
-
+    //-- Print Table --//
     begin_frame();
 
     while ($arr = mysql_fetch_assoc($res))
@@ -160,10 +129,22 @@ if ($action == "viewposts")
 
         $added = $arr["added"]." GMT (".(get_elapsed_time(sql_timestamp_to_unix_timestamp($arr["added"])))." ago)";
 
-        echo("<br /><table border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>
-        $added&nbsp;--&nbsp;<span style='font-weight:bold;'>Forum:&nbsp;</span><a href='forums.php?action=viewforum&amp;forumid=$forumid'>$forumname</a>&nbsp;--&nbsp;<span style='font-weight:bold;'>Topic:&nbsp;</span>
-        <a href='forums.php?action=viewtopic&amp;topicid=$topicid'>$topicname</a>&nbsp;--&nbsp;<span style='font-weight:bold;'>Post:&nbsp;</span>
-        #<a href='forums.php?action=viewtopic&amp;topicid=$topicid&amp;page=p$postid#$postid'>$postid</a>".($newposts ? " &nbsp;<span style='font-weight:bold ;style='color : #ff0000;'>NEW!</span>" : "")."</td></tr></table>\n");
+        echo("<br />
+                <table border='0' cellspacing='0' cellpadding='0'>
+                    <tr>
+                        <td class='embedded'>
+                            $added&nbsp;--&nbsp;
+                            <span style='font-weight:bold;'>Forum:&nbsp;</span>
+                            <a href='forums.php?action=viewforum&amp;forumid=$forumid'>$forumname</a>&nbsp;--&nbsp;
+                            <span style='font-weight:bold;'>Topic:&nbsp;</span>
+                            <a href='forums.php?action=viewtopic&amp;topicid=$topicid'>$topicname</a>&nbsp;--&nbsp;
+                            <span style='font-weight:bold;'>Post:&nbsp;</span>
+                            #<a href='forums.php?action=viewtopic&amp;topicid=$topicid&amp;page=p$postid#$postid'>$postid</a>
+                            ".($newposts ? " &nbsp;
+                            <span style='font-weight:bold ;style='color : #ff0000;'>NEW!</span>" : "")."
+                        </td>
+                    </tr>
+                </table>\n");
 
         begin_table(true);
 
@@ -178,7 +159,7 @@ if ($action == "viewposts")
             if (mysql_num_rows($subres) == 1)
             {
                 $subrow = mysql_fetch_assoc($subres);
-                $body .= "<p><span  style='font-size: xx-small;'>Last edited by <a href='userdetails.php?id=$arr[editedby]'><span style='font-weight:bold;'>$subrow[username]</span></a> at $arr[editedat] GMT</span></p>\n";
+                $body .= "<p><span style='font-size: xx-small;'>Last edited by <a href='userdetails.php?id=$arr[editedby]'><span style='font-weight:bold;'>$subrow[username]</span></a> at $arr[editedat] GMT</span></p>\n";
             }
         }
 
@@ -199,13 +180,12 @@ if ($action == "viewposts")
     die;
 }
 
-//-- Action: View   comments
-
+//-- Action: View Comments --//
 if ($action == "viewcomments")
 {
     $select_is = "COUNT(*)";
 
-    // LEFT due to orphan comments
+    //-- LEFT Due To Orphan Comments --//
     $from_is = "comments AS c
                 LEFT JOIN torrents AS t ON c.torrent = t.id";
 
@@ -218,16 +198,14 @@ if ($action == "viewcomments")
                 ORDER BY $order_is";
 
     $res = sql_query($query) or sqlerr(__FILE__, __LINE__);
-    $arr = mysql_fetch_row($res) or error_message("error", "Error", "No  Comments Found");
+    $arr = mysql_fetch_row($res) or error_message("error", "Error", "No Comments Found");
 
     $commentcount = $arr[0];
 
-    //-- Make page menu
-
+    //-- Make Page Menu --//
     list($pagertop, $pagerbottom, $limit) = pager($perpage, $commentcount, $_SERVER["PHP_SELF"]."?action=viewcomments&id=$userid&");
 
-    //-- Get user data
-
+    //-- Get User Data --//
     $res = sql_query("SELECT username, donor, warned, enabled
                         FROM users
                         WHERE id = $userid") or sqlerr(__FILE__, __LINE__);
@@ -242,8 +220,7 @@ if ($action == "viewcomments")
         $subject = "unknown[$userid]";
     }
 
-    //-- Get comments
-
+    //-- Get Comments --//
     $select_is = "t.name, c.torrent AS t_id, c.id, c.added, c.text";
 
     $query = "SELECT $select_is
@@ -256,7 +233,7 @@ if ($action == "viewcomments")
 
     if (mysql_num_rows($res) == 0)
     {
-        error_message("error", "Error", "No Comments    Found");
+        error_message("error", "Error", "No Comments Found");
     }
 
     site_header("Comments History");
@@ -268,8 +245,7 @@ if ($action == "viewcomments")
         echo $pagertop;
     }
 
-    //-- Print table
-
+    //-- Print Table --//
     begin_frame();
 
     while ($arr = mysql_fetch_assoc($res))
@@ -277,7 +253,7 @@ if ($action == "viewcomments")
         $commentid = $arr["id"];
         $torrent   = $arr["name"];
 
-        // make sure the line doesn't wrap
+        //-- Make Sure The Line Doesn't Wrap --//
         if (strlen($torrent) > 55)
         {
             $torrent = substr($torrent, 0, 52)."...";
@@ -285,9 +261,8 @@ if ($action == "viewcomments")
 
         $torrentid = $arr["t_id"];
 
-        // find the page; this code should probably be in details.php instead
-
-        $subres = sql_query("SELECT COUNT(*)
+        //-- Find The Page; This Code Should Probably Be In details.php Instead --//
+        $subres = sql_query("SELECT COUNT(id)
                                 FROM comments
                                 WHERE torrent = $torrentid AND id < $commentid") or sqlerr(__FILE__, __LINE__);
 
@@ -297,8 +272,17 @@ if ($action == "viewcomments")
         $page_url  = $comm_page ? "&page=$comm_page" : "";
         $added     = $arr["added"]." GMT (".(get_elapsed_time(sql_timestamp_to_unix_timestamp($arr["added"])))." ago)";
 
-        echo("<table border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>"."$added&nbsp;---&nbsp;<span style='font-weight:bold;'>Torrent:&nbsp;</span>".($torrent ? ("<a href='details.php?id=$torrentid&amp;tocomm=1'>$torrent</a>") : "   [Deleted] ")."&nbsp;---&nbsp;<span  style='font-weight:bold;'>Comment:&nbsp;</span>#<a href='details.php?id=$torrentid&amp;tocomm=1$page_url'>$commentid</a>
-        </td></tr></table>\n");
+        echo("<table border='0' cellspacing='0' cellpadding='0'>
+                <tr>
+                    <td class='embedded'>
+                        "."$added&nbsp;---&nbsp;
+                        <span style='font-weight:bold;'>Torrent:&nbsp;</span>
+                        ".($torrent ? ("<a href='details.php?id=$torrentid&amp;tocomm=1'>$torrent</a>") : " [Deleted] ")."&nbsp;---&nbsp;
+                        <span style='font-weight:bold;'>Comment:&nbsp;</span>
+                        #<a href='details.php?id=$torrentid&amp;tocomm=1$page_url'>$commentid</a>
+                    </td>
+                </tr>
+            </table>\n");
 
         begin_table(true);
 
@@ -321,15 +305,13 @@ if ($action == "viewcomments")
     die;
 }
 
-//-- Handle unknown action
-
+//-- Handle Unknown Action --//
 if ($action != "")
 {
     error_message("error", "History Error", "Unknown Action.");
 }
 
-//-- Any other case
-
+//-- Any Other Case --//
 error_message("error", "History Error", "Invalid or No Query.");
 
 ?>

@@ -1,0 +1,828 @@
+body
+{
+    font-family      : tahoma, arial, helvetica, sans-serif;
+    font-size        : 8pt;
+    background-color : #FFFFFF; /* Overall Site Background Color - Comment out to use an Image */
+    color            : #1947D1; /* Change the overall font color */
+    margin-left      : 15%;
+    margin-top       : 0px;
+    margin-right     : 15%;
+    margin-bottom    : 5px;
+}
+
+table
+{
+    border-collapse  : collapse;
+    border           : none;
+    background-color : #FFFFFF; /* Change the table background color */
+}
+
+table.bottom
+{
+    background : transparent;
+}
+
+.sticky
+{
+    background-color : #CCFF9D;
+}
+
+h1
+{
+    font-size  : 12pt;
+    text-align : center;
+}
+
+h2
+{
+    font-size     : 10pt;
+    margin-bottom : 6px;
+    text-align    : center;
+}
+
+p
+{
+    font-size : 8pt;
+}
+
+td
+{
+    font-size : 8pt;
+    border    : 1px solid #A9CAEB;
+}
+
+td.std
+{
+    font-size : 8pt;
+    #border   : 0px solid;
+}
+
+td.comm
+{
+    font-size : 8pt;
+    border    : 1px solid #000000;
+}
+
+td.detail
+{
+    font-size   : 8pt;
+    font-weight : bold;
+    border   : 1px solid #A9CAEB;
+}
+
+td.embedded
+{
+    border     : none;
+    padding    : 0;
+    text-align : left;
+}
+
+td.forum
+{
+    #background-color     : #000000;
+    #border               : 1px solid #8B2500;
+    font-family           : Verdana, Helvetica, sans-serif;
+    font-size             : 11px;
+    padding               : 1px;
+    -webkit-border-radius : 6px !important;
+    -moz-border-radius    : 6px !important;
+}
+
+td.bottom
+{
+    border : none;
+}
+
+td.heading
+{
+    font-weight : bold;
+}
+
+td.text
+{
+    padding    : 10pt;
+    text-align : left;
+}
+
+td.comment
+{
+    padding    : 10pt;
+    font-size  : 8pt;
+    text-align : left;
+}
+
+td.colhead
+{
+    font-weight      : bold;
+    color            : #FFFFFF; /*  Change the font color to match altlink_forum */
+    background-color : #3399FF; /* Comment out to use an Image */
+}
+
+a.altlink_forum:visited
+{
+    font-weight     : bold;
+    color           : #000000; /*   Change the font color to match altlink_forum */
+    text-decoration : none;
+}
+
+a.altlink_forum:hover
+{
+    text-decoration : none;
+    color           : #ff0000; /*   Change the font color of the hover links in forums */
+}
+
+td.rowhead
+{
+    font-size : 8pt;
+}
+
+td.rowhead_form
+{
+    font-weight : bold;
+}
+
+td.navigation
+{
+    font-weight : bold;
+    font-size   : 10pt;
+    border      : none;
+}
+
+td.clear
+{
+    padding    : 0;
+    border     : 0;
+    background : transparent;
+}
+
+td.track
+{
+    font-weight     : bold;
+    text-align      : left;
+    #vertical-align : top;
+    border          : 0;
+}
+
+legend
+{
+    text-align : center;
+}
+
+form
+{
+    margin-top    : 0;
+    margin-bottom : 0;
+}
+
+a:link, a:visited
+{
+    text-decoration : none;
+    color           : #000000; /*   Change the font color of links */
+}
+
+a:hover
+{
+    color : #ff0000; /* Change the font color of the hover links */
+}
+
+a.altlink:link, a.altlink:visited
+{
+    font-weight     : bold;
+    color           : #a83838; /*   Change the font color of the Edit, Delete (forums), E, D (News on index) etc..*/
+    text-decoration : none;
+}
+
+a.altlink:hover
+{
+    text-decoration : none;
+}
+
+.red
+{
+    color : #ee0000;
+}
+
+input, select, textarea
+{
+    font-size : 8pt;
+}
+
+.small
+{
+    font-size : 7pt;
+}
+
+li
+{
+    margin-top    : 6pt;
+    margin-bottom : 6pt;
+}
+
+ul
+{
+    margin-left   : 16pt;
+    margin-top    : 0;
+    margin-bottom : 0;
+}
+
+fieldset
+{
+    width       : 95%;
+    border      : solid #0F5C8E 1px;
+    padding     : 0 1em 1em 1em;
+    margin-left : 15px;
+}
+
+a.catlink:link
+{
+    text-decoration : none;
+}
+
+a.catlink:hover
+{
+    color : #a83838;
+}
+
+/* font sizes valid */
+.font_size_1
+{
+    font-size : xx-small;
+}
+
+.font_size_2
+{
+    font-size : x-small;
+}
+
+.font_size_3
+{
+    font-size : small;
+}
+
+.font_size_4
+{
+    font-size : medium;
+}
+
+.font_size_5
+{
+    font-size : large;
+}
+
+.font_size_6
+{
+    font-size : x-large;
+}
+
+.font_size_7
+{
+    font-size : xx-large;
+}
+
+/*-------------------------------------------- Start of Polls ----------------------------------------*/
+.poll
+{
+    background-color : #ece9d8; /* Changes the background color of the Polls*/
+}
+
+#poll_container
+{
+    border      : 1px solid #333333;
+    font-family : Verdana, Arial, Helvetica, sans-serif;
+    font-size   : 12px;
+    margin      : 5px;
+    padding     : 5px;
+    width       : 400px;
+}
+
+#poll_title
+{
+    border      : none;
+    font-size   : 14px;
+    font-weight : bold;
+    text-align  : center;
+}
+
+.barmax, .bar
+{
+    border        : 1px solid #666666;
+    padding-left  : 2px;
+    padding-right : 2px;
+}
+
+.bar
+{
+    background : #cc4400;
+}
+
+.barmax
+{
+    background : #0033cc;
+}
+/*------------------------------------------- End of Polls -------------------------------------------*/
+
+.roundedCorners
+{
+    border                : 1px solid #000;
+    -moz-border-radius    : 6px;
+    -webkit-border-radius : 6px;
+}
+
+.codetop
+{
+    background  : #0099FF url(/images/bbcode/code.jpg) no-repeat right;
+    color       : #000;
+    font-weight : bold;
+    margin      : 0 auto 0 auto;
+    padding     : 3px;
+    border      : 1px solid #000;
+    width       : 470px;
+}
+
+.codemain
+{
+    background : #FFF;
+    border     : 1px solid #000;
+    color      : #000;
+    margin     : 0 auto 0 auto;
+    padding    : 3px;
+    width      : 470px;
+    overflow   : auto;
+    height     : 150px;
+}
+
+/*--------------------------------- Start For Donation Page - Align Offers ---------------------------*/
+.thumbnail
+{
+    float  : left;
+    width  : 225px;
+    height : 272px;
+}
+
+.clearboth
+{
+    clear : both;
+}
+
+#wrapper
+{
+    padding  : 0;
+    width    : 675px;
+    height   : auto;
+    position : relative;
+}
+/*--------------------------------- End For Donation Page - Align Offers -----------------------------*/
+
+/*--------------------------------- Start OK Submit Buttons Styling ----------------------------------*/
+.btn
+{
+    display               : inline-block;
+    outline               : none;
+    cursor                : pointer;
+    text-align            : center;
+    text-decoration       : none;
+    /*font: 16px Helvetica, sans-serif;*/
+    padding               : 1px 2px;
+    text-shadow           : 0 1px 1px rgba(0, 0, 0, .3);
+    -webkit-border-radius : 5px;
+    -moz-border-radius    : 5px;
+    border-radius         : 5px;
+    -webkit-box-shadow    : 0 1px 2px rgba(0, 0, 0, .2);
+    -moz-box-shadow       : 0 1px 2px rgba(0, 0, 0, .2);
+    box-shadow            : 0 1px 2px rgba(0, 0, 0, .2);
+    color                 : #FFFFFF; /* Changes the font    color of the buttons */
+    background            : #d39c55; /* Changes the top color of the button */
+    /* Replace all #d39c55 with your new top color.  Replace all #d3af80 with you new bottom color.
+     /*1st Value    Changes the background color of the top layer of button. */
+    /* 2nd value changes the bottom color layer of button */
+    background            : -webkit-gradient(linear, left top, left bottom, from(#297ACC), to(#3399FF));
+    background            : -moz-linear-gradient(top, #297ACC, #3399FF);
+    filter                : progid:DXImaGETransform.Microsoft.gradient(startColorstr = '#297ACC', endColorstr = '#3399FF');
+}
+
+.btn:hover
+{
+    background      : #d39c55; /*   Changes the top color of the button */
+    /* 1st Value Changes the background color of the top layer of button.*/
+    /* 2nd value changes the bottom color layer of button */
+    background      : -webkit-gradient(linear, left top, left bottom, from(#3399FF), to(#297ACC));
+    background      : -moz-linear-gradient(top, #3399FF, #297ACC);
+    filter          : progid:DXImaGETransform.Microsoft.gradient(startColorstr = '#3399FF', endColorstr = '#297ACC');
+    text-decoration : none;
+    color           : #FFFFFF; /* Changes the font  color of the buttons on hover*/
+}
+/*---------------------------------- End OK Submit Buttons Styling -----------------------------------*/
+
+/*-------------------------------------- Start Statusbar Styling -------------------------------------*/
+#statusbar
+{
+    border                : 1px solid #b3b3b3;
+    -webkit-border-radius : 8px;
+    -moz-border-radius    : 8px;
+    border-radius         : 8px;
+    -webkit-box-shadow    : #666 0px 2px 3px 2px;
+    -moz-box-shadow       : #666 0px 2px 3px 2px;
+    box-shadow            : #666 0px 2px 3px 2px;
+}
+
+#statusbar p.home
+{
+    margin-right: 5px;
+    color       : black;
+}
+
+/*-------------------------------------- End Statusbar Styling ---------------------------------------*/
+
+/*-------------------------------------- Start DropDown Menu Styling ---------------------------------*/
+
+.headerwidth
+{
+    width   : 900px;
+    margin  : 0px auto 0px auto;
+    display :table;
+}
+
+.mbar
+{
+    height     : 52px;
+    background : url("images/mbar.png") no-repeat;
+}
+
+.mbar .mbar
+{
+    background-position: 100% -52px;
+}
+
+.mbar .mbar .mbar
+{
+    background-position : 0 -104px;
+    background-repeat   : repeat-x;
+}
+
+.dpad
+{
+    margin: 0 15px;
+}
+
+#menubar
+{
+    width   : 900px;
+    position: fixed;
+    z-index: 2;
+}
+
+.menubar ul
+{
+    line-height    : 26px;
+    margin-top     : 10px;
+    text-transform : uppercase;
+}
+
+.menubar ul li, .menubar ul a, .menubar ul a b
+{
+    height : 26px;
+    float  : left;
+}
+
+.menubar ul a
+{
+    margin-right : 1px;
+    color        : #FFFFFF;
+    background   : url("images/topmenu.png") no-repeat 0 -999px;
+}
+
+.menubar ul a b
+{
+    cursor     : pointer;
+    padding    : 0px 10px;
+    background : url("images/topmenu.png") no-repeat 0 -999px;
+}
+
+.menubar ul a:hover
+{
+    background-position: 0 0;
+}
+
+.menubar ul a:hover b
+{
+    background-position: 100% -26px;
+}
+
+.menubar ul .sublnk a
+{
+    background-position: 0 -104px;
+}
+
+.menubar ul .sublnk a b
+{
+    padding-right       : 25px;
+    background-position : 100% -130px;
+}
+
+.menubar ul .sublnk a:hover, .menubar ul .sublnk.selected a
+{
+    background-position: 0 -52px;
+}
+
+.menubar ul .sublnk a:hover b, .menubar ul .sublnk.selected a b
+{
+    padding-right       : 25px;
+    background-position : 100% -78px;
+}
+
+/*---SubMenu---*/
+.menubar ul .sublnk
+{
+    position: relative;
+}
+
+.menubar ul li ul
+{
+    width    : 200px;
+    margin   : 0;
+    top      : 26px;
+    left     : 0;
+    position : absolute;
+    z-index  : 9999;
+    display  : none;
+}
+
+.menubar ul li ul li a, .menubar ul li ul li, .menubar ul li ul li a b
+{
+    background     : none;
+    float          : none;
+    height         : auto;
+    display        : block;
+    line-height    : normal;
+    text-transform : none;
+}
+
+.menubar ul li ul li
+{
+    padding: 0;
+}
+
+.menubar ul li ul li a
+{
+    color         : #FFFFFF;
+    font-weight   : bold;
+    padding       : 6px 0;
+    width         : 100%;
+    border-bottom : 1px solid #3f4b51;
+    background    : #297ACC;
+    opacity       :0.7;
+    -moz-opacity  :0.7;
+    filter        :alpha(opacity=70);
+}
+
+.menubar ul li ul li a:hover
+{
+    background-color: #3399FF;
+}
+
+.lcol, .rcol, form
+{
+    display: inline;
+}
+
+.lcol
+{
+    float: left;
+}
+
+.reset, .reset li
+{
+    list-style : none;
+    padding    : 0;
+    margin     : 0;
+}
+
+.thide, .htmenu span
+{
+    overflow    : hidden;
+    display     : block;
+    height      : 0;
+    line-height : normal;
+}
+
+.hrss
+{
+    float       : right;
+    margin-top  : 15px;
+    padding-top : 18px;
+    width       : 18px;
+    background  : url("images/rsshead.png") no-repeat;
+}
+
+
+.logo
+{
+    /*-- from left to right --*/
+    /*-- top, right, bot, left --*/
+    margin: 40px 0px 0px 100px;
+}
+
+.smlmenu
+{
+/*color: white;*/
+    margin : 0px auto 0px auto;
+    font   : 8.5pt Arial,Helvetica,Sans-serif;
+}
+
+.main_frame
+{
+    padding: 10px 10px 10px 10px;
+}
+
+#mainbox
+{
+    background            : #FFFFFF;
+    margin                : 0px auto 10px auto;
+    width                 : 900px;
+  /*padding               : 10px 10px 10px 10px;*/
+    border                : 1px solid #b3b3b3;
+    -webkit-border-radius : 8px;
+    -moz-border-radius    : 8px;
+    border-radius         : 8px;
+    -webkit-box-shadow    : #666 0px 2px 3px;
+    -moz-box-shadow       : #666 0px 2px 3px;
+    box-shadow            : #666 0px 2px 3px;
+}
+
+.spacer
+{
+    margin: 10px auto 0px auto;
+}
+
+.small
+{
+    font-size: 0.9em;
+}
+/*-------------------------------------- End DropDown Menu Styling -----------------------------------*/
+
+/*----------------------------------------- Start Userdetails Content --------------------------------*/
+#featured ul.ui-tabs-nav
+{
+    list-style :none;
+    margin   : 1em 0;
+    padding : 0;
+    text-align : center;
+}
+
+#featured ul.ui-tabs-nav li
+{
+    display : inline;
+    margin : 0 2px;
+    font-size :12px;
+}
+
+#featured .ui-tabs-panel
+{
+    width    :100%; /* increase / decrease width of user details display */
+    height   :100%; /* Do not adjust */
+    position :relative;
+}
+/*------------------------------------- Finish Sliding Userdetails Content ---------------------------*/
+
+/*------------------------------------ Start Error/Warning Notices -----------------------------------*/
+.notice
+{
+    background            : url(/images/error/error-bg.png) repeat-x 0 0;
+    color                 : #FFF;
+    width                 : 83%;
+    font-weight           : normal;
+    padding               : 4px 15px 0;
+    margin-bottom         : 1.0em;
+    -moz-border-radius    : 6px;
+    -webkit-border-radius : 6px;
+    border-radius         : 6px;
+    -moz-box-shadow       : 1px 1px 2px rgba(0, 0, 0, .4);
+    -webkit-box-shadow    : 1px 1px 2px rgba(0, 0, 0, .4);
+    box-shadow            : 1px 1px 2px rgba(0, 0, 0, .4);
+    position              : relative;
+    left                  : 34px;
+    z-index               : 1;
+}
+
+.notice p
+{
+    margin-bottom : 1.5em;
+}
+
+.notice p:last-child
+{
+    margin-bottom : 0;
+}
+
+.notice ul
+{
+    margin-left   : 8px;
+    margin-bottom : 1.5em;
+}
+
+.notice ul:last-child
+{
+    margin-bottom : 0;
+}
+
+.notice li
+{
+    background      : url(/images/error/error-tabs.png) no-repeat 0 -95px;
+    list-style-type : none;
+    padding-left    : 18px;
+    margin-bottom   : .75em;
+}
+
+.notice-success li
+{
+    background-position : 0 -95px;
+}
+
+.notice-warn li
+{
+    background-position : 0 -895px;
+}
+
+.notice-error li
+{
+    background-position : 0 -495px;
+}
+
+.notice-info li
+{
+    background-position : 0 -1295px;
+}
+
+.notice h5
+{
+    font-size     : 14px;
+    font-weight   : bold;
+    margin-bottom : .65em;
+}
+
+.notice span
+{
+    background : url(/images/error/error-tabs.png) no-repeat 100% 0;
+    width      : 33px;
+    height     : 40px;
+    position   : absolute;
+    left       : -34px;
+    top        : 6px;
+}
+
+.notice-success
+{
+    background-color : #EEF4D4;
+    color            : #596C26;
+    border           : 1px solid #8FAD3D;
+}
+
+.notice-success span
+{
+    background-position : 100% 0;
+}
+
+.notice-warn
+{
+    background-color : #FFEA97;
+    color            : #796100;
+    border           : 1px solid #E1B500;
+}
+
+.notice-warn span
+{
+    background-position : 100% -800px;
+}
+
+.notice-error
+{
+    background-color : #EFCEC9;
+    color            : #933628;
+    border           : 1px solid #AE3F2F;
+}
+
+.notice-error span
+{
+    background-position : 100% -400px;
+}
+
+.notice-info
+{
+    background-color : #C6D8F0;
+    color            : #285797;
+    border           : 1px solid #4381CD;
+}
+
+.notice-info span
+{
+    background-position : 100% -1200px;
+}
+/*------------------------------------- End Error/Warning Notices ------------------------------------*/
+
+/*------------------------------------------- Start LightBox -----------------------------------------*/
+.image-resize
+{
+    max-width : 350px;
+    border    : none;
+}
+/*-------------------------------------------- End LightBox ------------------------------------------*/

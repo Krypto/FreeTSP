@@ -5260,7 +5260,7 @@ class GeSHi
             // common trailing strings
             // BUGGY!
             //$list = preg_replace_callback('#(?<=^|\:|\|)\w+?(\w+)(?:\|.+\1)+(?=\|)#', create_function(
-            //'$matches', 'return "(?:" . preg_replace("#" . preg_quote($matches[1], "#") . "(?=\||$)#", "", $matches[0]) . ")" . $matches[1];'), $list);
+            //'$matches', 'return "(?:".preg_replace("#".preg_quote($matches[1], "#")."(?=\||$)#", "", $matches[0]).")".$matches[1];'), $list);
             // (?:p)? => p?
             $list = preg_replace('#\(\?\:(.)\)\?#', '\1?', $list);
             // (?:a|b|c|d|...)? => [abcd...]?
@@ -5268,7 +5268,7 @@ class GeSHi
             static $callback_2;
             if (!isset ($callback_2))
             {
-                $callback_2 = create_function('$matches', 'return "[" . str_replace("|", "", $matches[1]) . "]";');
+                $callback_2 = create_function('$matches', 'return "[".str_replace("|", "", $matches[1])."]";');
             }
             $list = preg_replace_callback('#\(\?\:((?:.\|)+.)\)#', $callback_2, $list);
         }

@@ -1,47 +1,22 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
-/////FreeTSP shout.php Spook////
+//-- FreeTSP shout.php Spook --//
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
 
 db_connect();
 logged_in();
@@ -57,13 +32,14 @@ logged_in();
     }
 </script>
 
-<script type='text/javascript'><!--
-
+<script type='text/javascript'>
+<!--
     function mySubmit()
     {
         setTimeout('document.shbox.reset()', 100);
     }
-//--></script>
+//-->
+</script>
 
 <iframe src='shoutbox.php' width='100%' height='200' frameborder='1' name='sbox' marginwidth='0' marginheight='0'></iframe>
 
@@ -71,16 +47,16 @@ logged_in();
 
 <form action='shoutbox.php' method='get' target='sbox' name='shbox' onsubmit='mySubmit()'>
     <script type='text/javascript'>
-        var b_open = 0;
-        var i_open = 0;
-        var u_open = 0;
+        var b_open     = 0;
+        var i_open     = 0;
+        var u_open     = 0;
         var color_open = 0;
-        var html_open = 0;
+        var html_open  = 0;
 
-        var myAgent = navigator.userAgent.toLowerCase();
+        var myAgent   = navigator.userAgent.toLowerCase();
         var myVersion = parseInt(navigator.appVersion);
 
-        var is_ie = ((myAgent.indexOf("msie") != -1) && (myAgent.indexOf("opera") == -1));
+        var is_ie  = ((myAgent.indexOf("msie") != -1) && (myAgent.indexOf("opera") == -1));
         var is_nav = ((myAgent.indexOf('mozilla') != -1) && (myAgent.indexOf('spoofer') == -1) && (myAgent.indexOf('compatible') == -1) && (myAgent.indexOf('opera') == -1) && (myAgent.indexOf('webtv') == -1) && (myAgent.indexOf('hotjava') == -1));
 
         var is_win = ((myAgent.indexOf("win") != -1) || (myAgent.indexOf("16bit") != -1));
@@ -118,21 +94,21 @@ logged_in();
 
         function pushstack(thearray, newval)
         {
-            arraysize = stacksize(thearray);
+            arraysize           = stacksize(thearray);
             thearray[arraysize] = newval;
         }
 
         function popstackd(thearray)
         {
             arraysize = stacksize(thearray);
-            theval = thearray[arraysize - 1];
+            theval    = thearray[arraysize - 1];
             return theval;
         }
 
         function popstack(thearray)
         {
             arraysize = stacksize(thearray);
-            theval = thearray[arraysize - 1];
+            theval    = thearray[arraysize - 1];
 
             delete thearray[arraysize - 1];
             return theval;
@@ -185,17 +161,17 @@ logged_in();
         function tag_url()
         {
             var FoundErrors = '';
-            var enterURL = prompt("You must register URL", "http://");
-            var enterTITLE = prompt("You must register a title", "");
+            var enterURL    = prompt("You Must Register URL", "http://");
+            var enterTITLE  = prompt("You Must Register a Title", "");
 
             if (!enterURL || enterURL == "")
             {
-                FoundErrors += " " + "You must indicate URL,";
+                FoundErrors += " " + "You Must indicate URL,";
             }
 
             if (!enterTITLE)
             {
-                FoundErrors += " " + "You must indicate a title";
+                FoundErrors += " " + "You Must indicate a Title";
             }
 
             if (FoundErrors)
@@ -209,11 +185,11 @@ logged_in();
         function tag_image()
         {
             var FoundErrors = '';
-            var enterURL = prompt("You must register the URL", "http://");
+            var enterURL    = prompt("You Must Register the URL", "http://");
 
             if (!enterURL || enterURL == "http://")
             {
-                alert("Error !" + "You must register URL");
+                alert("Error !" + "You Must Register URL");
                 return;
             }
             doInsert("[img]" + enterURL + "[/img]", "", false);
@@ -221,11 +197,11 @@ logged_in();
 
         function tag_email()
         {
-            var emailAddress = prompt("You must email", "");
+            var emailAddress = prompt("You Must email", "");
 
             if (!emailAddress)
             {
-                alert("Error !" + "You must email");
+                alert("Error !" + "You Must email");
                 return;
             }
             doInsert("[email]" + emailAddress + "[/email]", "", false);
@@ -296,14 +272,14 @@ logged_in();
 
         function addText(theTag, theClsTag, isSingle, theForm)
         {
-            var isClose = false;
-            var message = theForm.shbox_text;
-            var set = false;
-            var old = false;
+            var isClose  = false;
+            var message  = theForm.shbox_text;
+            var set      = false;
+            var old      = false;
             var selected = "";
 
             if (navigator.appName == "Netscape" && message.textLength >= 0)
-            { // mozilla, firebird, netscape
+            { //-- Mozilla, Firebird, Netscape --//
                 if (theClsTag != "" && message.selectionStart != message.selectionEnd)
                 {
                     selected = message.value.substring(message.selectionStart, message.selectionEnd);
@@ -341,7 +317,7 @@ logged_in();
             }
 
             if ((myVersion >= 4) && is_ie && is_win)
-            { // Internet Explorer
+            { //-- Internet Explorer --//
                 if (message.isTextEdit)
                 {
                     message.focus();
@@ -410,8 +386,8 @@ logged_in();
             else
             {
                 lastindex = 0;
-                for (i = 0; 
-                    i < bbtags.length; 
+                for (i = 0;
+                    i < bbtags.length;
                     i++)
                 {
                     if (bbtags[i] == thetag)
@@ -438,26 +414,26 @@ logged_in();
     <center>
         <table width='600' cellspacing='0' cellpadding='1'>
             <tr>
-                <td colspan='1' align='center'>
+                <td align='center' colspan='1'>
                     <table cellspacing='1' cellpadding='1'>
                         <tr>
                             <td class='embedded'>
-                                <input style='font-weight: bold;font-size:9px;' type='button' name='b' value='B' onclick='javascript: simpletag("b")' />
+                                <input type='button' style='font-weight: bold;font-size:9px;' name='b' value='B' onclick='javascript: simpletag("b")' />
                             </td>
                             <td class='embedded'>
-                                <input class='codebuttons' style='font-style: italic;font-size:10px;' type='button' name='i' value='I' onclick='javascript: simpletag("i")' />
+                                <input type='button' class='codebuttons' style='font-style: italic;font-size:10px;' name='i' value='I' onclick='javascript: simpletag("i")' />
                             </td>
                             <td class='embedded'>
-                                <input class='codebuttons' style='text-decoration: underline;font-size:9px;' type='button' name='u' value='U' onclick='javascript: simpletag("u")' />
+                                <input type='button' class='codebuttons' style='text-decoration: underline;font-size:9px;' name='u' value='U' onclick='javascript: simpletag("u")' />
                             </td>
                             <td class='embedded'>
-                                <input class='codebuttons' style='font-size:10px;' type='button' name='url' value='URL' onclick='tag_url()' />
+                                <input type='button' class='codebuttons' style='font-size:10px;' name='url' value='URL' onclick='tag_url()' />
                             </td>
+                            <!-- <td class='embedded'>
+                                <input type='button' class='codebuttons' style='font-size:10px;' name='IMG' value='IMG' onclick='javascript: tag_image()' />
+                            </td> -->
                             <td class='embedded'>
-                                <input class='codebuttons' style='font-size:10px;' type='button' name='IMG' value='IMG' onclick='javascript: tag_image()' />
-                            </td>
-                            <td class='embedded'>
-                                <input class='width:188' style='font-size:9px;' type='button'  onclick='javascript:closeall();' name='tagcount' value='Close Tags' />
+                                <input type='button' class='width:188' style='font-size:9px;' onclick='javascript:closeall();' name='tagcount' value='Close Tags' />
                             </td>
                         </tr>
                     </table>
@@ -467,11 +443,11 @@ logged_in();
 
         <table width='600' cellspacing='0' cellpadding='1'>
             <tr>
-                <td colspan='1' align='center'>
+                <td align='center' colspan='1'>
                     <table cellspacing='1' cellpadding='1'>
                         <tr>
                             <td class='embedded'>
-                                <select name='color' class='codebuttons'
+                                <select class='codebuttons' name='color'
                                         onchange='alterfont(this.options[this.selectedIndex].value, "color")'>
                                     <option value='0'>---------- Color ----------</option>
                                     <option style='background-color: black' value='Black'>Black</option>
@@ -516,7 +492,7 @@ logged_in();
                                     <option style='background-color: white' value='White'>White</option>
                                 </select>
 
-                                <select name='font' class='codebuttons'
+                                <select class='codebuttons' name='font'
                                         onchange='alterfont(this.options[this.selectedIndex].value, "font")'>
                                     <option value='0'>-------------- Font --------------</option>
                                     <option value='Arial'>Arial</option>
@@ -542,7 +518,7 @@ logged_in();
                                     <option value='Verdana'>Verdana</option>
                                 </select>
 
-                                <select name='size' class='codebuttons'
+                                <select class='codebuttons' name='size'
                                         onchange='alterfont(this.options[this.selectedIndex].value, "size")'>
                                     <option value='0'>------ Size ------</option>
                                     <option value='1'>1</option>

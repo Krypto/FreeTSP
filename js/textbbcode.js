@@ -43,12 +43,12 @@ function clink()
 function cimage()
 {
     var link;
-    link = prompt("Please enter the full URL for your image\nOnly .png, .jpg, .gif images", "http://");
+    link = prompt("Please enter the full URL for your image\nOnly .png, .jpg, .gif, .jpeg images", "http://");
     var re_text = /\.jpg|\.gif|\.png|\.jpeg/i;
     if (re_text.test(link) == false && link != "http://" && link)
     {
         alert("Image not allowed only .jpg .gif .png .jpeg");
-        link = prompt("Please enter the full URL for your image\nOnly .png, .jpg, .gif images", "http://");
+        link = prompt("Please enter the full URL for your image\nOnly .png, .jpg, .gif, .jpeg images", "http://");
     }
     if (link != "http://" && link) wrap('img', link, '');
 

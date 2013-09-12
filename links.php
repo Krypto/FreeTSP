@@ -1,50 +1,26 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_vfunctions.php');
-require_once(INCL_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_bbcode.php');
 
 db_connect();
 logged_in();
 
-site_header("Links");
+site_header("Links", false);
 
 function add_link ($url, $title, $description = "")
 {
@@ -67,11 +43,11 @@ if ($CURUSER)
 }
 ?>
 
-<table width='100%' class='main' border='0' cellspacing='0' cellpadding='0'>
+<table class='main' border='0' width='100%' cellspacing='0' cellpadding='0'>
 <tr>
 <td class='embedded'>
 <h2>Other Pages on this Site</h2>
-<table width='100%' border='1' cellspacing='0' cellpadding='10'>
+<table border='1' width='100%' cellspacing='0' cellpadding='10'>
     <tr>
         <td class='text'>
             <ul>
@@ -90,7 +66,7 @@ if ($CURUSER)
 </table>
 
 <h2>BitTorrent Information</h2>
-<table width='100%' border='1' cellspacing='0' cellpadding='10'>
+<table border='1' width='100%' cellspacing='0' cellpadding='10'>
     <tr>
         <td class='text'>
             <ul>
@@ -107,7 +83,7 @@ if ($CURUSER)
 </table>
 
 <h2>BitTorrent Software</h2>
-<table width='100%' border='1' cellspacing='0' cellpadding='10'>
+<table border='1' width='100%' cellspacing='0' cellpadding='10'>
     <tr>
         <td class='text'>
             <ul>
@@ -147,7 +123,7 @@ if ($CURUSER)
 </table>
 
 <h2>Download Sites</h2>
-<table width='100%' border='1' cellspacing='0' cellpadding='10'>
+<table border='1' width='100%' cellspacing='0' cellpadding='10'>
     <tr>
         <td class='text'>
             <ul>
@@ -163,7 +139,7 @@ if ($CURUSER)
 </table>
 
 <h2>Forum Communities</h2>
-<table width='100%' border='1' cellspacing='0' cellpadding='10'>
+<table border='1' width='100%' cellspacing='0' cellpadding='10'>
     <tr>
         <td class='text'>
             <ul>
@@ -182,7 +158,7 @@ if ($CURUSER)
 </table>
 
 <h2>Other Sites</h2>
-<table width='100%' border='1' cellspacing='0' cellpadding='10'>
+<table border='1' width='100%' cellspacing='0' cellpadding='10'>
     <tr>
         <td class='text'>
             <ul>
@@ -204,7 +180,7 @@ if ($CURUSER)
 </table>
 
 <h2>Link to FreeTSP</h2>
-<table width='100%' border='1' cellspacing='0' cellpadding='10'>
+<table border='1' width='100%' cellspacing='0' cellpadding='10'>
     <tr>
         <td class='text'> Do you want a link to FreeTSP on your homepage?<br /> Copy the following and paste it into your homepage code.<br /> <br />
             <a href="http://www.freetsp.info"><img src="http://www.freetsp.info/public/style_images/logo-4.png" width='486' height='100' border='0' alt='FreeTSP Support Forum' title='FreeTSP Support Forum' /></a><br /> <span style='color : #004E98;'> &lt;!-- FreeTSP Link --&gt;<br /> <br /> &lt;a href='http://www.freetsp.info'&gt;&lt;img src='http://www.freetsp.info/public/style_images/logo-4.png' border='0' alt='FreeTSP Support Forum' title='FreeTSP Support Forum' &gt;&lt;/a&gt; <br /> <br /> &lt;!-- End of FreeTSP Link --&gt;</span><br />

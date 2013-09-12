@@ -30,12 +30,12 @@ function klappe_news(id)
     if (klappText.style.display == 'none')
     {
         klappText.style.display = 'block';
-        klappBild.src = 'images/minus.gif';
+        klappBild.src = 'images/minus.png';
     }
     else
     {
         klappText.style.display = 'none';
-        klappBild.src = 'images/plus.gif';
+        klappBild.src = 'images/plus.png';
     }
 }
 function klappe_changelog(id)
@@ -45,11 +45,11 @@ function klappe_changelog(id)
     if (klappText.style.display == 'none')
     {
         klappText.style.display = 'block';
-        klappBild.src = 'images/minus.gif';
+        klappBild.src = 'images/minus.png';
     }
     else
     {
         klappText.style.display = 'none';
-        klappBild.src = 'images/plus.gif';
+        klappBild.src = 'images/plus.png';
     }
 }

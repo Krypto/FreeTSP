@@ -1,48 +1,23 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
-require_once(INCL_DIR.'function_torrenttable.php');
-require_once(INCL_DIR.'function_benc.php');
-require_once(INCL_DIR.'function_page_verify.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_torrenttable.php');
+require_once(FUNC_DIR.'function_benc.php');
+require_once(FUNC_DIR.'function_page_verify.php');
 
 ini_set("upload_max_filesize", $max_torrent_size);
 
@@ -58,7 +33,7 @@ if (get_user_class() < UC_USER)
 }
 
 foreach (explode(":", "descr:type:name")
-         as
+         AS
          $v)
 {
     if (!isset($_POST[$v]))
@@ -78,6 +53,26 @@ $fname = unesc($f["name"]);
 if (empty($fname))
 {
     error_message("error", "Upload Failed!", "Empty filename!");
+}
+
+if ($_POST['uplver'] == 'yes')
+{
+    $anonymous = "yes";
+    $anon      = "Anonymous";
+}
+else
+{
+    $anonymous = "no";
+    $anon      = $CURUSER["username"];
+}
+
+if ($_POST['freeleech'] == 'yes')
+{
+    $freeleech = "yes";
+}
+else
+{
+    $freeleech = "no";
 }
 
 $nfo = sqlesc('');
@@ -111,18 +106,21 @@ if (isset($_FILES['nfo']) && !empty($_FILES['nfo']['name']))
     $nfo = sqlesc(str_replace("\x0d\x0d\x0a", "\x0d\x0a", @file_get_contents($nfofilename)));
 }
 
+$request = (((isset($_POST['request']) && is_valid_id($_POST['request'])) ? intval($_POST['request']) : 0));
+$offer   = (((isset($_POST['offer']) && is_valid_id($_POST['offer'])) ? intval($_POST['offer']) : 0));
+
 $descr = unesc($_POST["descr"]);
 
 if (!$descr)
 {
-    error_message("error", "Upload Failed!", "You must enter a Description!");
+    error_message("error", "Upload Failed!", "You MUST Enter a Description!");
 }
 
 $catid = (0 + $_POST["type"]);
 
 if (!is_valid_id($catid))
 {
-    error_message("error", "Upload Failed!", "You must select a Category to put the torrent in!");
+    error_message("error", "Upload Failed!", "You MUST Select a Category to put the torrent in!");
 }
 
 if (!validfilename($fname))
@@ -142,6 +140,11 @@ if (!empty($_POST["name"]))
     $torrent = unesc($_POST["name"]);
 }
 
+if (!empty($_POST["poster"]))
+{
+     $poster = unesc($_POST["poster"]);
+}
+
 $tmpname = $f["tmp_name"];
 
 if (!is_uploaded_file($tmpname))
@@ -151,21 +154,21 @@ if (!is_uploaded_file($tmpname))
 
 if (!filesize($tmpname))
 {
-    error_message("error", "Upload Failed!", "Empty file!");
+    error_message("error", "Upload Failed!", "Empty File!");
 }
 
 $dict = bdec_file($tmpname, $max_torrent_size);
 
 if (!isset($dict))
 {
-    error_message("error", "Upload Failed!", "What the hell did you upload? This is not a bencoded file!");
+    error_message("error", "Upload Failed!", "What the hell did you upload? This is NOT a Bencoded File!");
 }
 
 function dict_check ($d, $s)
 {
     if ($d["type"] != "dictionary")
     {
-        error_message("error", "Upload Failed", "not a dictionary");
+        error_message("error", "Upload Failed", "NOT a Dictionary");
     }
 
     $a   = explode(":", $s);
@@ -174,7 +177,7 @@ function dict_check ($d, $s)
     $t   = '';
 
     foreach ($a
-             as
+             AS
              $k)
     {
         unset($t);
@@ -229,12 +232,12 @@ function dict_get ($d, $k, $t)
     return $v["value"];
 }
 
-list($ann, $info) = dict_check($dict, "announce(string):info");
+list($ann, $info)            = dict_check($dict, "announce(string):info");
 list($dname, $plen, $pieces) = dict_check($info, "name(string):piece length(integer):pieces(string)");
 
 if (!in_array($ann, $announce_urls, 1))
 {
-    error_message("error", "Upload Failed!", "Invalid Announce URL! must be <span style='font-weight:bold;'>".$announce_urls[0]."</span>");
+    error_message("error", "Upload Failed!", "Invalid Announce URL! Must be <span style='font-weight:bold;'>".$announce_urls[0]."</span>");
 }
 
 if (strlen($pieces) % 20 != 0)
@@ -258,7 +261,7 @@ else
 
     if (!isset($flist))
     {
-        error_message("error", "Upload Failed!", "missing both length and files");
+        error_message("error", "Upload Failed!", "Missing both Length and Files");
     }
 
     if (!count($flist))
@@ -269,7 +272,7 @@ else
     $totallen = 0;
 
     foreach ($flist
-             as
+             AS
              $fn)
     {
         list($ll, $ff) = dict_check($fn, "length(integer):path(list)");
@@ -277,7 +280,7 @@ else
         $ffa = array();
 
         foreach ($ff
-                 as
+                 AS
                  $ffe)
         {
             if ($ffe["type"] != "string")
@@ -302,7 +305,7 @@ else
 
 $infohash = pack("H*", sha1($info["string"]));
 
-// Replace punctuation characters with spaces
+//-- Replace Punctuation Characters With Spaces --//
 
 $torrent = str_replace("_", " ", $torrent);
 $torrent = str_replace(".torrent", " ", $torrent);
@@ -321,12 +324,16 @@ $torrent = str_replace(".mp3", " ", $torrent);
 $torrent = str_replace(".", " ", $torrent);
 
 $nfo = sqlesc(str_replace("\x0d\x0d\x0a", "\x0d\x0a", @file_get_contents($nfofilename)));
+$poster = unesc($_POST['poster']);
 
-$ret = sql_query("INSERT INTO torrents (search_text, filename, owner, visible, info_hash, name, size, numfiles, type, descr, ori_descr, category, save_as, added, last_action, nfo)
+$ret = sql_query("INSERT INTO torrents (search_text, filename, owner, visible, anonymous, freeleech,
+info_hash, name, size, numfiles, type, descr, ori_descr, category, save_as, added, last_action, nfo, offer, request, poster)
                     VALUES (".implode(",", array_map("sqlesc", array(searchfield("$shortfname $dname $torrent"),
                                                                      $fname,
                                                                      $CURUSER["id"],
                                                                      "no",
+                                                                     $anonymous,
+                                                                     $freeleech,
                                                                      $infohash,
                                                                      $torrent,
                                                                      $totallen,
@@ -335,15 +342,21 @@ $ret = sql_query("INSERT INTO torrents (search_text, filename, owner, visible, i
                                                                      $descr,
                                                                      $descr,
                                                                      0 + $_POST["type"],
-                                                                     $dname))).", '".get_date_time()."', '".get_date_time()."', $nfo)");
+                                                                     $dname))).",
+                                                                     '".get_date_time()."',
+                                                                     '".get_date_time()."',
+                                                                     $nfo,
+                                                                     $offer,
+                                                                     $request,
+                                                                     '".$poster."')");
 
 if (!$ret)
 {
     if (mysql_errno() == 1062)
     {
-        error_message("error", "Upload Failed!", "torrent already uploaded!");
+        error_message("error", "Upload Failed!", "Torrent Already Uploaded!");
     }
-    mysql_err();
+    mysql_error();
 }
 
 $id = mysql_insert_id();
@@ -353,7 +366,7 @@ $id = mysql_insert_id();
             WHERE torrent = $id");
 
 foreach ($filelist
-         as
+         AS
          $file)
 {
     @sql_query("INSERT
@@ -363,9 +376,94 @@ foreach ($filelist
 
 move_uploaded_file($tmpname, "$torrent_dir/$id.torrent");
 
-write_log("Torrent $id ($torrent) was uploaded by ".$CURUSER["username"]);
+//-- Start Requests And Offers Notifications --//
+$filled = 0;
 
-/* RSS feeds */
+//-- If It Was An Offer Notify The Folks Who Liked It --//
+if ($offer > 0)
+{
+    $res_offer = sql_query('SELECT user_id
+                             FROM offer_votes
+                             WHERE vote = \'yes\'
+                             AND user_id != '.$CURUSER['id'].'
+                             AND offer_id = '.$offer) or sqlerr(__FILE__, __LINE__);
+
+    $subject = sqlesc('An Offer you Voted for!');
+
+    $message = sqlesc("Hi, \n\n A Offer you were interested in has just been uploaded! \n\n [url=$site_url/details.php?id=".$id."][b]".htmlspecialchars($torrent, ENT_QUOTES)."[/b][/url].");
+
+    $time = sqlesc(get_date_time());
+
+         while($arr_offer = mysql_fetch_assoc($res_offer))
+         {
+             sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, saved, location)
+                         VALUES(0, '.$arr_offer['user_id'].', '.$time.', '.$message.', '.$subject.', \'yes\', 1)') or sqlerr(__FILE__, __LINE__);
+         }
+
+    sql_query("UPDATE offers
+                SET filled_torrent_id = '$id'
+                WHERE id = $offer") or sqlerr(__FILE__, __LINE__);
+
+    write_log('Offered torrent '.$id.' ('.$torrent.') was Uploaded by '.$CURUSER['username']);
+
+    $filled = 1;
+}
+
+//-- If It Was A Request Notify The Folks Who Voted --//
+if ($request > 0)
+{
+    $res_req = sql_query('SELECT user_id
+                            FROM request_votes
+                            WHERE vote = \'yes\'
+                            AND request_id = '.$request) or sqlerr(__FILE__, __LINE__);
+
+    $subject = sqlesc('A Request you were interested in!');
+
+    $message = sqlesc("Hi, \n\n A Request you were interested in has just been Uploaded! \n\n [url=$site_url/details.php?id=".$id."][b]".htmlspecialchars($torrent, ENT_QUOTES)."[/b][/url].");
+
+    $time = sqlesc(get_date_time());
+
+    while($arr_req = mysql_fetch_assoc($res_req))
+    {
+        sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, saved, location)
+                    VALUES(0, '.$arr_req['user_id'].', '.$time.', '.$message.', '.$subject.', \'yes\', 1)') or sqlerr(__FILE__, __LINE__);
+    }
+
+    $res_req_owner = sql_query('SELECT requested_by_user_id
+                                FROM requests
+                                WHERE id = '.$request) or sqlerr(__FILE__, __LINE__);
+
+    $subject = sqlesc('A Request you made!');
+
+    $message = sqlesc("Hi, \n A Request you made has just been Uploaded! \n [url=$site_url/details.php?id=".$id."][b]".htmlspecialchars($torrent, ENT_QUOTES)."[/b][/url].");
+
+    $time = sqlesc(get_date_time());
+
+    while($arr_req_owner = mysql_fetch_assoc($res_req_owner))
+    {
+         sql_query('INSERT INTO messages (sender, receiver, added, msg, subject, saved, location)
+                     VALUES(0, '.$arr_req_owner['requested_by_user_id'].', '.$time.', '.$message.', '.$subject.', \'yes\', 1)') or sqlerr(__FILE__, __LINE__);
+    }
+
+    sql_query("UPDATE requests
+                SET filled_by_username = '$CURUSER[username]', filled_torrent_id = '$id', filled_by_user_id = '$CURUSER[id]'
+                WHERE id = $request") or sqlerr(__FILE__, __LINE__);
+
+/*
+    sql_query('DELETE FROM requests WHERE id ='.$request);
+    sql_query('DELETE FROM request_votes WHERE request_id ='.$request);
+    sql_query('DELETE FROM comments WHERE request ='.$request);
+*/
+
+    write_log('Request for torrent '.$id.' ('.$torrent.') was Filled by '.$CURUSER['username']);
+
+    $filled = 1;
+}
+//-- Finish Requests And Offers Notifications --//
+
+write_log("Torrent $id ($torrent) was Uploaded by ".$CURUSER["username"]);
+
+//-- RSS Feeds --//
 
 if (($fd1 = @fopen("rss.xml", "w")) && ($fd2 = fopen("rssdd.xml", "w")))
 {
@@ -407,8 +505,8 @@ if (($fd1 = @fopen("rss.xml", "w")) && ($fd2 = fopen("rssdd.xml", "w")))
     @fclose($fd2);
 }
 
-/* Email notifs
-
+//-- Email Notifs --//
+/*
 $res = sql_query("SELECT name
                     FROM categories
                     WHERE id = $catid") or sqlerr();
@@ -458,7 +556,7 @@ while ($arr = mysql_fetch_row($res))
     }
     else
     {
-        $to .= "," . $arr[0];
+        $to .= ",".$arr[0];
     }
     ++$nthis;
     ++$ntotal;
@@ -467,9 +565,9 @@ while ($arr = mysql_fetch_row($res))
         if (!mail("Multiple recipients <$site_email>", "New torrent - $torrent", $body,
             "From: $site_email\r\nBcc: $to", "-f$site_email"))
         {
-            "error","Signup Failed!",("error","Error", "Your torrent has been been uploaded. DO NOT RELOAD THE PAGE!\n" .
+            "error","Signup Failed!",("error","Error", "Your torrent has been been Uploaded. DO NOT RELOAD THE PAGE!\n" .
                     "There was however a problem delivering the e-mail notifcations.\n" .
-                    "Please let an administrator know about this error!\n");
+                    "Please let an Administrator know about this Error!\n");
         }
         $nthis = 0;
     }

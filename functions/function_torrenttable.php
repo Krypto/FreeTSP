@@ -1,41 +1,16 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 function linkcolor ($num)
 {
@@ -49,36 +24,49 @@ function linkcolor ($num)
 
 function torrenttable ($res, $variant = "index")
 {
-    global $image_dir, $added;
+    global $CURUSER, $image_dir, $added;
+
+    $browse_res = sql_query("SELECT last_browse
+                                FROM users
+                                WHERE id='".$CURUSER['id']."'");
+
+    $browse_arr = mysql_fetch_row($browse_res);
+
+    $last_browse = $browse_arr[0];
+
+    $time_now = gmtime();
+
+    if ($last_browse > $time_now)
+    {
+      $last_browse = $time_now;
+    }
 
     ?>
-<table align='center' border='1' cellspacing='0' cellpadding='5'>
-    <tr>
-        <td class='colhead' align='center'>Type</td>
-        <td class='colhead' align='left'>Name</td>
-        <td class='colhead' align='left'>DL</td>
-        <td class='colhead' align='right'>Files</td>
-        <td class='colhead' align='right'>Comm.</td>
+    <table border='1' align='center' cellspacing='0' cellpadding='5'>
+        <tr>
+            <td class='colhead' align='center'>Type</td>
+            <td class='colhead' align='left'>Name</td>
+            <td class='colhead' align='left'>DL</td>
+            <td class='colhead' align='right'>Files</td>
+            <td class='colhead' align='right'>Comm.</td>
 
-        <!--<td class='colhead' align='center'>Rating</td>-->
-        <!--<td class='colhead' align='center'>Added</td>-->
+            <!--<td class='colhead' align='center'>Rating</td>-->
+            <!--<td class='colhead' align='center'>Added</td>-->
 
-        <td class='colhead' align='center'>Size</td>
+            <td class='colhead' align='center'>Size</td>
 
-        <!--
-        <td class='colhead' align='right'>Views</td>
-        <td class='colhead' align='right'>Hits</td>
-        -->
+            <!--<td class='colhead' align='right'>Views</td>-->
+            <!--<td class='colhead' align='right'>Hits</td>-->
 
-        <td class='colhead' align='center'>Snatched</td>
-        <td class='colhead' align='right'>Seeders</td>
-        <td class='colhead' align='right'>Leechers</td>
-<?php
+            <td class='colhead' align='center'>Snatched</td>
+            <td class='colhead' align='right'>Seeders</td>
+            <td class='colhead' align='right'>Leechers</td>
+    <?php
 
-if ($variant == "index")
-{
-    print("<td class='colhead' align='center'>Upped&nbsp;by</td>\n");
-}
+    if ($variant == "index")
+    {
+        print("<td class='colhead' align='center'>Upped&nbsp;by</td>\n");
+    }
 
     print("</tr>\n");
 
@@ -86,7 +74,15 @@ if ($variant == "index")
     {
         $id = $row["id"];
 
-        print("<tr>\n");
+        if ($row["sticky"] == "yes")
+        {
+            echo("<tr class='sticky'>\n");
+        }
+        else
+        {
+            echo("<tr>\n");
+        }
+
         print("<td class='rowhead' align='center' style='padding: 0px'>");
 
         if (isset($row["cat_name"]))
@@ -95,7 +91,7 @@ if ($variant == "index")
 
             if (isset($row["cat_pic"]) && $row["cat_pic"] != "")
             {
-                print("<img src='{$image_dir}caticons/{$row['cat_pic']}' width='60' height='54' border='0'  alt='{$row['cat_name']}' title='{$row['cat_name']}' />");
+                print("<img src='{$image_dir}caticons/{$row['cat_pic']}' width='60' height='54' border='0' alt='{$row['cat_name']}' title='{$row['cat_name']}' />");
             }
             else
             {
@@ -110,6 +106,7 @@ if ($variant == "index")
 
         print("</td>\n");
 
+        $freeleech = ($row[freeleech]=="yes" ? "&nbsp;<img align='right' src='".$image_dir."free.png' width='32' height='15' border='0' alt='Free Torrent' title='Free Torrent' />" : "");
         $dispname = htmlspecialchars($row["name"]);
         $added    = sqlesc(get_date_time());
 
@@ -127,8 +124,25 @@ if ($variant == "index")
             print("&amp;hit=1");
         }
 
-        print("'><span style='font-weight:bold;'>$dispname</span></a><br />".$row["added"]."</td>\n");
-        print("<td  class='rowhead' align='center'><a href='/download.php/$id/".rawurlencode($row["filename"])."'><img src='".$image_dir."download.png' width='16' height='16' border='0'   alt='Download' title='Download' /></a></td>\n");
+        $sticky = ($row['sticky']=="yes" ? "<img align='right' src='".$image_dir."sticky.png' width='40' height='15' border='0' alt='Sticky' title='Sticky' />" : "");
+
+        if (sql_timestamp_to_unix_timestamp($row["added"]) >= $last_browse)
+        {
+            print("'><span style='font-weight:bold;'>$dispname&nbsp;</span></a><img align='right' src='".$image_dir."new.png' width='30' height='15' border='0' alt='New' title='New' />&nbsp;&nbsp;$sticky$freeleech<br />".$row["added"]."</td>\n");
+        }
+        else
+        {
+            print("'><span style='font-weight:bold;'>$dispname&nbsp;&nbsp;$sticky$freeleech</span></a><br />".$row["added"]."</td>\n");
+        }
+
+        if ($CURUSER['downloadpos'] == 'no' || ($row['banned']=='yes'))
+        {
+            print("<td align='center'><span style='color:red;'>Download<br />Disabled</span></td>\n");
+        }
+        else
+        {
+            print("<td class='rowhead' align='center'><a href='/download.php/$id/".rawurlencode($row["filename"])."'><img src='".$image_dir."download.png' width='16' height='16' border='0' alt='Download' title='Download' /></a></td>\n");
+        }
 
         if ($row["type"] == "single")
         {
@@ -162,7 +176,7 @@ if ($variant == "index")
             }
         }
 
-        /*
+    /*
         print("<td class='rowhead' align='center'>");
         if (!isset($row["rating"]))
             print("---");
@@ -175,13 +189,14 @@ if ($variant == "index")
                 print($rating);
         }
         print("</td>\n");
-        */
-        //print( "<td class='rowhead' align='center'><table border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>" . str_replace( " ", "<br />" ) . "</td></tr></table></td>\n" );
+
+        print("<td class='rowhead' align='center'><table border='0' cellspacing='0' cellpadding='0'><tr><td class='embedded'>".str_replace(" ", "<br />")."</td></tr></table></td>\n");
+    */
 
         print("<td class='rowhead' align='center'>".str_replace(" ", "<br />", mksize($row["size"]))."</td>\n");
 
-        // print("<td class='rowhead' align='right'>" . $row["views"] . "</td>\n");
-        // print("<td class='rowhead' align='right'>" . $row["hits"] . "</td>\n");
+        // print("<td class='rowhead' align='right'>".$row["views"]."</td>\n");
+        // print("<td class='rowhead' align='right'>".$row["hits"]."</td>\n");
 
         $_s = "";
 
@@ -235,7 +250,14 @@ if ($variant == "index")
 
         if ($variant == "index")
         {
-            print("<td class='rowhead' align='center'>".(isset($row["username"]) ? ("<a href='/userdetails.php?id=".$row["owner"]."'><span style='font-weight:bold;'>".htmlspecialchars($row["username"])."</span></a>") : "<span  style='font-style: italic;'>(unknown)</span>")."</td>\n");
+            if ($row["anonymous"] == "yes")
+            {
+                print("<td align='center'><em>Anonymous</em></td>\n");
+            }
+            else
+            {
+                print("<td align='center'>".(isset($row["username"]) ? ("<a href='userdetails.php?id=".$row["owner"]."'><strong>".htmlspecialchars($row["username"])."</strong></a>") : "<em>(Unknown)</em>")."</td>\n");
+            }
         }
 
         print("</tr>\n");

@@ -1,49 +1,36 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
-require_once(INCL_DIR.'function_torrenttable.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_torrenttable.php');
+require_once(FUNC_DIR.'function_bbcode.php');
 
 db_connect(false);
 logged_in();
+
+parked();
+
+if (isset($_GET['clear_new']) && $_GET['clear_new'] == '1')
+{
+    sql_query("UPDATE users
+                SET last_browse=".gmtime()."+3600
+                WHERE id=".$CURUSER['id']);
+
+    header("Location: {$site_url}/browse.php");
+}
 
 $cats = genrelist();
 
@@ -58,7 +45,7 @@ if (isset($_GET["search"]))
     }
 }
 
-$orderby     = "ORDER BY torrents.id DESC";
+$orderby     = "ORDER BY torrents.sticky ASC, torrents.id DESC";
 $addparam    = "";
 $wherea      = array();
 $wherecatina = array();
@@ -158,14 +145,14 @@ if (isset($cleansearchstr))
 {
     $wherea[] = "MATCH (search_text, ori_descr) AGAINST (".sqlesc($searchstr).")";
     $addparam .= "search=".urlencode($searchstr)."&amp;";
-    $orderby = "";
+    $orderby  = "";
 }
 
-$where = implode(" and ", $wherea);
+$where = implode(" AND ", $wherea);
 
 if (isset($wherecatin))
 {
-    $where .= ($where ? " and " : "")."category IN(".$wherecatin.")";
+    $where .= ($where ? " AND " : "")."category IN(".$wherecatin.")";
 }
 
 if ($where != "")
@@ -183,13 +170,13 @@ $count = $row[0];
 if (!$count && isset($cleansearchstr))
 {
     $wherea  = $wherebase;
-    $orderby = "ORDER BY id DESC";
+    $orderby = "ORDER BY torrents.sticky ASC, torrents.id DESC";
     $searcha = explode(" ", $cleansearchstr);
     $sc      = 0;
 
     foreach ($searcha
-             AS
-             $searchss)
+            AS
+            $searchss)
     {
         if (strlen($searchss) <= 1)
         {
@@ -207,8 +194,8 @@ if (!$count && isset($cleansearchstr))
 
         foreach (array("search_text",
                        "ori_descr")
-                 AS
-                 $sss)
+                    AS
+                    $sss)
 
         {
             $ssa[] = "$sss LIKE '%".sqlwildcardesc($searchss)."%'";
@@ -219,7 +206,7 @@ if (!$count && isset($cleansearchstr))
 
     if ($sc)
     {
-        $where = implode(" and ", $wherea);
+        $where = implode(" AND ", $wherea);
         if ($where != "")
         {
             $where = "WHERE $where";
@@ -244,7 +231,8 @@ if ($count)
 {
     list($pagertop, $pagerbottom, $limit) = pager($torrentsperpage, $count, "browse.php?".$addparam);
 
-    $query = "SELECT torrents.id, torrents.category, torrents.leechers, torrents.seeders, torrents.name, torrents.times_completed, torrents.size, torrents.added, torrents.comments,torrents.numfiles,torrents.filename,torrents.owner,IF(torrents.nfo <> '', 1, 0) AS nfoav,".//   "IF(torrents.numratings < $min_votes, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, categories.name AS cat_name, categories.image AS cat_pic, users.username FROM torrents LEFT JOIN categories ON category = categories.id LEFT JOIN users ON torrents.owner = users.id $where $orderby $limit";
+    $query = "SELECT torrents.id, torrents.sticky, torrents.category, torrents.leechers, torrents.seeders, torrents.freeleech, torrents.name, torrents.times_completed, torrents.size, torrents.added, torrents.comments, torrents.numfiles, torrents.filename, torrents.sticky, torrents.anonymous, torrents.banned,
+torrents.owner,IF(torrents.nfo <> '', 1, 0) AS nfoav,".//   "IF(torrents.numratings < $min_votes, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, categories.name AS cat_name, categories.image AS cat_pic, users.username FROM torrents LEFT JOIN categories ON category = categories.id LEFT JOIN users ON torrents.owner = users.id $where $orderby $limit";
             "categories.name AS cat_name, categories.image AS cat_pic, users.username
             FROM torrents LEFT JOIN categories ON category = categories.id LEFT JOIN users ON torrents.owner = users.id $where $orderby $limit";
 
@@ -261,7 +249,7 @@ if (isset($cleansearchstr))
 }
 else
 {
-    site_header();
+    site_header('',false);
 }
 
 ?>
@@ -368,6 +356,14 @@ if (isset($cleansearchstr))
     print("<h2>Search Results for '".htmlspecialchars($searchstr)."'</h2>\n");
 }
 
+//-- If you want a Button --//
+echo ("<a href='?clear_new=1'><input type='submit' class='btn' value='Clear New Tag' /></a><br />");
+//-- If you want a Link --//
+
+/*
+    echo ("<a class='altlink' href='?clear_new=1'><span style='font-weight:bold; font-color:#FF0000;'>Clear New Tag</span></a>");
+*/
+
 if ($count)
 {
     print($pagertop);
@@ -388,7 +384,7 @@ else
         display_message("info", "Sorry.", "Nothing Here!");
     }
 }
-
+//
 site_footer();
 
 ?>

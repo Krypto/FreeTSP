@@ -95,7 +95,7 @@ class dot_base
      *  - "https://example.com" - browse to this URL
      *  - "trace:message" - print this message in the FlashDevelop debug pane
      *  - all other strings will be called as Javascript functions, so a string "hello_world"
-     *  will call the JS function "hello_world(index)". It passes in the index of the
+     *  will call the JS function "hello_world(index)".It passes in the index of the
      *  point.
      */
     function on_click ($do)

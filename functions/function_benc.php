@@ -1,41 +1,16 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 function benc ($obj)
 {
@@ -79,7 +54,7 @@ function benc_list ($a)
 {
     $s = "l";
     foreach ($a
-             as
+             AS
              $e)
     {
         $s .= benc($e);
@@ -97,7 +72,7 @@ function benc_dict ($d)
     sort($keys);
 
     foreach ($keys
-             as
+             AS
              $k)
     {
         $v = $d[$k];
@@ -143,7 +118,9 @@ function bdec ($s)
                      strlen => strlen($ss),
                      string => $ss);
     }
-    if (preg_match('/^i(\d+)e/', $s, $m))
+
+    // if (preg_match('/^i(\d+)e/', $s, $m))
+    if (preg_match('/^i(-{0,1}\d+)e/', $s, $m))
     {
         $v  = $m[1];
         $ss = "i".$v."e";
@@ -163,6 +140,7 @@ function bdec ($s)
                      strlen => strlen($ss),
                      string => $ss);
     }
+
     switch ($s[0])
     {
         case "l":
@@ -265,8 +243,8 @@ function bdec_dict ($s)
         }
 
         $v[$k] = $ret;
-        $i += $ret["strlen"];
-        $ss .= $ret["string"];
+        $i     += $ret["strlen"];
+        $ss    .= $ret["string"];
     }
     $ss .= "e";
 

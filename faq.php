@@ -1,56 +1,32 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_vfunctions.php');
-require_once(INCL_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_bbcode.php');
 
 db_connect(false);
 logged_in();
 
-site_header("FAQ");
+site_header("FAQ", false);
 ?>
 
-<table class='main' width='100%' border='0' cellspacing='0' cellpadding='0'>
+<table class='main' border='0' width='100%' cellspacing='0' cellpadding='0'>
     <tr>
         <td class='embedded'>
-            <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <table border='1' width='100%' cellspacing='0' cellpadding='10'>
                 <tr>
                     <td class='text'>
                         <span style='font-weight:bold;'>Welcome to <?php echo $site_name?></span><br />
@@ -80,11 +56,11 @@ site_header("FAQ");
 <br />
 <br />
 
-<table class='main' width='100%' border='0' cellspacing='0' cellpadding='0'>
+<table class='main' border='0' width='100%' cellspacing='0' cellpadding='0'>
     <tr>
         <td class='embedded'>
             <h2>Contents</h2>
-            <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <table border='1' width='100%' cellspacing='0' cellpadding='10'>
                 <tr>
                     <td class='text'>
                         <ul>
@@ -160,7 +136,7 @@ site_header("FAQ");
                                     <li><a href='#up2' class='altlink'>What criteria must I meet before I can join the
                                                                        Uploader team?</a></li>
                                     <li><a href='#up3' class='altlink'>Can I upload your torrents to other trackers?</a>&nbsp;&nbsp;<img
-                                            src='<?php echo $image_dir?>new.png' width='27' height='11' border='0'
+                                            src='<?php echo $image_dir?>new.png' width='30' height='15' border='0'
                                             alt='New' title='New' style='vertical-align: -15%' /></li>
                                 </ul>
                             </li>
@@ -183,20 +159,20 @@ site_header("FAQ");
                                                                        downloaded 120MB?</a></li>
                                     <li><a href='#dl8' class='altlink'>Why do I get a &quot;Not authorized (xx h) - READ
                                                                        THE FAQ!&quot; error?</a>&nbsp;&nbsp;<img
-                                            src='<?php echo $image_dir?>new.png' width='27' height='11' border='0'
+                                            src='<?php echo $image_dir?>new.png' width='30' height='15' border='0'
                                             alt='New' title='New' style='vertical-align: -15%' /></li>
                                     <li><a href='#dl9' class='altlink'>Why do I get a &quot;rejected by tracker - Port
                                                                        xxxx is blacklisted&quot;
                                                                        error?</a>&nbsp;&nbsp;<img
-                                            src='<?php echo $image_dir?>new.png' width='27' height='11' border='0'
+                                            src='<?php echo $image_dir?>new.png' width='30' height='15' border='0'
                                             alt='New' title='New' style='vertical-align: -15%' /></li>
                                     <li><a href='#dla' class='altlink'>What's this 'IOError - [Errno13] Permission
                                                                        denied' error?</a>&nbsp;&nbsp;<img
-                                            src='<?php echo $image_dir?>new.png' width='27' height='11' border='0'
+                                            src='<?php echo $image_dir?>new.png' width='30' height='15' border='0'
                                             alt='New' title='New' style='vertical-align: -15%' /></li>
                                     <li><a href='#dlb' class='altlink'>What's this &quot;TTL&quot; in the browse
                                                                        page?</a>&nbsp;&nbsp;<img
-                                            src='<?php echo $image_dir?>new.png' width='27' height='11' border='0'
+                                            src='<?php echo $image_dir?>new.png' width='30' height='15' border='0'
                                             alt='New' title='New' style='vertical-align: -15%' /></li>
                                 </ul>
                             </li>
@@ -259,11 +235,11 @@ site_header("FAQ");
 <br />
 <br />
 
-<table class='main' width='100%' border='0' cellspacing='0' cellpadding='0'>
+<table class='main' border='0' width='100%' cellspacing='0' cellpadding='0'>
     <tr>
         <td class='embedded'>
             <h2>Site information<a name='site' id='sitea'></a></h2>
-            <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <table border='1' width='100%' cellspacing='0' cellpadding='10'>
                 <tr>
                     <td class='text'>
                         <br />
@@ -306,11 +282,11 @@ site_header("FAQ");
 <br />
 <br />
 
-<table class='main' width='100%' border='0' cellspacing='0' cellpadding='0'>
+<table class='main' border='0' width='100%' cellspacing='0' cellpadding='0'>
     <tr>
         <td class='embedded'>
             <h2>User information<a name='user' id='usera1'></a></h2>
-            <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <table border='1' width='100%' cellspacing='0' cellpadding='10'>
                 <tr>
                     <td class='text'>
                         <span style='font-weight:bold;'>I registered an account but did not receive the confirmation e-mail!</span><a
@@ -589,11 +565,11 @@ site_header("FAQ");
 <br />
 <br />
 
-<table class='main' width='100%' border='0' cellspacing='0' cellpadding='0'>
+<table class='main' border='0' width='100%' cellspacing='0' cellpadding='0'>
     <tr>
         <td class='embedded'>
             <h2>Stats<a name='stats'></a></h2>
-            <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <table border='1' width='100%' cellspacing='0' cellpadding='10'>
                 <tr>
                     <td class='text'>
                         <br />
@@ -752,11 +728,11 @@ site_header("FAQ");
 <br />
 <br />
 
-<table class='main' width='100%' border='0' cellspacing='0' cellpadding='0'>
+<table class='main' border='0' width='100%' cellspacing='0' cellpadding='0'>
     <tr>
         <td class='embedded'>
             <h2>Uploading<a name='up'></a></h2>
-            <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <table border='1' width='100%' cellspacing='0' cellpadding='10'>
                 <tr>
                     <td class='text'>
                         <br />
@@ -819,11 +795,11 @@ site_header("FAQ");
 <br />
 <br />
 
-<table class='main' width='100%' border='0' cellspacing='0' cellpadding='0'>
+<table class='main' border='0' width='100%' cellspacing='0' cellpadding='0'>
 <tr>
 <td class='embedded'>
 <h2>Downloading<a name='dl'></a></h2>
-<table width='100%' border='1' cellspacing='0' cellpadding='10'>
+<table border='1' width='100%' cellspacing='0' cellpadding='10'>
 <tr>
 <td class='text'>
 <br />
@@ -1184,11 +1160,11 @@ it's inactive.<br />
 <br />
 <br />
 
-<table class='main' width='100%' border='0' cellspacing='0' cellpadding='0'>
+<table class='main' border='0' width='100%' cellspacing='0' cellpadding='0'>
     <tr>
         <td class='embedded'>
             <h2>How can I improve my download speed?<a name='dlsp'></a></h2>
-            <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <table border='1' width='100%' cellspacing='0' cellpadding='10'>
                 <tr>
                     <td class='text'>
                         <br />
@@ -1300,11 +1276,11 @@ it's inactive.<br />
 <br />
 <br />
 
-<table class='main' width='100%' border='0' cellspacing='0' cellpadding='0'>
+<table class='main' border='0' width='100%' cellspacing='0' cellpadding='0'>
     <tr>
         <td class='embedded'>
             <h2>My ISP uses a transparent proxy. What should I do?<a name='prox' id='proxa'></a></h2>
-            <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <table border='1' width='100%' cellspacing='0' cellpadding='10'>
                 <tr>
                     <td class='text'>
                         <br />
@@ -1465,11 +1441,11 @@ it's inactive.<br />
 <br />
 <br />
 
-<table class='main' width='100%' border='0' cellspacing='0' cellpadding='0'>
+<table class='main' border='0' width='100%' cellspacing='0' cellpadding='0'>
     <tr>
         <td class='embedded'>
             <h2>Why can't I connect? Is the site blocking me?<a name='conn' id='conna'></a></h2>
-            <table width='100%' border='1' cellspacing='0' cellpadding='10'>
+            <table border='1' width='100%' cellspacing='0' cellpadding='10'>
                 <tr>
                     <td class='text'>
                         <br />
@@ -1535,11 +1511,11 @@ it's inactive.<br />
 <br />
 <br />
 
-<table class='main' width='100%' border='0' cellspacing='0' cellpadding='0'>
+<table class='main' border='0' width='100%' cellspacing='0' cellpadding='0'>
     <tr>
         <td class='embedded'>
             <h2>What if I can't find the answer to my problem here?<a name='other' id='othera'></a></h2>
-            <table width='100%' border='0' cellspacing='0' cellpadding='10'>
+            <table border='0' width='100%' cellspacing='0' cellpadding='10'>
                 <tr>
                     <td class='text'>
                         <br />

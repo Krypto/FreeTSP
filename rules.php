@@ -1,50 +1,26 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_bbcode.php');
 
 db_connect();
 logged_in();
 
-site_header("Rules");
+site_header("Rules", false);
 
 begin_frame("General Rules - <span style='color : #004E98;'>Breaking these Rules Can and Will get you Banned!</span>");
 
@@ -87,14 +63,12 @@ begin_frame("General Forum Guidelines - <span style='color : #004E98;'>Please fo
     <li>No Requesting or Posting of Serials, CD keys, Passwords or Cracks in the Forums.</li>
     <li>No Bumping... (All Bumped Threads will be Deleted.)</li>
     <li>No Images larger than 800x600, and preferably Web-Optimised.</li>
-    <li>No Double Posting. If you wish to post again, and yours is the last post in the thread please use the EDIT
-        function, instead of posting a double.
+    <li>No Double Posting. If you wish to post again, and yours is the last post in the thread please use the EDIT function, instead of posting a double.
     </li>
     <li>Please ensure all questions are posted in the correct section!<br />
         (Game questions in the Games section, Apps questions in the Apps section, etc.)
     </li>
-    <li>Last, please read the <a href='faq.php' class='altlink'><span style='font-weight:bold;'>FAQ</span></a> before
-        asking any questions!
+    <li>Last, please read the <a href='faq.php' class='altlink'><span style='font-weight:bold;'>FAQ</span></a> before asking any questions!
     </li>
 </ul>
 
@@ -108,14 +82,9 @@ begin_frame("Avatar Guidelines - <span style='color : #004E98;'>Please try to fo
 
 <ul>
     <li>The allowed formats are .gif, .jpg and .png.</li>
-    <li>Be considerate. Resize your images to a width of 150 px and a size of no more than 150 KB. (Browsers will re
-        scale them anyway: smaller images will be expanded and will not look good; larger images will just waste
-        bandwidth and CPU cycles.) For now this is just a guideline but it will be automatically enforced in the near
-        future.
+    <li>Be considerate. Resize your images to a width of 150 px and a size of no more than 150 KB. (Browsers will re scale them anyway: smaller images will be expanded and will not look good; larger images will just waste bandwidth and CPU cycles.) For now this is just a guideline but it will be automatically enforced in the near future.
     </li>
-    <li>Do not use potentially offensive material involving porn, religious material, animal / human cruelty or
-        ideologically charged images. Mods have wide discretion on what is acceptable. If in doubt
-        PM one.
+    <li>Do not use potentially offensive material involving porn, religious material, animal / human cruelty or ideologically charged images. Mods have wide discretion on what is acceptable. If in doubt PM one.
     </li>
 </ul>
 

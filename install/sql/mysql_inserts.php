@@ -9,8 +9,39 @@ $INSERT[] = "INSERT INTO categories (id, name, image) VALUES
 (6, 'XXX', 'cat_xxx.png'),
 (7, 'Misc', 'cat_misc.png')";
 
-$INSERT[] = "INSERT INTO config (mysql_host, mysql_db, mysql_user, mysql_pass, domain_url, announce_url, site_online, members_only, site_mail, site_name, image_dic, torrent_dic, peer_limit, max_members, signup_timeout, min_votes, autoclean_interval, announce_interval,max_torrent_size, max_dead_torrent_time, posts_read_expiry, max_login_attempts, dictbreaker, delete_old_torrents, dead_torrents, maxfilesize, attachment_dir, forum_width, maxsubjectlength, postsperpage, use_attachment_mod, use_poll_mod, forum_stats_mod, use_flood_mod, limmit, minutes) VALUES
-('localhost', '???', '???', '???', 'http://www.yoursite.com', 'http://www.yoursite.com/announce.php', 'true', 'true', 'noreply@freetsp.com', 'FREETSP', '/images/', 'torrents', '50000', '7500', '86400*3', '1', '900', '60 * 30', '1000000', '3 * 3600', '14 * 86400', '6', 'functions/dictbreaker', '1', '28', '1024*1024', 'forum_attachments', '100%', '80', '25', 'true', 'true', 'true', 'true', '10', '5')";
+$INSERT[] = "INSERT INTO config (mysql_host, mysql_db, mysql_user, mysql_pass, site_url, announce_url, site_online, members_only, site_mail, email_confirm, site_name, image_dic, torrent_dic, peer_limit, max_members, max_users_then_invite, invites, signup_timeout, min_votes, autoclean_interval, announce_interval,max_torrent_size, max_dead_torrent_time, posts_read_expiry, max_login_attempts, dictbreaker, delete_old_torrents, dead_torrents, site_reputation, maxfilesize, attachment_dir, forum_width, maxsubjectlength, postsperpage, use_attachment_mod, use_poll_mod, forum_stats_mod, use_flood_mod, limmit, minutes) VALUES
+('localhost', '???', '???', '???', 'http://www.yoursite.com', 'http://www.yoursite.com/announce.php', 'true', 'true', 'noreply@freetsp.com', 'true', 'FREETSP', '/images/', 'torrents', '50000', '7500', '5000', '2500', '86400*3', '1', '900', '60 * 30', '1000000', '3 * 3600', '14 * 86400', '6', 'functions/dictbreaker', '1', '28', 'false', '1024*1024', 'forum_attachments', '100%', '80', '25', 'true', 'true', 'true', 'true', '10', '5')";
+
+$INSERT[] = "INSERT INTO controlpanel (id, name, url, image, status, max_class) VALUES
+(1, 'Manage Bans', 'bans', 'bans.png', 1, 4),
+(2, 'Test IP', 'testip', 'tools.png', 1, 4),
+(3, 'User Search and Announcement System', 'usersearch', 'search_user.png', 1, 5),
+(4, 'Last 24 History', 'last24history', '24_history.png', 1, 5),
+(5, 'Add Users', 'adduser', 'add_user.png', 1, 6),
+(6, 'News', 'news', 'news.png', 1, 6),
+(7, 'Theme Manager', 'stylesheets', 'theme_manager.png', 1, 7),
+(8, 'Catergory Manager', 'category', 'cat_manager.png', 1, 7),
+(9, 'Tracker Manager', 'tracker_manager', 'cat_manager.png', 1, 7),
+(10, 'Coders Log', 'editlog', 'layout.png', 1, 7),
+(11, 'Perform Manual Cleanup', 'docleanup', 'upload.png', 1, 6),
+(12, 'Site Log', 'log', 'log.png', 1, 4),
+(13, 'Forum Manager', 'forummanage', 'navmenu.png', 1, 7),
+(14, 'Over Forum', 'moforums', 'navmenu.png', 1, 7),
+(15, 'Make Poll', 'makepoll', 'polls.png', 1, 6),
+(16, 'Manage Polls', 'polls', 'polls.png', 1, 6),
+(17, 'Quick Delete Member', 'quickdelete', 'delete-user.png', 1, 6),
+(18, 'View Parked Accounts', 'parked', 'parked.png', 1, 4),
+(19, 'Staff Log', 'staff_log', 'log1.png', 1, 6),
+(20, 'Warned Members', 'warned', 'warned.png', 1, 4),
+(21, 'Duplicate IP Checker', 'ipcheck', 'blocked.png', 1, 5),
+(22, 'Staff News', 'staffnews', 'snews.png', 1, 6),
+(23, 'Help Desk', 'help_desk', 'team.png', 1, 4),
+(24, 'Latest Torrent Comments', 'latest_comments', 'comments.png', 1, 4),
+(25, 'Clear MySQL Tables', 'cleartable', 'log.png', 1, 7),
+(26, 'Deal with Reports', 'reports', 'reports.png', 1, 4),
+(27, 'Add Invites to User Groups', 'inviteadd', 'invite.png', 1, 6),
+(28, 'Site Announcements', 'site_announcement', 'mail.png', 1, 5),
+(29, 'Tracker Mods Credits', 'credit_mods', 'credits.png', 1, 7)";
 
 $INSERT[] = "INSERT INTO countries (id, name, flagpic) VALUES
 (1, 'Abkhazia', 'Abkhazia.png'),
@@ -270,12 +301,93 @@ $INSERT[] = "INSERT INTO countries (id, name, flagpic) VALUES
 (255, 'Zambia', 'Zambia.png'),
 (256, 'Zimbabwe', 'Zimbabwe.png')";
 
-$INSERT[] = "INSERT INTO `stats` (`id`, `regusers`, `unconusers`, `torrents`, `seeders`, `leechers`, `torrentstoday`, `donors`, `unconnectables`, `forumtopics`, `forumposts`, `numactive`) VALUES (1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1)";
+$INSERT[] = "INSERT INTO modscredits (id, name, category, status, mod_link, credit, modified, description) VALUES
+(1, 'Announcement By Refined User Search', 'Staff/Tools', 'Complete', 'http://www.freetsp.info', 'Retro', 'Fireknight', 'Make A Site Announcement Via A Refined Search ( IE: By Ratio )'),
+(2, 'Announcement By Class', 'Staff/Tools', 'Complete', 'http://www.freetsp.info', 'Fireknight', 'Fireknight', 'Make A Site Announcement By Class'),
+(3, 'Change A Members Email', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/1555-change-a-members-email/', 'Fireknight', 'Fireknight', 'Change A Members Email In Their Profile'),
+(4, 'Change A Members Username', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/1299-change-user-name/', 'Fireknight', 'Fireknight', 'Change A Members Username In Their Profile'),
+(5, 'Click X to Login', 'Addon', 'Complete', 'http://www.freetsp.info/topic/2132-click-x-to-login/', 'Nicky', 'Krypto', 'Click X To Login ( Proves you are human and not a spam bot )'),
+(6, 'Complete Anonymous Uploading', 'Browse/Torrent/Details', 'Complete', 'http://www.freetsp.info/topic/1460-complete-anonymous-uploading/', 'Wilba and Ininja', 'Krypto', 'Hide The Uploaders Name When Selected '),
+(7, 'Delete Member by Username', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/846-freetsp-rev1-delete-member-by-username/', 'TB Source', 'Fireknight', 'What It Says, Delete By Username'),
+(8, 'Delete Member in Profile', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/1553-delete-member-in-profile/', 'Wilba', 'Fireknight', 'What It Says, Delete A Member In Their Profile'),
+(9, 'Disable Upload, Download, Forum, Offers Comments, Requests Comments, Comments and Shoutbox Rights', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/1501-download-rights/', 'Wilba', 'Fireknight', 'Disable Or Enable A Members Permissions For The Above Areas'),
+(10, 'Disabled Members - Email Support', 'Message/Email', 'Complete', 'http://www.freetsp.info/topic/1930-disabled-members-email-support/page__hl__email', 'Nicky', 'Krypto', 'This Allow Members Who Have Had Their Account Disabled To Contact Staff'),
+(11, 'Duplicate IP Checker', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/766-duplicate-ip-checker/', 'FireFusion', 'Krypto', 'See All Members With Duplicate IP''s'),
+(12, 'Email Signup confirmation On/Off Switch', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/1991-confirm-email-on-signup-on-off-switch/', 'Fireknight', 'Fireknight', 'Turn Of The Need For Email On Singup / Auto Confirm Account'),
+(13, 'Firstline Support', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/1616-first-line-support/page__hl__firstline', 'Wilba', 'Fireknight', 'First Line Of Help By Volunteer Members'),
+(14, 'Freeleech', 'Browse/Torrent/Details', 'Complete', 'http://www.freetsp.info/topic/2008-freeleech-mod/page__hl__freeleech', 'Laffin and MMN-O', 'Krypto', 'Makes Only Upload Count Towards Ratio On Torrents ( Based On Golden Torrents )'),
+(15, 'Help Desk', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/1946-rc3-helpdesk/page__hl__helpdesk', 'nuerher', 'Fireknight', 'Where A member Can Ask Staff For Help, When The Staff Page Is Hidden.'),
+(16, 'Image Resize Mod', 'Addon', 'Complete', 'http://forum.u-232.com/index.php/topic,366.msg952.html#msg952', 'Mindless and putyn', 'Krypto', 'Resize all Images Uploaded Or Taged'),
+(17, 'Improved & Safer Number Key Invite System / With Invite Tree', 'Addon', 'Complete', 'http://www.freetsp.info/topic/1349-improved-safer-number-key-invite-system/', 'The Brass', 'Fireknight', 'Generates An Invite Code For Members To Give To Friends ( Based On The Invite System )'),
+(18, 'MySQL Table Clear', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/1405-mysql-table-clear/page__hl__%2Bmysql+%2Btable+%2Bclear', 'Nicky', 'Krypto', 'Truncate ( Empty The SQL Tables For Things Like Shoutbox )'),
+(19, 'New Torrents get New Tag', 'Browse/Torrent/Details', 'Complete', 'http://forum.u-232.com/index.php/topic,45.0.html', 'Mindless', 'Krypto', 'New Torrents Added Since A Members Last Visted Get A New Flag Image'),
+(20, 'Parked Accounts', 'Addon', 'Complete', 'http://www.freetsp.info/topic/1615-parked-accounts/page__hl__parked', 'psor', 'Krypto', 'Lets A Member Park Their Account So They Do Not Get Auto Deleted By Cleanup'),
+(21, 'PC On/Off at Night', 'Addon', 'Complete', 'http://www.freetsp.info/topic/1556-pc-on-off-at-night/page__hl__night', 'DSB', 'Krypto', 'Lets A Member Set His Account To Show Their PC Is On / Off At Night'),
+(22, 'Poster Mod', 'Browse/Torrent/Details', 'Complete', 'http://www.freetsp.info/topic/1507-poster-mod/page__hl__poster', 'johim', 'Fireknight', 'Add A Image Link To The Upload'),
+(23, 'Quick Ban', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/1605-quick-ban/page__hl__quickban', 'Subzero', 'Fireknight', 'Ban A Member From Profile Button'),
+(24, 'Reputation Addon [Switch]', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/1607-reputation-add-on-switch/', 'Subzero', 'Krypto', 'Turn On Off Switch For Reputation Points'),
+(25, 'Request and Offers', 'Browse/Torrent/Details', 'Complete', 'http://www.freetsp.info', 'Sir Snuggle Bunny', 'Fireknight', 'Make An Offer Or Request ( With Votes, Comments & Notified When Torrent Is Uploaded )'),
+(26, 'Reset Users Password', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/1545-reset-users-password/page__hl__reset', 'cddvdheaven', 'Fireknight', 'Manual Reset Of A Members Forgotten Password ( Can Not Reset Same Or Higher Class )'),
+(27, 'Shoutbox Background Color defined in Stylesheet', 'Addon', 'Complete', 'http://www.freetsp.info', 'Fireknight', 'Fireknight', 'Fully Customise Your Shoutbox ( Color, Text, Images ETC To Match Your Themes )'),
+(28, 'Simple Password Strength Meter', 'Addon', 'Complete', 'http://www.freetsp.info', 'Krypto', 'Krypto', 'Lets You Know How Good Your Password Is '),
+(29, 'Staff Action Log', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/1156-staff-action-log/', 'Fireknight', 'Fireknight', 'Logs The Actions Of The Staff Members'),
+(30, 'Staff News Page', 'Addon', 'Complete', 'http://www.freetsp.info/topic/1603-satff-news-page/', 'Fireknight', 'Krypto', 'Staff News On Home Page'),
+(31, 'Temporary Demotion', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/1600-temporary-demotion/', 'Retro', 'Fireknight', 'Lets You To Temporary Demote Yourself To Check What Lower Classes Can See & Do'),
+(32, 'Warned Members', 'Staff/Tools', 'Complete', 'http://www.freetsp.info/topic/1091-warned-members/', 'Wilba', 'Fireknight', 'See All Warned Members In One File')";
+
+$INSERT[] = "INSERT INTO stats (`id`, `regusers`, `unconusers`, `torrents`, `seeders`, `leechers`, `torrentstoday`, `donors`, `unconnectables`, `forumtopics`, `forumposts`, `numactive`, `Users`, `Poweruser`, `Vip`, `Uploaders`, `Moderator`, `Adminisitrator`, `Sysop`, `Manager`) VALUES (1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1)";
+
+$INSERT[] = "INSERT INTO support_lang (id, name) VALUES
+(1, 'Albanian'),
+(2, 'Arabic'),
+(3, 'Bulgarian'),
+(4, 'Catalan'),
+(5, 'Croatian'),
+(6, 'Czech'),
+(7, 'Danish'),
+(8, 'Dutch'),
+(9, 'English'),
+(10, 'Estonian'),
+(11, 'Filipino'),
+(12, 'Finnish'),
+(13, 'French'),
+(14, 'Galician'),
+(15, 'German'),
+(16, 'Greek'),
+(17, 'Hebrew'),
+(18, 'Hindi'),
+(19, 'Hungarian'),
+(20, 'Indonesian'),
+(21, 'Italian'),
+(22, 'Japanese'),
+(23, 'Korean'),
+(24, 'Latvian'),
+(25, 'Lithuanian'),
+(26, 'Maltese'),
+(27, 'Norwegian'),
+(28, 'Persian ALPHA'),
+(29, 'Polish'),
+(30, 'Portuguese'),
+(31, 'Romanian'),
+(32, 'Russian'),
+(33, 'Serbian'),
+(34, 'Slovak'),
+(35, 'Slovenian'),
+(36, 'Spanish'),
+(37, 'Swedish'),
+(38, 'Thai'),
+(39, 'Turkish'),
+(40, 'Ukrainian'),
+(41, 'Vietnamese')";
 
 $INSERT[] = "INSERT INTO stylesheets (id, uri, name) VALUES
 (1, 'default', '(default)'),
 (2, 'pastel', 'Pastel'),
 (3, 'dark', 'Dark'),
-(4, 'light', 'Light')";
+(4, 'light', 'Light'),
+(5, 'genx', 'GenX'),
+(6, 'clean', 'Clean'),
+(7, 'darkx', 'DarkX'),
+(8, 'unique', 'Unique')";
 
 ?>

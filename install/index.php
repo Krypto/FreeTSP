@@ -1,51 +1,27 @@
 <?php
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and/or modify    --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*--------               Developed By: Krypto, Fireknight                --------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*------           Credit To CoLdFuSiOn For TheTBDEv Installer             ------*
-*------           Moddified To Work With FreeTSP By Fireknight            ------*
-*-------------------------------------------------------------------------------*
-*/
+
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**
+** Credit To CoLdFuSiOn For The TBDev Installer
+** Moddified To Work With FreeTSP By Fireknight
+**/
+
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
-//set_magic_quotes_runtime(0);
 
 define('INSTALLER_ROOT_PATH', './');
 define('FTSP_ROOT_PATH', '../');
 define('CACHE_PATH', FTSP_ROOT_PATH);
-define('REQ_PHP_VER', '2.10.1');
-define('REQ_MYSQL_VER', '2.10.3');
+define('REQ_PHP_VER', '4.3.0');
+define('REQ_MYSQL_VER', '4.0.27');
 define('FreeTSP_REV', 'FreeTSP v1.0');
 
 $installer = new installer;
@@ -121,7 +97,7 @@ class installer
                                     Where you will be required to enter information regarding your server details.<br />
                                     The Installer needs this infomation to Install your tracker.
                                 <br /><br />
-                                <strong>TAKE NOTICE:- USING THIS INSTALLER WILL DELETE ANY CURRENT FreeTSP DATABASE AND OVERWRITE ANY FUNCTION_CONFIG.PHP FILE</strong>
+                                <strong>TAKE NOTICE:- Using this Installer WILL DELETE any current FREETSP database and overwrite any function_config.php file</strong>
                                    ";
 
         $warnings = array();
@@ -130,12 +106,13 @@ class installer
                             FTSP_ROOT_PATH."functions/function_config.php");
 
         $writeable = array(FTSP_ROOT_PATH."functions/function_config.php",
-                           FTSP_ROOT_PATH."torrents",
                            FTSP_ROOT_PATH."cache",
-                           FTSP_ROOT_PATH."cache/last24");
+                           FTSP_ROOT_PATH."cache/last24",
+                           FTSP_ROOT_PATH."forum_attachments",
+                           FTSP_ROOT_PATH."torrents",);
 
         foreach ($checkfiles
-                 as
+                 AS
                  $cf)
         {
             if (!file_exists($cf))
@@ -145,7 +122,7 @@ class installer
         }
 
         foreach ($writeable
-                 as
+                 AS
                  $cf)
         {
             if (!is_writeable($cf))
@@ -205,13 +182,13 @@ class installer
         {
             $err_string = implode("<br /><br />", $warnings);
 
-            $this->htmlout .= "<br /><br />
-                                <div class='error-box' style='width: 500px;'>
-                                    <strong>Warning!
-                                    The following errors must be rectified before continuing!</strong>
-                                    <br /><br />
-                                    $err_string
-                                </div>";
+            $this->htmlout .= "
+                <br /><br />
+                <div class='error-box' style='width: 500px;'>
+                    <strong>Warning!  The following errors must be rectified before continuing!</strong>
+                    <br /><br />
+                    $err_string
+                </div>";
         }
         else
         {
@@ -228,71 +205,73 @@ class installer
         $this->stdhead('Set Up form');
 
         $this->htmlout .= "
-                            <div class='box_content'>
-                                <form action='index.php' method='post'>
-                            <div>
-                                <input type='hidden' name='progress' value='2' />
-                            </div>
+            <div class='box_content'>
+                <form action='index.php' method='post'>
+                    <div>
+                        <input type='hidden' name='progress' value='2' />
+                    </div>
 
-                            <h2>Your Server Environment</h2>";
+                     <h2>Your Server Environment</h2>";
 
         $this->htmlout .= "
-        <p>This section requires you to enter your SQL information.<br />
-           If in doubt, please check with your webhost before asking for support.<br />
-           You may choose to enter an existing database name.<br />
-           If you do not have an existing database, you can create one from here.</p>
+                    <p>This section requires you to enter your SQL information.<br />
+                       If in doubt, please check with your webhost before asking for support.<br />
+                       You may choose to enter an existing database name.<br />
+                       If you do not have an existing database, you can create one from here.</p>
 
-        <legend><strong>MySQL Settings</strong></legend>
+                    <fieldset>
+                        <legend><strong>MySQL Settings</strong></legend>
 
-        <fieldset>
-            <legend><strong>MySQL Host</strong></legend>
-            <input type='text' name='mysql_host' value='' />
-            (localhost is usually sufficient)
-        </fieldset>
+                        <fieldset>
+                            <legend><strong>MySQL Host</strong></legend>
+                            <input type='text' name='mysql_host' value='' />
+                            (localhost is usually sufficient)
+                        </fieldset>
 
-        <fieldset>
-            <legend><strong>MySQL Database Name</strong></legend>
-            <input type='text' name='mysql_db' value='' />
-        </fieldset>
+                        <fieldset>
+                            <legend><strong>MySQL Database Name</strong></legend>
+                            <input type='text' name='mysql_db' value='' />
+                        </fieldset>
 
-        <fieldset>
-            <legend><strong>SQL Username</strong></legend>
-            <input type='text' name='mysql_user' value='' />
-        </fieldset>
+                        <fieldset>
+                            <legend><strong>SQL Username</strong></legend>
+                            <input type='text' name='mysql_user' value='' />
+                        </fieldset>
 
-        <fieldset>
-            <legend><strong>SQL Password</strong></legend>
-            <input type='text' name='mysql_pass' value='' />
-        </fieldset>
+                        <fieldset>
+                            <legend><strong>SQL Password</strong></legend>
+                            <input type='text' name='mysql_pass' value='' />
+                        </fieldset>
+                    </fieldset>
 
-        <legend><strong>General Settings</strong></legend>
+                    <fieldset>
+                        <legend><strong>General Settings</strong></legend>
 
-        <fieldset>
-            <legend><strong>Site URL</strong></legend>
-            <input type='text' name='site_url' value='http://' />
-            ( Example - http://www.yoursite.com )
-        </fieldset>
+                        <fieldset>
+                            <legend><strong>Site URL</strong></legend>
+                            <input type='text' name='site_url' value='http://' />
+                            ( Example - http://www.yoursite.com )
+                        </fieldset>
 
-        <fieldset>
-            <legend><strong>Announce URL</strong></legend>
-            <input type='text' name='announce_url' value='http://' />
-            ( No ending slash - Example - http://www.yoursite.com/announce.php )
-        </fieldset>
+                        <fieldset>
+                            <legend><strong>Announce URL</strong></legend>
+                            <input type='text' name='announce_url' value='http://' />
+                            ( No ending slash - Example - http://www.yoursite.com/announce.php )
+                        </fieldset>
 
-        <fieldset>
-            <legend><strong>Site Name</strong></legend>
-            <input type='text' name='site_name' value='' />
-        </fieldset>
+                        <fieldset>
+                            <legend><strong>Site Name</strong></legend>
+                            <input type='text' name='site_name' value='' />
+                        </fieldset>
+                    </fieldset>
 
-        <div class='proceed-btn-div'>
-
-        <input class='btn' type='submit' value='CONTINUE' /></div>
-
-        </form>
-        </div>";
+                    <div class='proceed-btn-div'>
+                        <input class='btn' type='submit' value='CONTINUE' />
+                    </div>
+                </form>
+            </div>";
 
         $this->htmlout();
-
     }
 
     function do_step_two ()
@@ -306,7 +285,7 @@ class installer
                     'site_name');
 
         foreach ($in
-                 as
+                 AS
                  $out)
         {
             if ($this->VARS[$out] == "")
@@ -319,7 +298,7 @@ class installer
         {
             $this->install_error("Connection error:<br /><br />[".mysql_errno()."] dbconn: mysql_connect: ".mysql_error());
         }
-        //mysql_select_db($FTSP['mysql_db']) or die('dbconn: mysql_select_db: ' . mysql_error());
+        //mysql_select_db($FTSP['mysql_db']) or die('dbconn: mysql_select_db: '.mysql_error());
         //mysql_set_charset('utf8');
 
         if (!mysql_select_db($this->VARS['mysql_db']))
@@ -329,9 +308,7 @@ class installer
                 $this->install_error("Unable to create database");
                 exit();
             }
-
             mysql_select_db($this->VARS['mysql_db']);
-
         }
         else
         {
@@ -342,7 +319,7 @@ class installer
         require_once(INSTALLER_ROOT_PATH.'sql/mysql_inserts.php');
 
         foreach ($TABLE
-                 as
+                 AS
                  $q)
         {
             preg_match("/CREATE TABLE (\S+) \(/", $q, $match);
@@ -359,7 +336,7 @@ class installer
         }
 
         foreach ($INSERT
-                 as
+                 AS
                  $q)
         {
             if (!mysql_query($q))
@@ -368,38 +345,36 @@ class installer
             }
         }
 
-
-        mysql_query("UPDATE config SET mysql_host=('".$_POST['mysql_host']."'),mysql_db=('".$_POST['mysql_db']."'),mysql_user=('".$_POST['mysql_user']."'),mysql_pass=('".$_POST['mysql_pass']."'),domain_url=('".$_POST['site_url']."'),announce_url=('".$_POST['announce_url']."'),site_name=('".$_POST['site_name']."')");
+        mysql_query("UPDATE config SET mysql_host=('".$_POST['mysql_host']."'),mysql_db=('".$_POST['mysql_db']."'),mysql_user=('".$_POST['mysql_user']."'),mysql_pass=('".$_POST['mysql_pass']."'),site_url=('".$_POST['site_url']."'),announce_url=('".$_POST['announce_url']."'),site_name=('".$_POST['site_name']."')");
 
         $this->stdhead('Database Success!');
 
         $this->htmlout .= "
-        <div class='box_content'>
+            <div class='box_content'>
 
-            <h2>Database Success</h2>
+                <h2>Database Success</h2>
 
-            <strong>Your database has been installed!</strong>
-            <br /><br />
-            The installation process is almost complete.
-            <br />
-            The next step will configure the tracker settings.
-            <br /><br />
+                <strong>Your Database has been Installed!</strong><br /><br />
 
-            <form action='index.php' method='post'>
-                <div>
-                    <input type='hidden' name='progress' value='3' />
-                    <input type='hidden' name='mysql_host' value='{$this->VARS['mysql_host']}' />
-                    <input type='hidden' name='mysql_db' value='{$this->VARS['mysql_db']}' />
-                    <input type='hidden' name='mysql_user' value='{$this->VARS['mysql_user']}' />
-                    <input type='hidden' name='mysql_pass' value='{$this->VARS['mysql_pass']}' />
-                    <input type='hidden' name='site_url' value='{$this->VARS['site_url']}' />
-                    <input type='hidden' name='announce_url' value='{$this->VARS['announce_url']}' />
-                    <input type='hidden' name='site_name' value='{$this->VARS['site_name']}' />
-                </div>
-                <div class='proceed-btn-div'>
-                <input class='btn' type='submit' value='CONTINUE' /></div>
-            </form>
-        </div>";
+                The Installation process is almost complete.<br />
+
+                The next step will configure the tracker settings.<br /><br />
+
+                <form action='index.php' method='post'>
+                    <div>
+                        <input type='hidden' name='progress' value='3' />
+                        <input type='hidden' name='mysql_host' value='{$this->VARS['mysql_host']}' />
+                        <input type='hidden' name='mysql_db' value='{$this->VARS['mysql_db']}' />
+                        <input type='hidden' name='mysql_user' value='{$this->VARS['mysql_user']}' />
+                        <input type='hidden' name='mysql_pass' value='{$this->VARS['mysql_pass']}' />
+                        <input type='hidden' name='site_url' value='{$this->VARS['site_url']}' />
+                        <input type='hidden' name='announce_url' value='{$this->VARS['announce_url']}' />
+                        <input type='hidden' name='site_name' value='{$this->VARS['site_name']}' />
+                    </div>
+                    <div class='proceed-btn-div'>
+                    <input class='btn' type='submit' value='CONTINUE' /></div>
+                </form>
+            </div>";
 
         $this->htmlout();
     }
@@ -409,73 +384,70 @@ class installer
         $this->stdhead('Config Set Up form');
 
         $this->htmlout .= "
-        <div class='box_content'>
+            <div class='box_content'>
+                <form action='index.php' method='post'>
 
-        <form action='index.php' method='post'>
-        <div>
-        <input type='hidden' name='progress' value='4' />
-        </div>
+                    <div>
+                        <input type='hidden' name='progress' value='4' />
+                    </div>
 
-        <h2>Setting up your Config file</h2>";
+                    <h2>Setting up your Config file</h2>";
 
-        $this->htmlout .= "
-        <p>This section requires you to enter your all information. If in doubt, please check with your webhost before asking for support. Please note: Any settings you enter here will overwrite any settings in your function_config.php file!</p>
+                    $this->htmlout .= "
+                        <p>This section requires you to enter your all information. If in doubt, please check with your webhost before asking for support. Please note: Any settings you enter here will overwrite any settings in your function_config.php file!</p>
 
-        <fieldset>
-        <legend><strong>MySQL Settings</strong></legend>
+                        <fieldset>
+                            <legend><strong>MySQL Settings</strong></legend>
 
-        <div class='form-field'>
-            <label>MySQL Host</label>
-            <input type='text' name='mysql_host' value='{$this->VARS['mysql_host']}' /><br />
-        </div>
+                            <div class='form-field'>
+                                <label>MySQL Host</label>
+                                <input type='text' name='mysql_host' value='{$this->VARS['mysql_host']}' /><br />
+                            </div>
 
-        <div class='form-field'>
-            <label>MySQL Database Name</label>
-            <input type='text' name='mysql_db' value='{$this->VARS['mysql_db']}' /><br />
-        </div>
+                            <div class='form-field'>
+                                <label>MySQL Database Name</label>
+                                <input type='text' name='mysql_db' value='{$this->VARS['mysql_db']}' /><br />
+                            </div>
 
-        <div class='form-field'>
-            <label>SQL Username</label>
-            <input type='text' name='mysql_user' value='{$this->VARS['mysql_user']}' /><br />
-        </div>
+                            <div class='form-field'>
+                                <label>SQL Username</label>
+                                <input type='text' name='mysql_user' value='{$this->VARS['mysql_user']}' /><br />
+                            </div>
 
-        <div class='form-field'>
-            <label>SQL Password</label>
-            <input type='text' name='mysql_pass' value='{$this->VARS['mysql_pass']}' /><br />
-        </div>
-        </fieldset>
+                            <div class='form-field'>
+                                <label>SQL Password</label>
+                                <input type='text' name='mysql_pass' value='{$this->VARS['mysql_pass']}' /><br />
+                            </div>
+                        </fieldset>
 
-        <fieldset>
-        <legend><strong>General Tracker Settings</strong></legend>
+                        <fieldset>
+                            <legend><strong>General Tracker Settings</strong></legend>
 
-        <div class='form-field'>
-            <label>Base URL</label>
-            <input type='text' name='site_url' value='{$this->VARS['site_url']}' />
-            <br /><span class='form-field-info'>Check that this setting is correct, as it was automatic!</span>
-        </div>
+                            <div class='form-field'>
+                                <label>Base URL</label>
+                                <input type='text' name='site_url' value='{$this->VARS['site_url']}' />
+                                <br /><span class='form-field-info'>Check that this setting is correct, as it was automatic!</span>
+                            </div>
 
-        <div class='form-field'>
-            <label>Announce URL</label>
-            <input type='text' name='announce_url' value='{$this->VARS['announce_url']}' />
-            <br /><span class='form-field-info'>Check that this setting is correct, as it was automatic!</span>
-        </div>
+                            <div class='form-field'>
+                                <label>Announce URL</label>
+                                <input type='text' name='announce_url' value='{$this->VARS['announce_url']}' />
+                                <br /><span class='form-field-info'>Check that this setting is correct, as it was automatic!</span>
+                            </div>
 
-        <div class='form-field'>
-            <label>Site Name</label>
-            <input type='text' name='site_name' value='{$this->VARS['site_name']}' />
-        </div>
+                            <div class='form-field'>
+                                <label>Site Name</label>
+                                <input type='text' name='site_name' value='{$this->VARS['site_name']}' />
+                            </div>
+                        </fieldset>
 
-        </fieldset>
-
-        <div class='proceed-btn-div'>
-
-        <input class='btn' type='submit' value='CONTINUE' /></div>
-
-        </form>
-        </div>";
+                        <div class='proceed-btn-div'>
+                            <input class='btn' type='submit' value='CONTINUE' />
+                        </div>
+                </form>
+            </div>";
 
         $this->htmlout();
-
     }
 
     function do_step_four ()
@@ -493,7 +465,7 @@ class installer
                     'site_name');
         //print_r($this->VARS); exit;
         foreach ($in
-                 as
+                 AS
                  $out)
         {
             if ($this->VARS[$out] == "")
@@ -503,7 +475,7 @@ class installer
         }
 
         // open config_dist.php
-        $conf_string = file_get_contents('./config_dist.php');
+        $conf_string = file_get_contents(INSTALLER_ROOT_PATH.'config_dist.php');
 
         $placeholders = array('<#mysql_host#>',
                               '<#mysql_db#>',
@@ -527,7 +499,6 @@ class installer
         {
             fputs($fh, $conf_string, strlen($conf_string));
             fclose($fh);
-
         }
         else
         {
@@ -537,14 +508,13 @@ class installer
         $this->stdhead('Wrote Config Success!');
 
         $this->htmlout .= "
-        <div class='box_content'>
-            <h2>Success! Your configuration file was written to successfully!</h2>
-            <br /><br />
-            <div class='proceed-btn-div'><a href='index.php?progress=end'><span class='btn'>CONTINUE</span></a></div>
-        </div>";
+            <div class='box_content'>
+                <h2>Success! Your configuration file was written to successfully!</h2>
+                <br /><br />
+                <div class='proceed-btn-div'><a href='index.php?progress=end'><span class='btn'>CONTINUE</span></a></div>
+            </div>";
 
         $this->htmlout();
-
     }
 
     function do_end ()
@@ -567,9 +537,9 @@ class installer
             $this->stdhead('Install Complete!');
 
             $txt = "PLEASE REMOVE THE INSTALLER ('index.php') BEFORE CONTINUING!<br />
-            Not doing this will open you up to a situation where anyone could delete your tracker &amp; data!
-                    <br /><br />
-                    <div style='text-align: center;'><a href='../login.php'>Create Sysop Account</a></div>";
+            Not doing this will open you up to a situation where anyone could delete your tracker &amp; data!<br /><br />
+
+                <div style='text-align: center;'><a href='../login.php'>Create Sysop Account</a></div>";
         }
 
         $warn = '';
@@ -580,35 +550,32 @@ class installer
         }
 
         $this->htmlout .= "
-        <div class='box_content'>
-            <h2>Installation Successfully Completed!</h2>
-            <br />
-            <strong>The Installation is now Complete!</strong>
-            {$warn}
-            <br /><br />
-            {$txt}
-        </div>";
+            <div class='box_content'>
+                <h2>Installation Successfully Completed!</h2>
+                <br />
+                <strong>The Installation is now Complete!</strong>
+                {$warn}
+                <br /><br />
+                {$txt}
+            </div>";
 
         $this->htmlout();
-
     }
 
-    ////////////////////////////////////////////////////////////
-    /////////////    WORKER FUNCTIONS //////////////////////////
-    ////////////////////////////////////////////////////////////
-
+    //-- Worker Functions --//
     function install_error ($msg = "")
     {
         $this->stdhead('Warning!');
 
-        $this->htmlout .= " <div class='error-box'>
-                                <h2>Warning!</h2>
-                                <br /><br />
-                                <h3>The following errors must be rectified before continuing!</h3>
-                                <br />Please <a href='javascript:history.back()'><span class='btn'>go back</span></a> and try again!
-                                <br /><br />
-                                $msg
-                            </div>";
+        $this->htmlout .= "
+            <div class='error-box'>
+                <h2>Warning!</h2>
+                <br /><br />
+                <h3>The following errors must be rectified before continuing!</h3>
+                <br />Please <a href='javascript:history.back()'><span class='btn'>go back</span></a> and try again!
+                <br /><br />
+                $msg
+            </div>";
 
         $this->htmlout();
     }
@@ -617,9 +584,9 @@ class installer
     {
         echo $this->htmlout;
         echo "</div>
-        <div id='siteInfo'><p class='center'>
-        <a href='http://www.freetsp.info'><img src='/images/button.png' alt='Powered By FreeTSP v1.0 &copy;&nbsp;2010 - 2012' title='Powered By FreeTSP v1.0 &copy;&nbsp;2010 - 2012' /></a></p>
-        </div>
+            <div id='siteInfo'><p class='center'>
+                <a href='http://www.freetsp.info'><img src='/images/button.png' alt='Powered By FreeTSP v1.0 &copy;&nbsp;2010 - 2012' title='Powered By FreeTSP v1.0 &copy;&nbsp;2010 - 2012' /></a></p>
+            </div>
 
         </body></html>";
         exit();
@@ -637,7 +604,7 @@ class installer
                 <meta http-equiv='Content-Language' content='en-us' />
                 <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
 
-                <title>FTSP.NET :: {$title}</title>
+                <title>FTSP.INFO :: {$title}</title>
                 <link rel='stylesheet' href='1.css' type='text/css' />
 
             </head>
@@ -646,8 +613,7 @@ class installer
 
           <div class='text-header' style='text-align:center;'><img src='/images/logo.png' alt='' /><br /><h6>Welcome to the FreeTSP Tracker Installer</h6></div>
 
-                <div>";
-
+        <div>";
     }
 
     function mksecret ($len = 5)
@@ -676,6 +642,6 @@ class installer
         return md5(md5($salt).$md5_once_password);
     }
 
-} //end class
+} //-- End Class --//
 
 ?>

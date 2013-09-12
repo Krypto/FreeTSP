@@ -1,20 +1,3 @@
-.idea/
-/__MACOSX/
-/freetsp.bbprojectd/
-/FreeTSP.esproj/
-/ftsp themed/
-/*.txt
-/*.xml
 /*.DS_Store
-
-stylesheets/darkx
-stylesheets/darkx1
-/Build/
-/ftsp/
-/htaccess-builder/
-/ipb/
-/tsfm/
-/vbforum/
-/ftsp.sublime-project
-/ftsp.sublime-workspace
-/*.phptidy-cache
+/*.xml
+/userdetails_new_seeding_time.php

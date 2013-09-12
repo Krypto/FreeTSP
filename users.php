@@ -1,45 +1,20 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify    --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
 
 db_connect();
 logged_in();
@@ -56,7 +31,7 @@ if ($class == '-' || !is_valid_id($class))
 
 if ($search != '' || $class)
 {
-    $query = "username LIKE ".sqlesc("%$search%")." and status='confirmed'";
+    $query = "username LIKE ".sqlesc("%$search%")." AND status='confirmed'";
 
     if ($search)
     {
@@ -76,13 +51,13 @@ else
     {
         $letter = "";
     }
-    $query = "username  LIKE '$letter%' and status='confirmed'";
+    $query = "username LIKE '$letter%' AND status='confirmed'";
     $q     = "letter=$letter";
 }
 
 if (ctype_digit($class))
 {
-    $query .= " and class=$class";
+    $query .= " AND class=$class";
     $q .= ($q ? "&amp;" : "")."class=$class";
 }
 
@@ -94,7 +69,7 @@ echo("<div align='center'>");
 echo("<form method='get' action='users.php?'>\n");
 echo("Search: <input type='text' name='search' size='30' />\n");
 echo("<select name='class'>\n");
-echo("<option value='-'>(any class)</option>\n");
+echo("<option value='-'>(Any Class)</option>\n");
 
 for ($i = 0;;
      ++$i)
@@ -139,9 +114,9 @@ $perpage    = 25;
 $browsemenu = '';
 $pagemenu   = '';
 
-$res = sql_query("SELECT COUNT(*)
+$res = sql_query("SELECT COUNT(id)
                     FROM users
-                    WHERE $query")    or sqlerr(__FILE__, __LINE__);
+                    WHERE $query") or sqlerr(__FILE__, __LINE__);
 
 $arr = mysql_fetch_row($res);
 
@@ -221,7 +196,7 @@ $offset = ($page * $perpage) - $perpage;
 if ($arr[0] > 0)
 {
     $res = sql_query("SELECT users.*, countries.name, countries.flagpic
-                        FROM users FORCE INDEX ( username )
+                        FROM users FORCE INDEX (username)
                         LEFT JOIN countries ON country = countries.id
                         WHERE $query
                         ORDER BY username
@@ -229,7 +204,7 @@ if ($arr[0] > 0)
 
     echo("<table border='1' cellspacing='0' cellpadding='5'>");
     echo("<tr>
-            <td class='colhead' align='left'>User   name</td>
+            <td class='colhead' align='left'>User name</td>
             <td class='colhead'>Registered</td>
             <td class='colhead'>Last access</td>
             <td class='colhead' align='left'>Class</td>
@@ -238,10 +213,14 @@ if ($arr[0] > 0)
 
     while ($row = mysql_fetch_assoc($res))
     {
-        $country = ($row['name'] != NULL) ? "<td  class='rowhead'style='padding: 0px' align='center'><img src='{$image_dir}flag/{$row[flagpic]}' width='32' height='20' border='0' alt='".htmlspecialchars($row[name])."'   title='".htmlspecialchars($row[name])."'/></td>" : "<td class='rowhead' align='center'>---</td>";
+        $country = ($row['name'] != NULL) ? "<td class='rowhead'style='padding: 0px' align='center'><img src='{$image_dir}flag/{$row[flagpic]}' width='32' height='20' border='0' alt='".htmlspecialchars($row[name])."' title='".htmlspecialchars($row[name])."'/></td>" : "<td class='rowhead' align='center'>---</td>";
 
         echo("<tr>
-                <td class='rowhead' align='left'><a href='userdetails.php?id=$row[id]'><span style='font-weight:bold;'>$row[username]</span></a>&nbsp;&nbsp;".($row['donor'] == 'yes' ? "<img src='{$image_dir}star.png'    width='16' height='16' border='0' alt='Donor' title='Donor' />" : "")."&nbsp;".($row['warned'] == 'yes' ? "<img src='{$image_dir}warned.png' width='16' height='16' border='0'  alt='Warned' title='Warned' />" : "")."</td>
+                <td class='rowhead' align='left'>
+                    <a href='userdetails.php?id=$row[id]'><span style='font-weight:bold;'>$row[username]</span></a>&nbsp;&nbsp;
+                    ".($row['donor'] == 'yes' ? "<img src='{$image_dir}star.png' width='16' height='16' border='0' alt='Donor' title='Donor' />" : "")."&nbsp;
+                    ".($row['warned'] == 'yes' ? "<img src='{$image_dir}warned.png' width='16' height='16' border='0' alt='Warned' title='Warned' />" : "")."
+                </td>
                 <td class='rowhead'>$row[added]</td>
                 <td class='rowhead'>$row[last_access]</td>
                 <td class='rowhead' align='left'>".get_user_class_name($row["class"])."</td>

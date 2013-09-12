@@ -1,41 +1,16 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 function get_ratio_color ($ratio)
 {
@@ -147,27 +122,25 @@ function get_slr_color ($ratio)
     return "#000000";
 }
 
+function parked()
+{
+    global $CURUSER;
+
+    if ($CURUSER["parked"] == "yes")
+        error_message("warn", "Warning", "Your Account is currently Parked.");
+}
+
 function get_user_id ()
 {
     global $CURUSER;
     return $CURUSER["id"];
 }
 
-define ('UC_TRACKER_MANAGER', 1); ///---Set the ID# to match the member who will have access to the Tracker Manager---///
-
 function get_user_class ()
 {
     global $CURUSER;
     return $CURUSER["class"];
 }
-
-define ('UC_USER', 0);
-define ('UC_POWER_USER', 1);
-define ('UC_VIP', 2);
-define ('UC_UPLOADER', 3);
-define ('UC_MODERATOR', 4);
-define ('UC_ADMINISTRATOR', 5);
-define ('UC_SYSOP', 6);
 
 function get_user_class_name ($class)
 {
@@ -193,6 +166,9 @@ function get_user_class_name ($class)
 
         case UC_SYSOP:
             return "SysOp";
+
+        case UC_MANAGER:
+            return "Manager";
     }
     return "";
 }
@@ -215,13 +191,15 @@ function get_user_class_color ($class)
             return "B000B0";
         case UC_SYSOP:
             return "FF0000";
+        case UC_MANAGER:
+            return "FF0000";
     }
     return "";
 }
 
 function format_username ($user, $icons = true)
 {
-    global $image_dir, $site_url;
+    global $CURUSER, $image_dir, $site_url;
 
     $user['id']    = (int) $user['id'];
     $user['class'] = (int) $user['class'];
@@ -236,31 +214,40 @@ function format_username ($user, $icons = true)
         return 'unknown['.$user['id'].']';
     }
 
-    $username = '<span style="font-weight:bold; color:#'.get_user_class_color($user['class']).';">'.$user['username'].'</span>';
-    $str      = '<span style="white-space: nowrap;"><a class="user_'.$user['id'].'" href="'.$site_url.'/userdetails.php?id='.$user['id'].'"target="_blank">'.$username.'</a>';
+    $username = '<span style="font-weight:bold; color:#'.get_user_class_color($user['class']).';">'.htmlspecialchars($user['username']).'&nbsp;</span>';
+    $str      = '<span style="white-space: nowrap;"><a href="'.$site_url.'/userdetails.php?id='.$user['id'].'"target="_blank">'.$username.'</a>';
 
     if ($icons != false)
     {
         $str .= ($user['donor'] == 'yes' ? '<img src="'.$image_dir.'star.png" width="16" height="16" border="0" alt="Donor" title="Donor" />' : '');
         $str .= ($user['warned'] == 'yes' ? '<img src="'.$image_dir.'warned.png" width="15" height="16" border="0" alt="Warned" title="Warned" />' : '');
-        $str .= ($user['enabled'] == 'yes' ? '<img src="'.$image_dir.'disabled.png" width="16" height="15" border="0" alt="Disabled" title="Disabled" />' : '');
+        $str .= ($user['enabled'] == 'no' ? '<img src="'.$image_dir.'disabled.png" width="16" height="15" border="0" alt="Disabled" title="Disabled" />' : '');
     }
     $str .= "</span>\n";
 
     return $str;
 }
 
-function format_user ($user)
+function format_user($user)
 {
-    global $site_url;
+    global $CURUSER, $site_url;
     return '<a href="'.$site_url.'/userdetails.php?id='.$user['id'].'" title="'.get_user_class_name($user['class']).'">
-                <span style="color:'.get_user_class_color($user['class']).';">'.$user['username'].'</span>
+                <span style="color:'.get_user_class_color($user['class']).';">'.htmlspecialchars($user['username']).'</span>
             </a>'.get_user_icons($user).' ';
 }
 
+function print_user_stuff($arr)
+
+  {
+  global $CURUSER;
+
+        return '<a href="userdetails.php?id='.$arr['id'].'" title="'. get_user_class_name($arr['class']).'">
+                <span style="font-weight: bold; color: '.get_user_class_color($arr['class']).'; ">'.$arr['username'].'</span></a> ';
+  }
+
 function is_valid_user_class ($class)
 {
-    return is_numeric($class) && floor($class) == $class && $class >= UC_USER && $class <= UC_SYSOP;
+    return is_numeric($class) && floor($class) == $class && $class >= UC_USER && $class <= UC_MANAGER;
 }
 
 function is_valid_id ($id)

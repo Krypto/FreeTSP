@@ -21,7 +21,7 @@
  *    it's why we must decode them with REGEXPS. as there are many keywords with several tokens,
  *    I had to create a separate section in the code to simplify the reading.
  * Be aware that some words may be highlighted several times like for "ref to data", which is first
- *    highlighted for "ref to data", then secondly for "ref to". It is very important to
+ *    highlighted for "ref to data", then secondly for "ref to".It is very important to
  *    position "ref to" after "ref to data" otherwise "data" wouldn't be highlighted because
  *    of the previous highlight.
  * Control, declarative and other statements are assigned URLs to sap documentation website:

@@ -9,8 +9,9 @@ ErrorDocument 500 /errors/error.php?error=500
 #Enable cache control - CHANGE TO ON/OFF OR COMMENT/UNCOMMENT UNREQUIRED CHACHES
 #Ranges can be seconds, minutes, hours, days, weeks, months, years
 <IfModule mod_expires.c>
-ExpiresActive Off
+#ExpiresActive Off
 #ExpiresDefault "access plus 1 years"
+#ExpiresByType text/javascript "access plus 1 months"
 #ExpiresByType application/javascript "access plus 1 weeks"
 #ExpiresByType application/pdf "access plus 1 years"
 #ExpiresByType application/x-shockwave-flash "access plus 1 years"
@@ -20,7 +21,7 @@ ExpiresActive Off
 #ExpiresByType image/ico "access plus 1 years"
 #ExpiresByType image/x-icon "access plus 1 years"
 #ExpiresByType text/plain "access plus 1 day"
-ExpiresByType text/html "access plus 1 weeks"
+#ExpiresByType text/html "access plus 1 weeks"
 #ExpiresByType text/css "access plus 1 day"
 #ExpiresByType video/x-flv "access plus 1 day"
 </IfModule>

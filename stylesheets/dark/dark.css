@@ -22,6 +22,11 @@ table.bottom
     background : transparent;
 }
 
+.sticky
+{
+    background-color : #993366;
+}
+
 h1
 {
     font-size  : 12pt;
@@ -274,8 +279,7 @@ a.catlink:hover
     font-size : xx-large;
 }
 
-/* ------------------------------------- Start of Polls ------------------------------------------------------- */
-
+/*-------------------------------------------- Start of Polls ----------------------------------------*/
 .poll
 {
     background-color : #19191b; /* Changes the background color of the Polls*/
@@ -315,8 +319,7 @@ a.catlink:hover
 {
     background : #0033cc;
 }
-
-/* ------------------------------------- End of Polls --------------------------------------------------------- */
+/*------------------------------------------- End of Polls -------------------------------------------*/
 
 .roundedCorners
 {
@@ -348,7 +351,7 @@ a.catlink:hover
     height     : 150px;
 }
 
-/* ------------------------------------- Start For Donation Page - Align Offers ------------------------------- */
+/*--------------------------------- Start For Donation Page - Align Offers ---------------------------*/
 .thumbnail
 {
     float  : left;
@@ -368,11 +371,9 @@ a.catlink:hover
     height   : auto;
     position : relative;
 }
+/*--------------------------------- End For Donation Page - Align Offers -----------------------------*/
 
-/* ------------------------------------- End For Donation Page - Align Offers --------------------------------- */
-
-/* ------------------------------------  Start OK Submit Buttons Styling  ------------------------------------  */
-
+/*--------------------------------- Start OK Submit Buttons Styling ----------------------------------*/
 .btn
 {
     display               : inline-block;
@@ -410,11 +411,9 @@ a.catlink:hover
     text-decoration : none;
     color           : #ffffff; /* Changes the font  color of the buttons on hover*/
 }
+/*---------------------------------- End OK Submit Buttons Styling -----------------------------------*/
 
-/* ------------------------------------  End OK Submit Buttons Styling  ------------------------------------  */
-
-/* ------------------------------------  Start Statusbar Styling  ------------------------------------  */
-
+/*-------------------------------------- Start Statusbar Styling -------------------------------------*/
 #statusbar
 {
     background            : #525254; /* Changes the background color of the Statusbar */
@@ -444,11 +443,9 @@ a.catlink:hover
     float : left;
     color : white;
 }
+/*-------------------------------------- End Statusbar Styling ---------------------------------------*/
 
-/* ------------------------------------  End Statusbar Styling  ------------------------------------  */
-
-/* ------------------------------------  Start DropDown Menu Styling  ------------------------------  */
-
+/*-------------------------------------- Start DropDown Menu Styling ---------------------------------*/
 .stn-menu,
 .stn-menu ul a:hover,
 .stn-menu ul li:hover > a
@@ -621,11 +618,9 @@ a.catlink:hover
     -webkit-border-radius : 6px !important;
     -moz-border-radius    : 6px !important;
 }
+/*-------------------------------------- End DropDown Menu Styling -----------------------------------*/
 
-/* ------------------------------------- End DropDown Menu Styling ---------------------------------- */
-
-/* ------------------------------------- Start Staff Tools Styling ----------------------------------- */
-
+/*-------------------------------------- Start Staff Tools Styling -----------------------------------*/
 .TSPbutton
 {
     border                : 2px solid #28282a; /*Change border color of buttons*/
@@ -657,363 +652,33 @@ a.catlink:hover
 {
     color : #00ff00; /*Change font color    of buttons*/
 }
+/*-------------------------------------- End Staff Tools Styling -------------------------------------*/
 
-/* ------------------------------------- End Staff Tools Styling -------------------------------------  */
-
-/* ------------------------------------- Start Staff Panel Styling -------------------------------------  */
-.FreeTSPglidecontentwrapper
-{
-    position         : relative; /* Do not change this value    */
-    width            : 80%;
-    height           : 300px; /* Set height to  be able to contain height of largest content shown*/
-    background-color : #19191b; /* Change to    your table background color */
-    border           : 1px solid #000000 /* Changes the color of the outer  border*/ margin : 1px auto;
-    overflow         : hidden;
-}
-
-/*
-    Total wrapper width: 350px+5px+5px=360px
-    Or width of wrapper div itself plus any left and right CSS border and padding
-    Adjust related containers below according to comments
-    */
-
-.FreeTSPglidecontent
-{
-    /*style for each glide content DIV within   wrapper.*/
-    position         : absolute; /* Do not change this value    */
-    background-color : #19191b; /* Change to    your table background color */
-    padding          : 10px;
-    visibility       : hidden;
-    width            : 96%;
-}
-
-/*
-     Total FreeTSPglidecontent width: 330px+10px+10px=350px
-    Or width of wrapper div itself (not counting wrapper border/padding)
-    */
-
-.FreeTSPglidecontenttoggler
-{
-    /*style for DIV used to contain toggler links. */
-    width      : 60%;
-    margin-top : 6px;
-    text-align : center;
-    /*How to align pagination links: "left", "center", or "right"
-     background:    white; /*always declare an explicit background color for fade effect to properly render in IE*/
-}
-
-/*
-     Total contenttoggler width: 350px+5px+5px=360px
-    Or total width of wrapper div (counting wrapper border/padding)
-    */
-
-.FreeTSPglidecontenttoggler a
-{
-    /*style for every   navigational link within toggler */
-    border          : 0px solid #000000; /* Changes the color   of the tabs border*/
-    padding         : 1px 3px;
-    margin-right    : 1px;
-    font-weight     : bold;
-    text-decoration : none;
-}
-
-.FreeTSPglidecontenttoggler a.toc
-{
-    /*style for individual toggler links (page 1,   page 2, etc). ".toc" class auto generated! */
-    background-color : #19191b; /* Changes the color    of the tabs background */
-    color            : #ffffff; /* Changes the color of the tabs text*/
-}
-
-/* ------------------------------------ End Staff Panel Styling -------------------------------------  */
-
-/*------------------------------------- Start Std Menu UserCP ---------------------------------------- */
-
-.FreeTSPglidecontentwrapper3
-{
-    position   : relative; /* Do not change this value  */
-    width      : 80%;
-    height     : 310px; /* Set height to    be able to contain height of largest content shown*/
-    background : #19191b; /*    Change to your table background color */
-    border     : 1px solid #cccccc; /* Changes border color */
-    margin     : 1px auto;
-    overflow   : hidden;
-}
-
-/*
-    Total wrapper width: 350px+5px+5px=360px
-    Or width of wrapper div itself plus any left and right CSS border and padding
-    Adjust related containers below according to comments
-    */
-
-.FreeTSPglidecontent3
-{
-    /*style for each glide content DIV within   wrapper.*/
-    position   : absolute; /* Do not change this value  */
-    background : #19191b; /*    Change to your table background color */
-    padding    : 10px;
-    visibility : hidden;
-    width      : 96%;
-}
-
-/*
-     Total FreeTSPglidecontent width: 330px+10px+10px=350px
-    Or width of wrapper div itself (not counting wrapper border/padding)
-    */
-
-.FreeTSPglidecontenttoggler3
-{
-    /*style for DIV used to contain toggler links. */
-    width      : 100%;
-    margin-top : 6px;
-    text-align : center;
-    /*How to align pagination links: "left", "center", or "right"
-     background:    #19191b; /*always declare an explicit background color for fade effect to properly render in IE*/
-}
-
-/*
-     Total contenttoggler width: 350px+5px+5px=360px
-    Or total width of wrapper div (counting wrapper border/padding)
-    */
-
-.FreeTSPglidecontenttoggler3 a
-{
-    /*style for every   navigational link within toggler */
-    border          : 0px solid #000000; /* Changes the color   of the tabs border*/
-    padding         : 1px 3px;
-    margin-right    : 2px;
-    font-weight     : bold;
-    text-decoration : none;
-}
-
-.FreeTSPglidecontenttoggler3 a.toc
-{
-    /*style for individual toggler links (page 1,   page 2, etc). ".toc" class auto generated! */
-    background-color : #19191b; /* Changes the color    of the tabs background */
-    color            : #ffffff; /* Changes the color of the tabs text*/
-}
-
-/*------------------------------------- End Std Menu UserCP ----------------------------------------- */
-
-/* ------------------------------------ Start Staff Tools Sliding Content --------------------------- */
-
-.FreeTSPglidecontentwrapper4
-{
-    position   : relative; /* Do not change this value  */
-    width      : 100%;
-    height     : 310px; /* Set height to    be able to contain height of largest content shown*/
-    background : #19191b; /*    Change to your table background color */
-    border     : 1px solid #000000;
-    margin     : 1px auto;
-    overflow   : hidden;
-}
-
-/*
-    Total wrapper width: 350px+5px+5px=360px
-    Or width of wrapper div itself plus any left and right CSS border and padding
-    Adjust related containers below according to comments
-    */
-
-.FreeTSPglidecontent4
-{
-    /*style for each glide content DIV within   wrapper.*/
-    position   : absolute; /* Do not change this value  */
-    background : #19191b; /*    Change to your table background color */
-    padding    : 10px;
-    visibility : hidden;
-    width      : 96%;
-
-}
-
-/*
-     Total FreeTSPglidecontent width: 330px+10px+10px=350px
-    Or width of wrapper div itself (not counting wrapper border/padding)
-    */
-
-.FreeTSPglidecontenttoggler4
-{
-    /*style for DIV used to contain toggler links. */
-    width      : 100%;
-    margin-top : 6px;
-    text-align : center;
-    /*How to align pagination links: "left", "center", or "right"
-     background:    #19191b; /*always declare an explicit background color for fade effect to properly render in IE*/
-}
-
-/*
-     Total contenttoggler width: 350px+5px+5px=360px
-    Or total width of wrapper div (counting wrapper border/padding)
-    */
-
-.FreeTSPglidecontenttoggler4 a
-{
-    /*style for every   navigational link within toggler */
-    border          : 0px solid #000000; /* Changes the color   of the tabs border*/
-    padding         : 1px 3px;
-    margin-right    : 2px;
-    font-weight     : bold;
-    text-decoration : none;
-}
-
-.FreeTSPglidecontenttoggler4 a.toc
-{
-    /*style for individual toggler links (page 1,   page 2, etc). ".toc" class auto generated! */
-    background-color : #19191b; /* Changes the color of the tabs background */
-    color            : #ffffff; /* Changes the color of the tabs text*/
-}
-
-/* ------------------------------------ End Staff Tools Sliding Content ------------------------------ */
-
-/*------------------------------------- Start Top Ten CSS -------------------------------------------- */
-
-.FreeTSPglidecontentwrapper5
-{
-    position   : relative; /* Do not change this value  */
-    width      : 100%;
-    height     : 450px; /* Set height to    be able to contain height of largest content shown*/
-    background : #19191b; /*    Change to your table background color */
-    border     : none; /* Changes border color */
-    margin     : 1px auto;
-    overflow   : hidden;
-}
-
-/*
-    Total wrapper width: 350px+5px+5px=360px
-    Or width of wrapper div itself plus any left and right CSS border and padding
-    Adjust related containers below according to comments
-    */
-
-.FreeTSPglidecontent5
-{
-    /*style for each glide content DIV within   wrapper.*/
-    position   : absolute; /* Do not change this value  */
-    background : #19191b; /*    Change to your table background color */
-    padding    : 10px;
-    visibility : hidden;
-    width      : 96%;
-}
-
-/*
-     Total FreeTSPglidecontent width: 330px+10px+10px=350px
-    Or width of wrapper div itself (not counting wrapper border/padding)
-    */
-
-.FreeTSPglidecontenttoggler5
-{
-    /*style for DIV used to contain toggler links. */
-    width      : 100%;
-    margin-top : 6px;
-    text-align : center;
-    /*How to align pagination links: "left", "center", or "right"
-     background:    #19191b; /*always declare an explicit background color for fade effect to properly render in IE*/
-}
-
-/*
-     Total contenttoggler width: 350px+5px+5px=360px
-    Or total width of wrapper div (counting wrapper border/padding)
-    */
-
-.FreeTSPglidecontenttoggler5 a
-{
-    /*style for every   navigational link within toggler */
-    border          : 0px solid #000000; /* Changes the color   of the tabs border*/
-    padding         : 1px 3px;
-    margin-right    : 2px;
-    font-weight     : bold;
-    text-decoration : none;
-}
-
-.FreeTSPglidecontenttoggler5 a.toc
-{
-    /*style for individual toggler links (page 1,   page 2, etc). ".toc" class auto generated! */
-    background-color : #19191b; /* Changes the color    of the tabs background */
-    color            : #ffffff; /* Changes the color of the tabs text*/
-}
-
-/*------------------------------------- End Top Ten CSS ---------------------------------------------- */
-
-/*------------------------------------- Start Login/Signup CSS --------------------------------------- */
-
-.FreeTSPglidecontentwrapper7
-{
-    position   : relative; /* Do not change this value  */
-    width      : 100%;
-    height     : 400px; /* Set height to    be able to contain height of largest content shown*/
-    background : #19191b; /*    Change to your table background color */
-    border     : none; /* Changes border color */
-    margin     : 1px auto;
-    overflow   : hidden;
-}
-
-.FreeTSPglidecontent7
-{
-    /*style for each glide content DIV within   wrapper.*/
-    position   : absolute; /* Do not change this value  */
-    background : #19191b; /*    Change to your table background color */
-    padding    : 10px;
-    visibility : hidden;
-    width      : 96%;
-}
-
-.FreeTSPglidecontenttoggler7
-{
-    /*style for DIV used to contain toggler links. */
-    width      : 100%;
-    margin-top : 6px;
-    text-align : left;
-    /*How   to align pagination links: "left", "center", or "right"
-     background:    #ece9d8; /*always declare an explicit background color for fade effect to properly render in IE*/
-}
-
-.FreeTSPglidecontenttoggler7 a
-{
-    /*style for every   navigational link within toggler */
-    border          : none; /* Changes the color of the tabs border*/
-    padding         : 1px 3px;
-    font-weight     : bold;
-    text-decoration : none;
-}
-
-.FreeTSPglidecontenttoggler7 a.toc
-{
-    /*style for individual toggler links (page 1,   page 2, etc). ".toc" class auto generated! */
-    color : #a83838; /* Changes the color of    the tabs text*/
-}
-
-.FreeTSPglidecontenttoggler7 a.toc:hover
-{
-    text-decoration : none;
-}
-
-/*------------------------------------- End Login/Signup CSS ------------------------------------------*/
-
-/* ------------------------------------ Start Userdetails Content --------------------------- */
-
+/*----------------------------------------- Start Userdetails Content --------------------------------*/
 #featured ul.ui-tabs-nav
 {
-list-style :none;
-margin   : 1em 0;
-padding : 0;
-         text-align : center;
-
+    list-style :none;
+    margin   : 1em 0;
+    padding : 0;
+    text-align : center;
 }
 
 #featured ul.ui-tabs-nav li
 {
-         display : inline;
-         margin : 0 2px;
-font-size :12px;
+    display : inline;
+    margin : 0 2px;
+    font-size :12px;
 }
 
 #featured .ui-tabs-panel
 {
-width    :100%; /* increase / decrease width of user details display */
-height   :100%; /* Do not adjust */
-position :relative;
+    width    :100%; /* increase / decrease width of user details display */
+    height   :100%; /* Do not adjust */
+    position :relative;
 }
+/*------------------------------------- Finish Sliding Userdetails Content ---------------------------*/
 
-/* ------------------------------------ Finish Sliding Userdetails Content --------------------------- */
-
-/*------------------------------------- Start Error/Warning Notices ------------------------------------*/
+/*------------------------------------ Start Error/Warning Notices -----------------------------------*/
 .notice
 {
     background            : url(/images/error/error-bg.png) repeat-x 0 0;
@@ -1146,5 +811,12 @@ position :relative;
 {
     background-position : 100% -1200px;
 }
-
 /*------------------------------------- End Error/Warning Notices ------------------------------------*/
+
+/*------------------------------------------- Start LightBox -----------------------------------------*/
+.image-resize
+{
+    max-width : 350px;
+    border   :none;
+}
+/*-------------------------------------------- End LightBox ------------------------------------------*/

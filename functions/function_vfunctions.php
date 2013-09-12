@@ -1,41 +1,16 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 function pager ($rpp, $count, $href, $opts = array())
 {
@@ -134,7 +109,7 @@ function pager ($rpp, $count, $href, $opts = array())
 
             if ($i != $page)
             {
-                $pagerarr[] = "<a href='{$href}page=$i'><span style='font-weight:bold;'>$text</span></a>";
+                $pagerarr[] = "<a href='{$href}&amp;page=$i'><span style='font-weight:bold;'>$text</span></a>";
             }
             else
             {
@@ -164,7 +139,16 @@ function write_log ($text)
     $added = sqlesc(get_date_time());
 
     sql_query("INSERT INTO sitelog (added, txt)
-                VALUES($added, $text)")    or sqlerr(__FILE__, __LINE__);
+                VALUES($added, $text)") or sqlerr(__FILE__, __LINE__);
+}
+
+function write_stafflog($text)
+{
+    $text  = sqlesc($text);
+    $added = sqlesc(get_date_time());
+
+    sql_query("INSERT INTO stafflog (added, txt)
+                VALUES($added, $text)") or sqlerr(__FILE__, __LINE__);
 }
 
 function searchfield ($s)
@@ -206,12 +190,28 @@ function hash_where ($name, $hash)
 
 function error_message ($type, $heading, $message)
 {
-    site_header();
-    echo("<table class='main' width='100%' cellpadding='0' cellspacing='0' border='0'><tr><td class='embedded'>");
+    site_header("",false);
+    echo("<table class='main' border='0' width='100%' cellpadding='0' cellspacing='0'><tr><td class='embedded'>");
 
     if ($heading)
     {
         echo("<div class='notice notice-$type'><h2>$heading</h2>\n");
+    }
+
+    echo("<p>".$message."</p><span></span></div>");
+    echo("</td></tr></table>");
+    site_footer();
+    die;
+}
+
+function error_message_center ($type, $heading, $message)
+{
+    site_header("",false);
+    echo("<table class='main' border='0' width='100%' cellpadding='0' cellspacing='0'><tr><td class='embedded'>");
+
+    if ($heading)
+    {
+        echo("<div class='notice notice-$type' align='center'><h2>$heading</h2>\n");
     }
 
     echo("<p>".$message."</p><span></span></div>");
@@ -225,6 +225,15 @@ function display_message ($type, $heading, $message)
     if ($heading)
     {
         echo("<div class='notice notice-$type' align='left'><h2>$heading</h2>\n");
+    }
+    echo("<p>".$message."</p><span></span></div>");
+}
+
+function display_message_center ($type, $heading, $message)
+{
+    if ($heading)
+    {
+        echo("<div class='notice notice-$type' align='center'><h2>$heading</h2>\n");
     }
     echo("<p>".$message."</p><span></span></div>");
 }
@@ -305,7 +314,7 @@ function time_return ($stamp)
     }
     elseif ($months > 1)
     {
-        $nicetime['months'] = $months." Month";
+        $nicetime['months'] = $months."   Month";
     }
 
     if ($weeks == 1)
@@ -323,7 +332,7 @@ function time_return ($stamp)
     }
     elseif ($days > 1)
     {
-        $nicetime['days'] = $days." Days";
+        $nicetime['days'] = $days."   Days";
     }
 
     if ($hours == 1)
@@ -377,7 +386,7 @@ function failedloginscheck ()
                     SET banned = 'yes'
                     WHERE ip=$ip") or sqlerr(__FILE__, __LINE__);
 
-        error_message("error", "Login Locked!", "You have <span style='font-weight:bold;'>exceed thr maximum login attempts</span>, therefore your IP Address <span style='font-weight:bold;'>(".htmlspecialchars($ip).")</span> has been Banned.", false);
+        error_message("error", "Login Locked!", "You have <span style='font-weight:bold;'>exceed the Maximum Login Attempts</span>, therefore your IP Address <span style='font-weight:bold;'>(".htmlspecialchars($ip).")</span> has been Banned.", false);
     }
 }
 

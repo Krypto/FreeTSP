@@ -1,45 +1,20 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
 
 db_connect();
 
@@ -49,7 +24,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
     if (!validemail($email))
     {
-        error_message("error", "Error", "You must enter an email address");
+        error_message("error", "Error", "You MUST enter an email address");
     }
 
     $res = sql_query("SELECT *
@@ -57,7 +32,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
                         WHERE email=".sqlesc($email)."
                         LIMIT 1") or sqlerr();
 
-    $arr = mysql_fetch_assoc($res) or error_message("error", "Error", "The email address was not found in the database.\n");
+    $arr = mysql_fetch_assoc($res) or error_message("error", "Error", "The email address was NOT found in the Database.\n");
     $sec = mksecret();
 
     sql_query("UPDATE users
@@ -69,7 +44,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         error_message("error", "Database Error", "Please contact an Administrator about this.");
     }
 
-    $hash = md5($sec.$email.$arr["passhash"].$sec);
+    //$hash = md5($sec.$email.$arr["passhash"].$sec);
+    $hash = md5($sec.$arr["email"].$arr["passhash"] . $sec);
 
 $body = <<<EOD
 Someone, hopefully you, requested that the password for the account
@@ -94,8 +70,8 @@ EOD;
 
     @mail($arr["email"], "$site_name password reset confirmation", $body, "From: $site_email", "-f$site_email")
         or
-        error_message("error", "Error", "Unable to send mail. Please contact an administrator about this error.");
-        error_message("success", "Success", "A confirmation email has been mailed.\n"." Please allow a few minutes for the mail to arrive.");
+        error_message("error", "Error", "Unable to send mail. Please contact an Administrator about this Error.");
+        error_message("success", "Success", "A Confirmation email has been mailed.\n"." Please allow a few minutes for the mail to arrive.  Also check your Spam/Junk Folders.");
 }
 elseif ($_GET)
 {
@@ -125,7 +101,7 @@ elseif ($_GET)
         httperr();
     }
 
-    // generate new password;
+    //-- Generate New Password --//
     $chars       = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     $newpassword = "";
 
@@ -143,7 +119,7 @@ elseif ($_GET)
 
     if (!mysql_affected_rows())
     {
-        error_message("error", "Error", "Unable to update user data. Please contact an Administrator about this error.");
+        error_message("error", "Error", "Unable to Update User Data. Please contact an Administrator about this Error.");
     }
 
 $body = <<<EOD
@@ -152,7 +128,7 @@ As per your request we have generated a new password for your account.
 Here is the information we now have on file for this account:
 
 User name: {$arr["username"]}
-Password:  $newpassword
+Password: $newpassword
 
 You may login at $site_url/login.php
 
@@ -162,8 +138,8 @@ EOD;
 
     @mail($email, "$site_name account details", $body, "From: $site_email", "-f$site_email")
         or
-        error_message("error", "Error", "Unable to send mail. Please contact an administrator about this error.");
-        error_message("success", "Success", "The new account details have been mailed to <span style='font-weight:bold;'>$email</span>.\n"."Please allow a few minutes for the mail to arrive.");
+        error_message("error", "Error", "Unable to send mail. Please contact an Administrator about this Error.");
+        error_message("success", "Success", "The New Account details have been mailed to <span style='font-weight:bold;'>$email</span>.\n"."Please allow a few minutes for the mail to arrive.  Also check your Spam/Junk Folders.");
 }
 
 ?>

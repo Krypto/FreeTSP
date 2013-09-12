@@ -24,7 +24,7 @@ body
     margin-top : 40px;
 }
 
-/* Error title */
+/* Error Title */
 #container h1.title
 {
     padding        : 0 10px 20px 10px;
@@ -43,7 +43,7 @@ body
     padding     : 0 19px 15px;
 }
 
-/* Error message */
+/* Error Message */
 #container p
 {
     padding        : 5px 35px;

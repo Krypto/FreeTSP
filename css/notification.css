@@ -1,9 +1,7 @@
-/*Classic CSS3 notification boxes
-Copyright (c) 2011 Arrowthemes.com
--------------------------------------------- */
+/* Classic CSS3 Notification Boxes
+Copyright (c) 2011 Arrowthemes.com */
 
-/*general css color styling for css notifications */
-
+/* General CSS Color Styling For CSS Notifications */
 .silver, .blue, .olive, .bluegrey, .yellow, .redd, .orange
 {
     font-size             : 13px;
@@ -32,8 +30,7 @@ Copyright (c) 2011 Arrowthemes.com
     behavior              : url(css/PIE.htc)
 }
 
-/*shapes formating for css notifications*/
-
+/* Shapes Formating For Css Notifications */
 .inset
 {
     box-shadow         : inset 0 1px 2px #6D6D6D !important;
@@ -131,9 +128,8 @@ Copyright (c) 2011 Arrowthemes.com
     width : 95%
 }
 
-/*color formating for css notifications*/
-/*silver color*/
-
+/* Color Formating For CSS Notifications */
+/* Silver Color */
 .silver
 {
     border-color    : #E0E0E0;
@@ -161,8 +157,7 @@ Copyright (c) 2011 Arrowthemes.com
     background      : linear-gradient(top, #f7f7f7 0%, #e9e9e9 100%)
 }
 
-/*blue color*/
-
+/* Blue Color */
 .blue
 {
     border-color    : #A9C3DB;
@@ -190,8 +185,7 @@ Copyright (c) 2011 Arrowthemes.com
     background      : linear-gradient(top, #eaf0f6 0%, #ccd8e6 100%)
 }
 
-/*olive color*/
-
+/* Olive Color */
 .olive
 {
     border-color    : #C2CDB9;
@@ -219,8 +213,7 @@ Copyright (c) 2011 Arrowthemes.com
     background      : linear-gradient(top, #eff1e9 0%, #cfd8c8 100%)
 }
 
-/*blue grey color*/
-
+/* Blue Grey Color */
 .bluegrey
 {
     border-color    : #aab6bc;
@@ -248,8 +241,7 @@ Copyright (c) 2011 Arrowthemes.com
     background      : linear-gradient(top, #ecf2f6 0%, #bbc4c9 100%)
 }
 
-/*yellow color*/
-
+/* Yellow Color */
 .yellow
 {
     border-color    : #ffe3b5;
@@ -277,8 +269,7 @@ Copyright (c) 2011 Arrowthemes.com
     background      : linear-gradient(top, #faf8d0 0%, #ffe8c3 100%)
 }
 
-/*orange color*/
-
+/* Orange Color */
 .orange
 {
     border-color    : #ffcf91;
@@ -306,8 +297,7 @@ Copyright (c) 2011 Arrowthemes.com
     background      : linear-gradient(top, #f9e6c1 0%, #ffd9a7 100%)
 }
 
-/*redd color*/
-
+/* Red Color */
 .redd
 {
     border-color    : #EC9494;
@@ -335,8 +325,7 @@ Copyright (c) 2011 Arrowthemes.com
     background      : linear-gradient(top, #fac7c2 0%, #f7b1b1 100%)
 }
 
-/*selection color and emphasis*/
-
+/* Selection Color And Emphasis */
 .silver ::selection
 {
     background  : #808080;
@@ -484,7 +473,7 @@ Copyright (c) 2011 Arrowthemes.com
     text-shadow : none
 }
 
-/*emphasis*/
+/* Emphasis */
 .silver .emphasis, .blue .emphasis, .olive .emphasis, .bluegrey .emphasis, .yellow .emphasis, .orange .emphasis, .redd .emphasis
 {
     border-radius         : 5px;
@@ -545,10 +534,9 @@ Copyright (c) 2011 Arrowthemes.com
     color       : #FFF;
     text-shadow : none
 }
+/* eNd Of Color Formating */
 
-/*end of color formating*/
-/*notifications icons*/
-
+/* Notifications Icons */
 .tip p
 {
     background : url(icons/tip.png)
@@ -717,11 +705,8 @@ Copyright (c) 2011 Arrowthemes.com
     resize         : both
 }
 
-/*notification shadows*/
-
-/*outer bottom shadow*/
-/*------------------------------------*/
-
+/* Notification Shadows */
+/* Outer Bottom Shadow */
 .shadow-out
 {
     width                 : 101%;
@@ -804,9 +789,7 @@ Copyright (c) 2011 Arrowthemes.com
     -ms-transform         : skew(-10deg, -10deg) translate(40px, -15px);
 }
 
-/*inner bottom shadow*/
-/*------------------------------------*/
-
+/* Inner Bottom Shadow */
 .shadow-in
 {
     width    : 100%;

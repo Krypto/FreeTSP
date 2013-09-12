@@ -3,7 +3,12 @@
 
     <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
-
+        <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+        <!-- ******************************************************* -->
+        <!-- *       This website is powered by FreeTSP v1.0       * -->
+        <!-- *              Download and support at:               * -->
+        <!-- *              http://www.freetsp.info                * -->
+        <!-- ******************************************************* -->
         <title><?php echo $title ?></title>
         <meta name="title" content="FreeTSP" />
         <meta name="description"
@@ -19,8 +24,14 @@
 
         <script type='text/javascript' src='js/jquery.js'></script>
         <script type="text/javascript" src="js/java_klappe.js"></script>
-        <script type='text/javascript'>
+        <!-- Uncomment If You Wish To Ise Image-Resize Instead Of LightBox -->
+        <!--<link type='text/css' rel='stylesheet' href='css/resize.css'  />
+        <script type='text/javascript' src='js/core-resize.js'></script> -->
+        <!-- COmment Out The Two Lines Below And The LightBox Section If You Wish To Use Image-Resize Instead Of LightBox -->
+        <script type='text/javascript' src='js/jquery.lightbox-0.5.min.js'></script>
+        <link rel='stylesheet' type='text/css' href='css/jquery.lightbox-0.5.css' media='screen' />
 
+        <script type='text/javascript'>
             function popUp(URL)
             {
                 day = new Date();
@@ -28,6 +39,17 @@
                 eval("page" + id + " = window.open(URL, '" + id + "', 'toolbar=0,scrollbars=1,location=0,statusbar=0,menubar=0,resizable=1,width=740,height=380,left = 340,top = 280');");
             }
         </script>
+
+        <!-- Comment Out To Use Core-Resize Instead -->
+        <script type='text/javascript'>
+            /*<![CDATA[*/
+            //$(function () {
+            $('document').ready(function () {
+            $('a[rel=\"lightbox\"]').lightBox(); //-- Select All Links That Contains Lightbox In The Attribute rel --//
+            });
+            /*]]>*/
+        </script>
+        <!-- Comment Out To Use Core-Resize Instead -->
 
     </head>
 
@@ -42,7 +64,7 @@
                                              style='vertical-align: middle;' /></a>
                 </div>
             </td>
-            <td class='clear' width='49%' align='right'>
+            <td class='clear' align='right' width='49%'>
                 <a href='donate.php'><img src='<?php echo $image_dir?>donor/donate.png' width='170' height='58'
                                           border='0' alt='Make a Donation' title='Make a Donation' /></a>
             </td>
@@ -53,18 +75,18 @@
 
     <!-- MENU -->
     <?php
-    if ($CURUSER['stdmenu'] == "yes")
+    if ($CURUSER['menu'] == "2")
     {
-        require_once('stdmenu.php');
+        require_once(ROOT_DIR.'stdmenu.php');
     }
 
-    elseif ($CURUSER['dropmenu'] == "yes")
+    elseif ($CURUSER['menu'] == "1")
     {
-        require_once('menu.php');
+        require_once(ROOT_DIR.'menu.php');
     }
     ?>
     <!-- MENU -->
 
-    <table class='mainouter' width='100%' border='1' cellspacing='0' cellpadding='10'>
+    <table class='mainouter' border='1' width='100%' cellspacing='0' cellpadding='10'>
         <tr>
-            <td align='center' class='outer' style='padding-top: 20px; padding-bottom: 20px'>
+            <td class='outer' align='center' style='padding-top: 20px; padding-bottom: 20px'>

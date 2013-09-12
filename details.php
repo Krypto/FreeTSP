@@ -1,47 +1,22 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
-require_once(INCL_DIR.'function_bbcode.php');
-require_once(INCL_DIR.'function_commenttable.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_bbcode.php');
+require_once(FUNC_DIR.'function_commenttable.php');
 
 function ratingpic ($num)
 {
@@ -54,7 +29,7 @@ function ratingpic ($num)
         return;
     }
 
-    return "<img src='{$image_dir}ratings/{$r}.png' height='26' border='0' alt='rating: $num / 5' title='rating: $num /5' />";
+    return "<img src='{$image_dir}ratings/{$r}.png' width='25' height='26' border='0' alt='rating: $num / 5' title='rating: $num /5' />";
 }
 
 function getagent ($httpagent = '', $peer_id = "")
@@ -74,8 +49,20 @@ function dltable ($name, $arr, $torrent)
     }
 
     $s .= "\n";
-    $s .= "<table width='100%' class='main' border='1' cellspacing='0' cellpadding='5'>\n";
-    $s .= "<tr><td class='colhead'>User/IP</td>"."<td class='colhead' align='center'>Connectable</td>"."<td class='colhead' align='right'>Uploaded</td>"."<td class='colhead' align='center'>Rate</td>"."<td class='colhead' align='right'>Downloaded</td>"."<td class='colhead' align='center'>Rate</td>"."<td class='colhead' align='center'>Ratio</td>"."<td class='colhead' align='right'>Complete</td>"."<td class='colhead' align='right'>Connected</td>"."<td class='colhead' align='center'>Idle</td>"."<td class='colhead' align='left'>Client</td></tr>\n";
+    $s .= "<table class='main' border='1' width='100%' cellspacing='0' cellpadding='5'>\n";
+    $s .= "<tr>
+            <td class='colhead'>User/IP</td>
+            <td class='colhead' align='center'>Connectable</td>
+            <td class='colhead' align='right'>Uploaded</td>
+            <td class='colhead' align='center'>Rate</td>
+            <td class='colhead' align='right'>Downloaded</td>
+            <td class='colhead' align='center'>Rate</td>
+            <td class='colhead' align='center'>Ratio</td>
+            <td class='colhead' align='right'>Complete</td>
+            <td class='colhead' align='right'>Connected</td>
+            <td class='colhead' align='center'>Idle</td>
+            <td class='colhead' align='left'>Client</td>
+        </tr>\n";
 
     $now       = time();
     $moderator = (isset($CURUSER) && get_user_class() >= UC_MODERATOR);
@@ -85,12 +72,12 @@ function dltable ($name, $arr, $torrent)
              AS
              $e)
     {
-        // user/ip/port - check if anyone has this ip
-        ($unr = sql_query("SELECT username, privacy
+        //-- User, IP, Port - Check If Anyone Has This IP --//
+        ($unr = sql_query("SELECT id, class, username, privacy, donor, warned, enabled
                             FROM users
                             WHERE id = $e[userid]
                             ORDER BY last_access DESC
-                            LIMIT 1")) or die;
+                            LIMIT 1")) or sqlerr(__FILE__, __LINE__);
 
         $una = mysql_fetch_assoc($unr);
 
@@ -99,11 +86,19 @@ function dltable ($name, $arr, $torrent)
             continue;
         }
 
-        $s .= "<tr>\n";
+        $highlight = $CURUSER["id"] == $una["id"] ? " class='sticky'" : "";
+        $s         .= "<tr $highlight>\n";
 
         if ($una["username"])
         {
-            $s .= "<td class='rowhead'><a href='userdetails.php?id=$e[userid]'><span style='font-weight:bold;'>$una[username]</span></a></td>\n";
+            if (get_user_class() >= UC_MODERATOR || $torrent['anonymous'] != 'yes' || $e['userid'] != $torrent['owner'])
+            {
+                $s .= "<td class='rowhead'>".format_username($una)."</td>\n";
+            }
+            elseif (get_user_class() >= UC_MODERATOR || $torrent['anonymous'] = 'yes')
+            {
+                $s .= "<td><i>Anonymous</i></td>\n";
+            }
         }
         else
         {
@@ -156,8 +151,9 @@ function dltable ($name, $arr, $torrent)
 }
 
 db_connect(false);
-
 logged_in();
+
+parked();
 
 $id    = 0 + $_GET["id"];
 $added = sqlesc(get_date_time());
@@ -167,7 +163,7 @@ if (!isset($id) || !$id)
     die();
 }
 
-$res = sql_query("SELECT torrents.seeders, torrents.banned, torrents.leechers, torrents.info_hash, torrents.filename, LENGTH(torrents.nfo) AS nfosz, UNIX_TIMESTAMP() - UNIX_TIMESTAMP(torrents.last_action) AS lastseed, torrents.numratings, torrents.name, IF(torrents.numratings < $min_votes, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, torrents.owner, torrents.comments, torrents.save_as, torrents.descr, torrents.visible, torrents.size, torrents.added, torrents.views, torrents.hits, torrents.times_completed, torrents.id, torrents.type, torrents.numfiles, categories.name AS cat_name, users.username
+$res = sql_query("SELECT torrents.seeders, torrents.freeleech, torrents.banned, torrents.leechers, torrents.info_hash, torrents.filename, LENGTH(torrents.nfo) AS nfosz, UNIX_TIMESTAMP() - UNIX_TIMESTAMP(torrents.last_action) AS lastseed, torrents.numratings, torrents.name, IF(torrents.numratings < $min_votes, NULL, ROUND(torrents.ratingsum / torrents.numratings, 1)) AS rating, torrents.owner, torrents.comments, torrents.save_as, torrents.descr, torrents.visible, torrents.size, torrents.added, torrents.views, torrents.hits, torrents.times_completed, torrents.id, torrents.type, torrents.numfiles, torrents.anonymous,torrents.poster,categories.name AS cat_name, users.username
                 FROM torrents
                 LEFT JOIN categories ON torrents.category = categories.id
                 LEFT JOIN users ON torrents.owner = users.id
@@ -228,7 +224,7 @@ else
 
     if (!isset($_GET["page"]))
     {
-        site_header("Details for torrent '".$row["name"]."'");
+        site_header("Details for torrent '".$row["name"]."'", false);
 
         if ($CURUSER["id"] == $row["owner"] || get_user_class() >= UC_MODERATOR)
         {
@@ -243,7 +239,7 @@ else
 
         if ($_GET["uploaded"])
         {
-            echo display_message("success", "Successfully Uploaded!", "Please Wait - Your torrent will Download Automatically.  Note: that the torrent will NOT be Visible until you start Seeding!");
+            echo display_message("success", "Successfully Uploaded!", "Please Wait - Your torrent will Download Automatically.  Note: that the torrent will NOT be Visible until you Start Seeding!");
             echo("<meta http-equiv='refresh' content='1;url=download.php/$id/".rawurlencode($row["filename"])."'/>");
         }
         elseif ($_GET["edited"])
@@ -256,7 +252,7 @@ else
         }
         elseif (isset($_GET["searched"]))
         {
-            print("<h2>Your Search for '".htmlspecialchars($_GET["searched"])."' gave a single result:</h2>\n");
+            print("<h2>Your Search for '".htmlspecialchars($_GET["searched"])."' gave a Single Result:</h2>\n");
         }
         elseif ($_GET["rated"])
 
@@ -264,7 +260,7 @@ else
 
             //if ($returnto)
         {
-            echo error_message("success", " ", "Rating Added!");
+            echo error_message("success", "Success", "Rating Added!");
         }
 
         $s = $row["name"];
@@ -276,18 +272,25 @@ else
         if (isset($_GET["returnto"]))
         {
             $addthis = "&amp;returnto=".urlencode($_GET["returnto"]);
-            $url .= $addthis;
+            $url     .= $addthis;
             $keepget .= $addthis;
         }
 
         $editlink = "a href='$url' class='btn'";
 
-        print("<p align='center'>
-                <a class='main' href='download.php/$id/".rawurlencode($row["filename"])."'>
-                <img src='".$image_dir."download1.png' width='184' height='55' border='0' alt='Download' title='Download' />
-                </a></p>");
+        if ($CURUSER['downloadpos'] == 'no')
+        {
+            print("<span style='color:red;'><strong>Your Download Rights have been Removed.<br />You need to contact a member of Staff to resolve this situation!!</strong></span><br/><br />");
+        }
+        else
+        {
+            print("<p align='center'>
+                   <a class='main' href='download.php/$id/".rawurlencode($row["filename"])."'>
+                   <img src='".$image_dir."download1.png' width='184' height='55' border='0' alt='Download' title='Download' />
+                   </a></p>");
+        }
 
-        print("<table width='100%' border='1' cellspacing='0' cellpadding='5'>\n");
+        print("<table border='1' width='100%' cellspacing='0' cellpadding='5'>\n");
 
         function hex_esc ($matches)
         {
@@ -295,9 +298,61 @@ else
         }
 
         echo("<tr>
-                <td class='detail'>Info Hash</td>
+                <td class='detail' width='20%'>Info Hash</td>
                 <td class='rowhead'>".preg_replace_callback('/./s', "hex_esc", hash_pad($row["info_hash"]))."</td>
             </tr>");
+
+        $downl = ($CURUSER["downloaded"] + $row["size"]);
+        $sr    = $CURUSER["uploaded"] / $downl;
+
+        switch (true)
+        {
+            case ($sr >= 4):
+                $s = "yawn";
+                break;
+            case ($sr >= 2):
+                $s = "yawn";
+                break;
+            case ($sr >= 1):
+                $s = "yawn";
+                break;
+            case ($sr >= 0.5):
+                $s = "yawn";
+                break;
+            case ($sr >= 0.25):
+                $s = "yawn";
+                break;
+                case ($sr > 0.00):
+                $s = "yawn";
+                break;
+            default;
+                $s = "yawn";
+                break;
+        }
+
+        $sr = floor($sr * 1000) / 1000;
+        $sr = "<font color='".get_ratio_color($sr)."'>".number_format($sr, 3).
+              "</font>&nbsp;&nbsp;<img src='".$image_dir."smilies/{$s}.png' width='16' height='16' alt='$s' title='$s' />";
+
+        echo("<tr>
+                <td class='detail'>Ratio After Download</td>
+                <td class='rowhead'>".$sr."&nbsp;&nbsp;Your new Ratio if you Download this torrent.</td>
+            </tr>");
+
+        if (!empty($row["poster"]))
+        {
+            echo("<tr>
+                    <td class='detail'>Poster</td>
+                    <td class='rowhead'><a href='".$row["poster"]."' rel='lightbox'><img src='".$row["poster"]."' width='' height='' border='0' align='left' alt='Posted Image' title='Posted Image' /></a></td>
+                </tr>");
+        }
+        else
+        {
+            echo("<tr>
+                    <td class='detail'>Poster</td>
+                    <td class='rowhead'><a href='".$image_dir."poster.png' rel='lightbox'><img src='".$image_dir."poster.png' width='' height='' border='0' align='left' alt='Posted Image' title='Posted Image' /></a></td>
+                </tr>");
+        }
 
         if (!empty($row["descr"]))
         {
@@ -333,6 +388,14 @@ else
             echo("<tr>
                     <td class='detail'>Banned</td>
                     <td class='rowhead'>".$row["banned"]."</td>
+                </tr>");
+        }
+
+        if ($row['freeleech'] == 'yes')
+        {
+            echo("<tr>
+                    <td class='detail'>Freeleech</td>
+                    <td class='rowhead'>".$row["freeleech"]."</td>
                 </tr>");
         }
 
@@ -434,9 +497,7 @@ else
 
                     foreach ($ratings
                              AS
-                             $k
-                        =>
-                             $v)
+                             $k => $v)
                     {
                         $s .= "<option value='$k'>$k - $v</option>\n";
                     }
@@ -476,7 +537,18 @@ else
             </tr>");
 
         $keepget = "";
-        $uprow   = (isset($row["username"]) ? ("<a href='userdetails.php?id=".$row["owner"]."'><span style='font-weight:bold;'>".htmlspecialchars($row["username"])."</span></a>") : "<span style='font-style: italic;'>Unknown</span>");
+
+        if ($row['anonymous'] == 'yes')
+        {
+            if (get_user_class() < UC_UPLOADER)
+                $uprow = "<em>Anonymous</em>";
+            else
+                $uprow = "<em>Anonymous</em> (<a href='userdetails.php?id=$row[owner]'><strong>$row[username]</strong></a>)";
+        }
+        else
+        {
+            $uprow = (isset($row["username"]) ? ("<a href='userdetails.php?id=".$row["owner"]."'><strong>".htmlspecialchars($row["username"])."</strong></a>") : "<em>(Unknown)</em>");
+        }
 
         if ($owned)
         {
@@ -561,7 +633,7 @@ else
                 {
                     return seed_sort($a, $b);
                 }
-                
+
                 $x = $a["to_go"];
                 $y = $b["to_go"];
 
@@ -611,6 +683,54 @@ else
                 </tr>");
         }
 
+        $rt = sql_query("SELECT th.userid,u.username,u.class, u.donor, u.warned, u.id, u.enabled
+                            FROM thanks AS th INNER JOIN users AS u ON u.id=th.userid
+                            WHERE th.torrentid=".$id." ORDER BY u.class DESC") or sqlerr();
+        $ids = array();
+
+        if (mysql_num_rows($rt) > 0)
+        {
+            $list = "";
+            $i    = 0;
+
+            while ($ar = mysql_fetch_assoc($rt))
+            {
+                $ids[] = $ar["userid"];
+                $list .= "".format_username($ar)."".((mysql_num_rows($rt)-1) == $i ? "" : "")."";
+                ++$i;
+            }
+
+            echo("<tr>
+                    <td class='detail' width='20%'>Thanks List</td>
+                    <td class='rowhead' width='80%'>$list</td>
+                </tr>");
+        }
+        else
+        {
+            $list ="&nbsp;None yet";
+
+            if ($CURUSER["id"] != $row["owner"] && !in_array($CURUSER["id"],$ids))
+            {
+                echo("<tr><td class='detail'>Thanks List</td><td class='rowhead'>$list<form action=\"thanks.php\" method=\"post\">
+                    <input type='submit' name='submit' class='btn' value='Thanks!' />
+                    <input type='hidden' name='torrentid' value='$id' />
+                    </form></td></tr>");
+            }
+        }
+
+        if ($row["owner"] != $CURUSER["id"])
+        {
+            echo("<tr>
+                    <td class='detail'>Report</td>
+                    <td class='rowhead'>
+                        <form method='post' action='report.php?type=Torrent&amp;id=$id'>
+                            <input type='submit' class='btn' name='submit' value='Report This Torrent' />
+                            &nbsp;&nbsp;For Breaking the <a href='rules.php'>Rules</a>
+                        </form>
+                    </td>
+            </tr>");
+        }
+
         print("</table>\n");
     }
     else
@@ -622,7 +742,14 @@ else
 
     print("<p><a name='startcomments'></a></p>\n");
 
-    $commentbar = "<p align='center'><a class='btn' href='comment.php?action=add&amp;tid=$id'>Add a Comment</a></p>\n";
+    if ($CURUSER['torrcompos'] == 'no')
+    {
+        $commentbar = "<p align='center'><a class='btn'>Comment - Disabled</a></p>\n";
+    }
+    else
+    {
+        $commentbar = "<p align='center'><a class='btn' href='comment.php?action=add&amp;tid=$id'>Add a Comment</a></p>\n";
+    }
 
     $count = $row['comments'];
 
@@ -632,9 +759,9 @@ else
     }
     else
     {
-        list($pagertop, $pagerbottom, $limit) = pager(20, $count, "details.php?id=$id&", array(lastpagedefault => 1));
+        list($pagertop, $pagerbottom, $limit) = pager(5, $count, "details.php?id=$id&amp;", array(lastpagedefault => 1));
 
-        $subres = sql_query("SELECT comments.id, text, user, comments.added, editedby, editedat, avatar, warned, username, title, class, donor
+        $subres = sql_query("SELECT comments.id, text, user, comments.added, editedby, editedat, avatar, warned, username, title, class, donor, enabled
                                 FROM comments
                                 LEFT JOIN users ON comments.user = users.id
                                 WHERE torrent = $id

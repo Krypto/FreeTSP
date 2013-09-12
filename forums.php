@@ -1,71 +1,47 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
-/* Bleach Forums Improved and Optimized for TBDEV.NET by Alex2005 */
+//-- Bleach Forums Improved and Optimized for TBDEV.NET by Alex2005 --//
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
-require_once(INCL_DIR.'function_torrenttable.php');
-require_once(INCL_DIR.'function_bbcode.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_torrenttable.php');
+require_once(FUNC_DIR.'function_bbcode.php');
 
 db_connect(true);
 logged_in();
 
-/* Configs Start */
+parked();
 
-/* The max class, ie: UC_CODER -  Is able to Delete, Edit the Forum etc...  */
-define('MAX_CLASS', UC_SYSOP);
+//-- Configs Start --//
 
-/* Set's the max file size in php.ini, no need to change */
+//-- The Max Class, ie: UC_CODER - Is Able To Delete, Edit The Forum Etc...  --//
+define('MAX_CLASS', UC_MANAGER);
+
+//-- Set's The Max File Size In php.ini, No Need To Change  --//
 ini_set("upload_max_filesize", $maxfilesize);
 
-/* Set's the root path, change only if you know what you are doing */
-define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT'].'/');
+//-- Set's The Root Path, Change Only If You Know What You Are Doing  --//
+//define('ROOT_PATH', $_SERVER['DOCUMENT_ROOT'].'/');
 
-/* The extensions that are allowed to be uploaded by the users */
-/* Note: you need to have the pics in the $image_dir folder, ie zip.gif, rar.gif */
+//-- The Extensions That Are Allowed To Be Uploaded By The Users  --//
+//-- Note: You Need To Have The Pics In The $image_dir Folder, ie zip.gif, rar.gif  --//
 $allowed_file_extensions = array('rar',
                                  'zip');
 
-
-/*  Just a check, so that the default url, wont have a ending backslash(to double backslash the links), no need to edit or delete */
+//--  Just A Check, So That The Default URL, Wont Have A Ending Backslash (to Double Backslash The Links), No Need To Edit Or Delete --//
 $site_url_rev = strrev($site_url);
 
 if ($site_url_rev[0] == '/')
@@ -74,15 +50,14 @@ if ($site_url_rev[0] == '/')
     $site_url        = strrev($site_url_rev);
 }
 
-/*  Configs End */
-
+//-- Configs End --//
 $action = (isset($_GET["action"]) ? $_GET["action"] : (isset($_POST["action"]) ? $_POST["action"] : ''));
 
 if (!function_exists('highlight'))
 {
     function highlight ($search, $subject, $hlstart = '<span style="color : #ff0000; font-weight:bold;">', $hlend = '</span>')
     {
-        $srchlen = strlen($search); // length of searched string
+        $srchlen = strlen($search); //-- Length Of Searched String --//
 
         if ($srchlen == 0)
         {
@@ -91,11 +66,11 @@ if (!function_exists('highlight'))
 
         $find = $subject;
 
-        while ($find = stristr($find, $search)) // find $search text in $subject -case insensitive
+        while ($find = stristr($find, $search)) //-- Find $search Text In $subject -case Insensitive --//
         {
-            $srchtxt = substr($find, 0, $srchlen); // get new search text
+            $srchtxt = substr($find, 0, $srchlen); //-- Get New Search Text --//
             $find    = substr($find, $srchlen);
-            $subject = str_replace($srchtxt, $hlstart.$srchtxt.$hlend, $subject); // highlight found case insensitive search text
+            $subject = str_replace($srchtxt, $hlstart.$srchtxt.$hlend, $subject); //-- Highlight Found Case Insensitive Search Text --//
         }
 
         return $subject;
@@ -112,7 +87,8 @@ function catch_up ($id = 0)
                         FROM topics AS t
                         LEFT JOIN posts AS p ON p.id = t.lastpost
                         LEFT JOIN readposts AS r ON r.userid=".sqlesc($userid)." AND r.topicid=t.id
-                        WHERE p.added > ".sqlesc(get_date_time(gmtime() - $posts_read_expiry)).(!empty($id) ? ' AND t.id '.(is_array($id) ? 'IN ('.implode(', ', $id).')' : '= '.sqlesc($id)) : '')) or sqlerr(__FILE__, __LINE__);
+                        WHERE p.added > ".sqlesc(get_date_time(gmtime() - $posts_read_expiry)).(!empty($id) ? '
+                        AND t.id '.(is_array($id) ? 'IN ('.implode(', ', $id).')' : '= '.sqlesc($id)) : '')) or sqlerr(__FILE__, __LINE__);
 
     while ($arr = mysql_fetch_assoc($res))
     {
@@ -123,7 +99,6 @@ function catch_up ($id = 0)
             sql_query("INSERT INTO readposts (userid, topicid, lastpostread)
                         VALUES($userid, ".(int) $arr['id'].", $postid)") or sqlerr(__FILE__, __LINE__);
         }
-
         else
         {
             if ($arr['lastpostread'] < $postid)
@@ -137,15 +112,15 @@ function catch_up ($id = 0)
     mysql_free_result($res);
 }
 
-//==Begin cached online users
+//-- Begin Cached Online Users --//
 function forum_stats ()
 {
-    //== Active users in Forums
+    //-- Active Users In Forums --//
     global $forum_width, $CURUSER, $image_dir, $site_url;
 
     $forum3 = "";
-    $files  = ROOT_DIR."cache/forum.txt";
-    $expire = 30; // 30 seconds
+    $files  = CACHE_DIR."forum.txt";
+    $expire = 30; //-- 30 Seconds --//
 
     if (file_exists($files) && filemtime($files) > (time() - $expire))
     {
@@ -154,6 +129,7 @@ function forum_stats ()
     else
     {
         $dt = sqlesc(get_date_time(gmtime() - 180));
+
         $forum1 = sql_query("SELECT id, username, class, warned, donor
                                 FROM users
                                 WHERE forum_access >= $dt
@@ -169,7 +145,7 @@ function forum_stats ()
 
         fputs($fp, $OUTPUT);
         fclose($fp);
-    } // end else
+    } //-- End Else --//
 
     $forumusers = "";
 
@@ -177,45 +153,20 @@ function forum_stats ()
 
     {
         foreach ($forum3
-                 as
+                 AS
                  $arr)
         {
             if ($forumusers)
             {
                 $forumusers .= ",\n";
             }
-            $forumusers .= "<span style=\"white-space: nowrap;\">";
-            $arr["username"] = "<span style='color:#".get_user_class_color($arr['class'])."'> ".htmlspecialchars($arr['username'])."</span>";
-
-            $donator = $arr["donor"] === "yes";
-            $warned  = $arr["warned"] === "yes";
-
-            if ($CURUSER)
-            {
-                $forumusers .= "<a class='altlink_user' href='$site_url/userdetails.php?id={$arr["id"]}'><span style='font-weight:bold;'>{$arr["username"]}</span></a>";
-            }
-            else
-            {
-                $forumusers .= "<span style='font-weight:bold;'>{$arr["username"]}</span>";
-            }
-
-            if ($donator)
-            {
-                $forumusers .= "<img src='".$image_dir."star.png' width='16' height='16' border='0' alt='Donor' title='Donor' />";
-            }
-
-            if ($warned)
-            {
-                $forumusers .= "<img src='".$image_dir."warned.png' width='15' height='16' border='0' alt='Warned' title='Warned' />";
-            }
-
-            $forumusers .= "</span>";
+            $forumusers .= "".format_username($arr)."";
         }
     }
 
     if (!$forumusers)
     {
-        $forumusers = "There are currently No Active Members in the Forum";
+        $forumusers = "There are Currently No Active Members in the Forum";
     }
 
     $topic_post_res = sql_query("SELECT SUM(topiccount) AS topics, SUM(postcount) AS posts
@@ -225,21 +176,22 @@ function forum_stats ()
 
     ?>
 
-<br />
-<table width='<?php echo $forum_width; ?>' border='0' cellspacing='0' cellpadding='5'>
-    <tr>
-        <td class='colhead' align='center'>Now Active in Forums:</td>
-    </tr>
+    <br />
+    <table border='0' width='<?php echo $forum_width; ?>' cellspacing='0' cellpadding='5'>
+        <tr>
+            <td class='colhead' align='center'>Now Active in Forums:</td>
+        </tr>
 
-    <tr>
-        <td class='text'><?php echo $forumusers; ?></td>
-    </tr>
+        <tr>
+            <td class='text'><?php echo $forumusers; ?></td>
+        </tr>
 
-    <tr>
-        <td class='colhead' align='center'><h2>Our Members Wrote <span style='font-weight:bold;'><?php echo number_format($topic_post_arr['posts']); ?></span> Posts in <span style='font-weight:bold;'><?php echo number_format($topic_post_arr['topics']); ?></span> Threads</h2>
-        </td>
-    </tr>
-</table><?php
+        <tr>
+            <td class='colhead' align='center'><h2>Our Members Wrote <span style='font-weight:bold;'><?php echo number_format($topic_post_arr['posts']); ?></span> Posts in <span style='font-weight:bold;'><?php echo number_format($topic_post_arr['topics']); ?></span> Threads</h2>
+            </td>
+        </tr>
+    </table>
+    <?php
 }
 
 function show_forums ($forid)
@@ -267,7 +219,7 @@ function show_forums ($forid)
 
         if (is_valid_id($forums_arr['pid']))
         {
-            $lastpost = "<div style='white-space: nowrap;'>".$forums_arr["added"]."<br />"."by <a class='altlink_user' href='$site_url/userdetails.php?id=".(int) $forums_arr["userid"]."'><span style='font-weight:bold;'>".htmlspecialchars($forums_arr['username'])."</span></a><br />"."in <a href='forums.php?action=viewtopic&amp;topicid=".(int) $forums_arr["topicid"]."&amp;page=p$lastpostid#$lastpostid'><span style='font-weight:bold;'>".htmlspecialchars($forums_arr['subject'])."</span></a></div>";
+            $lastpost = "<div style='white-space: nowrap;'>".$forums_arr["added"]."<br />by <a class='altlink_user' href='$site_url/userdetails.php?id=".(int) $forums_arr["userid"]."'><span style='font-weight:bold;'>".htmlspecialchars($forums_arr['username'])."</span></a><br />in <a href='forums.php?action=viewtopic&amp;topicid=".(int) $forums_arr["topicid"]."&amp;page=p$lastpostid#$lastpostid'><span style='font-weight:bold;'>".htmlspecialchars($forums_arr['subject'])."</span></a></div>";
 
             $img = 'unlocked'.((($forums_arr['added'] > (get_date_time(gmtime() - $posts_read_expiry))) ? ((int) $forums_arr['pid'] > $forums_arr['lastpostread']) : 0) ? 'new' : '');
         }
@@ -285,10 +237,12 @@ function show_forums ($forid)
                     <td class='embedded' style='padding-right: 5px'><img src="<?php echo $image_dir.$img; ?>.png" width='32' height='32' border='0' alt='No New Posts' title='No New Posts' /></td>
                     <td class='embedded'>
                         <a href='forums.php?action=viewforum&amp;forumid=<?php echo $forumid; ?>'><span style='font-weight:bold;'><?php echo htmlspecialchars($forums_arr["name"]); ?></span></a><?php
+                    /*
                         if ($CURUSER['class'] >= UC_ADMINISTRATOR)
                         {
                             ?>&nbsp;<span style='font-size: xx-small;'>[<a class='altlink' href='forums.php?action=editforum&amp;forumid=<?php echo $forumid; ?>'>Edit</a>][<a class='altlink' href='forums.php?action=deleteforum&amp;forumid=<?php echo $forumid; ?>'>Delete</a>]</span><?php
                         }
+                    */
 
                         if (!empty($forums_arr["description"]))
                         {
@@ -307,7 +261,7 @@ function show_forums ($forid)
     }
 }
 
-//--Returns the Minimum Read/Write Class Levels of a Forum
+//--Returns the Minimum Read/Write Class Levels of a Forum --//
 function get_forum_access_levels ($forumid)
 {
     global $CURUSER, $site_url, $image_dir;
@@ -327,10 +281,11 @@ function get_forum_access_levels ($forumid)
                  "create" => $arr["minclasscreate"]);
 }
 
-//-- Returns the Forum ID of a Topic, or false on Error
+//-- Returns The Forum Id Of A Topic, Or False On Error --//
 function get_topic_forum ($topicid)
 {
     global $CURUSER, $image_dir, $posts_read_expiry, $site_url;
+
     $res = sql_query("SELECT forumid
                         FROM topics
                         WHERE id = ".sqlesc($topicid)) or sqlerr(__FILE__, __LINE__);
@@ -345,20 +300,20 @@ function get_topic_forum ($topicid)
     return (int) $arr['forumid'];
 }
 
-//-- Returns the ID of the Last Post of a Forum
+//-- Returns The Id Of The Last Post Of A Forum --//
 function update_topic_last_post ($topicid)
 {
     $res = sql_query("SELECT MAX(id) AS id
                         FROM posts
                         WHERE topicid = ".sqlesc($topicid)) or sqlerr(__FILE__, __LINE__);
 
-    $arr = mysql_fetch_assoc($res) or die("No Post Found!");
+    $arr = mysql_fetch_assoc($res) or die ("No Post Found!");
 
     sql_query("UPDATE topics
                 SET lastpost = {$arr['id']}
                 WHERE id = ".sqlesc($topicid)) or sqlerr(__FILE__, __LINE__);
 
-    //-- update Forum Post/Topic Count
+    //-- Update Forum Post/Topic Count --//
     $forums = sql_query("SELECT id
                             FROM forums");
 
@@ -366,9 +321,10 @@ function update_topic_last_post ($topicid)
     {
         $postcount  = 0;
         $topiccount = 0;
-        $topics     = sql_query("SELECT id
-                                    FROM topics
-                                    WHERE forumid = $forum[id]");
+
+        $topics = sql_query("SELECT id
+                                FROM topics
+                                WHERE forumid = $forum[id]");
 
         while ($topic = mysql_fetch_assoc($topics))
         {
@@ -400,44 +356,44 @@ function get_forum_last_post ($forumid)
     return (is_valid_id($postid) ? $postid : 0);
 }
 
-//-- Inserts a Quick Jump Menu
+//-- Inserts a Quick Jump Menu --//
 function insert_quick_jump_menu ($currentforum = 0)
 {
     global $CURUSER;
 
     ?>
-<div style='text-align:center;'>
-    <form method='get' action='forums.php' name='jump'>
-        <input type="hidden" name="action" value="viewforum" />
-        <?php print("<span style='font-weight:bold;'>Quick jump:</span>"); ?>
-        <select name='forumid' onchange="if(this.options[this.selectedIndex].value != -1){ forms['jump'].submit() }">
+    <div style='text-align:center;'>
+        <form method='get' action='forums.php' name='jump'>
+            <input type="hidden" name="action" value="viewforum" />
+            <?php print("<span style='font-weight:bold;'>Quick jump:</span>"); ?>
+            <select name='forumid' onchange="if(this.options[this.selectedIndex].value != -1){ forms['jump'].submit() }">
 
-            <?php
+                <?php
 
-            $res = sql_query("SELECT id, name, minclassread
-                                FROM forums
-                                ORDER BY name") or sqlerr(__FILE__, __LINE__);
+                $res = sql_query("SELECT id, name, minclassread
+                                    FROM forums
+                                    ORDER BY name") or sqlerr(__FILE__, __LINE__);
 
-            while ($arr = mysql_fetch_assoc($res))
-            {
-                if ($CURUSER['class'] >= $arr["minclassread"])
+                while ($arr = mysql_fetch_assoc($res))
                 {
-                    echo "<option value='".$arr["id"].($currentforum == $arr["id"] ? "' selected='selected'" : "'").'>'.$arr["name"]."</option>";
+                    if ($CURUSER['class'] >= $arr["minclassread"])
+                    {
+                        echo "<option value='".$arr["id"].($currentforum == $arr["id"] ? "' selected='selected'" : "'").'>'.$arr["name"]."</option>";
+                    }
                 }
-            }
 
-            ?>
+                ?>
 
-        </select>
-        <input type='submit' class='btn' value='Go!' />
-    </form>
-</div>
-<br />
+            </select>
+            <input type='submit' class='btn' value='Go!' />
+        </form>
+    </div>
+    <br />
 
-<?php
+    <?php
 }
 
-//-- Inserts a Compose Frame
+//-- Inserts a Compose Frame --//
 function insert_compose_frame ($id, $newtopic = true, $quote = false, $attachment = false)
 {
     global $maxsubjectlength, $CURUSER, $maxfilesize, $image_dir, $use_attachment_mod, $site_url, $image_dir;
@@ -452,8 +408,7 @@ function insert_compose_frame ($id, $newtopic = true, $quote = false, $attachmen
 
         ?><h3>New Topic in <a href='forums.php?action=viewforum&amp;forumid=<?php echo $id; ?>'><?php echo htmlspecialchars($arr["name"]); ?></a> forum</h3>
 
-            <?php
-
+    <?php
     }
     else
     {
@@ -462,14 +417,13 @@ function insert_compose_frame ($id, $newtopic = true, $quote = false, $attachmen
                             LEFT JOIN forums AS f ON f.id = t.forumid
                             WHERE t.id = ".sqlesc($id)) or sqlerr(__FILE__, __LINE__);
 
-        $arr = mysql_fetch_assoc($res) or die("Forum Error, Topic Not Found!");
+        $arr = mysql_fetch_assoc($res) or die ("Forum Error, Topic Not Found!");
 
         if ($CURUSER['class'] < $arr['minclassread'])
         {
-            error_message("warn", "Sorry", "You are Not allowed in here!");
+            error_message("warn", "Sorry", "You are Not Allowed in Here!");
             end_table();
             exit();
-
         }
 
         if ($arr['locked'] == 'yes' && $CURUSER['class'] < UC_MODERATOR)
@@ -480,7 +434,7 @@ function insert_compose_frame ($id, $newtopic = true, $quote = false, $attachmen
         }
             ?><h3 align="center">Reply to Topic: <a href='forums.php?action=viewtopic&amp;topicid=<?php echo $id; ?>'><?php echo htmlspecialchars($arr["subject"]); ?></a></h3>
 
-        <?php
+    <?php
     }
 
     if ($quote)
@@ -504,9 +458,11 @@ function insert_compose_frame ($id, $newtopic = true, $quote = false, $attachmen
 
         $arr = mysql_fetch_assoc($res);
     }
+
     begin_frame("Compose", true);
 
-        ?>
+    ?>
+
 <form method='post' name='compose' action='forums.php' enctype='multipart/form-data'>
     <input type='hidden' name='action' value='post' />
     <input type='hidden' name='<?php echo ($newtopic ? 'forumid' : 'topicid'); ?>' value='<?php echo $id; ?>' />
@@ -530,59 +486,60 @@ function insert_compose_frame ($id, $newtopic = true, $quote = false, $attachmen
     }
 
     ?>
-<tr>
-    <td class='rowhead' width='10%'>Body</td>
-<td class='rowhead'>
+    <tr>
+        <td class='rowhead' width='10%'>Body</td>
+        <td class='rowhead'>
 
-    <?php
+        <?php
 
-    $qbody = ($quote ? "[quote=".htmlspecialchars($arr["username"])."]".htmlspecialchars(unesc($arr["body"]))."[/quote]" : '');
-    if (function_exists('textbbcode'))
-    {
-        echo("".textbbcode("compose", "body", $qbody)."");
-    }
-    else
-    {
-        ?>
-        <textarea name='body' style='width:99%' rows='7' cols='5'><?php echo $qbody; ?></textarea><?php
-    }
-    echo("</td></tr>");
-    if ($use_attachment_mod && $attachment)
-    {
+        $qbody = ($quote ? "[quote=".htmlspecialchars($arr["username"])."]".htmlspecialchars(unesc($arr["body"]))."[/quote]" : '');
+
+        if (function_exists('textbbcode'))
+        {
+            echo("".textbbcode("compose", "body", $qbody)."");
+        }
+        else
+        {
+            ?>
+            <textarea name='body' rows='7' cols='5' style='width:99%'><?php echo $qbody; ?></textarea><?php
+        }
+        echo("</td></tr>");
+        if ($use_attachment_mod && $attachment)
+        {
+            ?>
+            <tr>
+                <td colspan='2'>
+                    <fieldset class='fieldset'>
+                        <legend>Add Attachment</legend>
+                        <input type='checkbox' name='uploadattachment' value='yes' />
+                        <input type='file' name='file' size='60' />
+                        <div class='error'>Allowed Files: rar, zip<br />Size Limit <?php echo mksize($maxfilesize); ?></div>
+                    </fieldset>
+                </td>
+            </tr>
+
+            <?php
+        }
+
         ?>
         <tr>
-            <td colspan='2'>
-                <fieldset class='fieldset'>
-                    <legend>Add Attachment</legend>
-                    <input type='checkbox' name='uploadattachment' value='yes' />
-                    <input type='file' name='file' size='60' />
-                    <div class='error'>Allowed Files: rar, zip<br />Size Limit <?php echo mksize($maxfilesize); ?></div>
-                </fieldset>
+            <td colspan='2' align='center'>
+                <input type='submit' class='btn' value='Submit' />
             </td>
         </tr>
 
         <?php
-    }
 
-    ?>
-    <tr>
-        <td colspan='2' align='center'>
-            <input type='submit' class='btn' value='Submit' />
-        </td>
-    </tr>
+        end_table();
 
-    <?php
+        ?>
+    </form>
 
-    end_table();
-
-    ?>
-</form>
-
-<p align='center'><a href='<?php echo $site_url; ?>/smilies.php' target='_blank'>Smilies</a></p><?php
+    <p align='center'><a href='<?php echo $site_url; ?>/smilies.php' target='_blank'>Smilies</a></p><?php
 
     end_frame();
 
-    //-- Get Last 10 Posts if this is a Reply
+    //-- Get Last 10 Posts If This Is A Reply --//
     if (!$newtopic)
     {
         $postres = sql_query("SELECT p.id, p.added, p.body, u.id AS uid, u.username, u.avatar
@@ -620,7 +577,7 @@ function insert_compose_frame ($id, $newtopic = true, $quote = false, $attachmen
                 ?>
 
             <tr>
-                <td class='rowhead' height='100' width='100' align='center' style='padding: 0px' valign="top"><img src="<?php echo $avatar; ?>" width='125' height='125' border='0' alt='Avatar' title='' /></td>
+                <td class='rowhead' align='center' width='100' height='100' style='padding: 0px' valign="top"><img src="<?php echo $avatar; ?>" width='125' height='125' border='0' alt='Avatar' title='Avatar' /></td>
                 <td class='comment' valign='top'><?php echo format_comment($post["body"]); ?></td>
             </tr>
 
@@ -673,7 +630,7 @@ if ($action == 'updatetopic' && $CURUSER['class'] >= UC_MODERATOR)
             error_message("error", "Sanity Check", "<a href='forums.php?action=$action&amp;topicid=$topicid&amp;delete=yes&amp;sure=yes'>You are about to Delete this Topic.  Click here to Confirm!</a>");
         }
 
-        write_log("Topic <span style='font-weight:bold;'>".$subject."</span> was deleted by <a class='altlink_user' href='$site_url/userdetails.php?id=".$CURUSER['id']."'>".$CURUSER['username']."</a>.");
+        write_log("Topic <span style='font-weight:bold;'>".$subject."</span> was Deleted by <a class='altlink_user' href='$site_url/userdetails.php?id=".$CURUSER['id']."'>".$CURUSER['username']."</a>.");
 
         if ($use_attachment_mod)
         {
@@ -691,7 +648,14 @@ if ($action == 'updatetopic' && $CURUSER['class'] >= UC_MODERATOR)
             }
         }
 
-        sql_query("DELETE posts, topics ".($use_attachment_mod ? ", attachments, attachmentdownloads " : "").($use_poll_mod ? ", postpolls, postpollanswers " : "")."FROM topics "."LEFT JOIN posts ON posts.topicid = topics.id ".($use_attachment_mod ? "LEFT JOIN attachments ON attachments.postid = posts.id "."LEFT JOIN attachmentdownloads ON attachmentdownloads.fileid = attachments.id " : "").($use_poll_mod ? "LEFT JOIN postpolls ON postpolls.id = topics.pollid "."LEFT JOIN postpollanswers ON postpollanswers.pollid = postpolls.id " : "")."WHERE topics.id = ".sqlesc($topicid)) or sqlerr(__FILE__, __LINE__);
+        sql_query("DELETE posts, topics ".($use_attachment_mod ? ", attachments, attachmentdownloads " : "").($use_poll_mod ? ", postpolls, postpollanswers " : "")."
+                    FROM topics
+                    LEFT JOIN posts ON posts.topicid = topics.id ".($use_attachment_mod ? "
+                    LEFT JOIN attachments ON attachments.postid = posts.id
+                    LEFT JOIN attachmentdownloads ON attachmentdownloads.fileid = attachments.id " : "").($use_poll_mod ? "
+                    LEFT JOIN postpolls ON postpolls.id = topics.pollid
+                    LEFT JOIN postpollanswers ON postpollanswers.pollid = postpolls.id " : "")."
+                    WHERE topics.id = ".sqlesc($topicid)) or sqlerr(__FILE__, __LINE__);
 
         header('Location: '.$_SERVER['PHP_SELF'].'?action=viewforum&forumid='.$forumid);
         exit();
@@ -724,6 +688,7 @@ if ($action == 'updatetopic' && $CURUSER['class'] >= UC_MODERATOR)
 
         $updateset[] = 'subject = '.sqlesc($new_subject);
     }
+
     $new_forumid = (int) $_POST['new_forumid'];
 
     if (!is_valid_id($new_forumid))
@@ -774,7 +739,7 @@ if ($action == 'updatetopic' && $CURUSER['class'] >= UC_MODERATOR)
     header('Location: '.$returnto);
     exit();
 }
-else if ($action == "editforum" && $CURUSER['class'] == MAX_CLASS) //-- Action: Edit Forum
+else if ($action == "editforum" && $CURUSER['class'] == MAX_CLASS) //-- Action: Edit Forum --//
 {
     $forumid = (int) $_GET["forumid"];
 
@@ -804,12 +769,13 @@ else if ($action == "editforum" && $CURUSER['class'] == MAX_CLASS) //-- Action: 
     print("<tr>
             <td class='rowhead'>Forum name</td>
             <td align='left' style='padding: 0px'>
-                <input type='text' name='name' size='60' maxlength='$maxsubjectlength' value=\"".htmlspecialchars($forum['name'])."\" style='border: 0px; height: 19px'  />
+                <input type='text' name='name' size='60' maxlength='$maxsubjectlength' value=\"".htmlspecialchars($forum['name'])."\" style='border: 0px; height: 19px' />
             </td>
         </tr>\n
         <tr>
             <td class='rowhead'>Description</td>
-            <td align='left' style='padding: 0px'><textarea name='description' cols='68' rows='3' style='border: 0px'>".htmlspecialchars($forum['description'])."</textarea>
+            <td align='left' style='padding: 0px'>
+                <textarea name='description' cols='68' rows='3' style='border: 0px'>".htmlspecialchars($forum['description'])."</textarea>
             </td>
         </tr>\n
         <tr>
@@ -842,7 +808,12 @@ else if ($action == "editforum" && $CURUSER['class'] == MAX_CLASS) //-- Action: 
         print("<option value='$i'".($i == $forum['minclasscreate'] ? " selected='selected'" : "").">".get_user_class_name($i)."</option>\n");
     }
 
-    print("</select> Class Required to Create Topics</td></tr>\n"."<tr><td colspan='2' align='center'><input type='submit' class='btn' value='Submit' /></td></tr>\n");
+    print("</select> Class Required to Create Topics</td></tr>\n
+            <tr>
+                <td colspan='2' align='center'>
+                    <input type='submit' class='btn' value='Submit' />
+                </td>
+            </tr>\n");
 
     end_table();
 
@@ -852,7 +823,7 @@ else if ($action == "editforum" && $CURUSER['class'] == MAX_CLASS) //-- Action: 
     site_footer();
     exit();
 }
-else if ($action == "updateforum" && $CURUSER['class'] == MAX_CLASS) //-- Action: Update Forum
+else if ($action == "updateforum" && $CURUSER['class'] == MAX_CLASS) //-- Action: Update Forum --//
 {
     $forumid = (int) $_GET["forumid"];
 
@@ -890,7 +861,7 @@ else if ($action == "updateforum" && $CURUSER['class'] == MAX_CLASS) //-- Action
     header("Location: {$_SERVER['PHP_SELF']}");
     exit();
 }
-else if ($action == 'deleteforum' && $CURUSER['class'] == MAX_CLASS) //-- Action: Delete Forum
+else if ($action == 'deleteforum' && $CURUSER['class'] == MAX_CLASS) //-- Action: Delete Forum --//
 {
     $forumid = (int) $_GET['forumid'];
 
@@ -924,7 +895,7 @@ else if ($action == 'deleteforum' && $CURUSER['class'] == MAX_CLASS) //-- Action
                                 WHERE topicid IN (".join(', ', $ids).")");
 
             foreach ($ids
-                     as
+                     AS
                      $id)
             {
                 if ($a = mysql_fetch_row($rp))
@@ -936,7 +907,14 @@ else if ($action == 'deleteforum' && $CURUSER['class'] == MAX_CLASS) //-- Action
 
         if ($use_attachment_mod || $use_poll_mod)
         {
-            $res = sql_query("SELECT ".($use_attachment_mod ? "COUNT(attachments.id) AS attachments " : "").($use_poll_mod ? ($use_attachment_mod ? ', ' : '')."COUNT(postpolls.id) AS polls " : "")."FROM topics "."LEFT JOIN posts ON topics.id=posts.topicid ".($use_attachment_mod ? "LEFT JOIN attachments ON attachments.postid = posts.id " : "").($use_poll_mod ? "LEFT JOIN postpolls ON postpolls.id=topics.pollid " : "")."WHERE topics.forumid=".sqlesc($forumid)) or sqlerr(__FILE__, __LINE__);
+            $res = sql_query("SELECT ".($use_attachment_mod ? "
+                                COUNT(attachments.id) AS attachments " : "").($use_poll_mod ? ($use_attachment_mod ? ', ' : '')."
+                                COUNT(postpolls.id) AS polls " : "")."
+                                FROM topics
+                                LEFT JOIN posts ON topics.id=posts.topicid ".($use_attachment_mod ? "
+                                LEFT JOIN attachments ON attachments.postid = posts.id " : "").($use_poll_mod ? "
+                                LEFT JOIN postpolls ON postpolls.id=topics.pollid " : "")."
+                                WHERE topics.forumid=".sqlesc($forumid)) or sqlerr(__FILE__, __LINE__);
 
             ($use_attachment_mod ? $attachments = 0 : NULL);
             ($use_poll_mod ? $polls = 0 : NULL);
@@ -947,10 +925,15 @@ else if ($action == 'deleteforum' && $CURUSER['class'] == MAX_CLASS) //-- Action
                 ($use_poll_mod ? $polls = $arr['polls'] : NULL);
             }
         }
-        error_message("warn", "** WARNING! **", "Deleting this Forum with id=$forumid (".$forum.") will also Delete ".$posts." Post".($posts != 1 ? 's' : '').($use_attachment_mod ? ", ".$attachments." attachment".($attachments != 1 ? 's' : '') : "").($use_poll_mod ? " AND ".($polls - $attachments)." poll".(($polls - $attachments) != 1 ? 's' : '') : "")." in ".$topics." topic".($topics != 1 ? 's' : '').". [<a href='forums.php?action=deleteforum&amp;forumid=$forumid&amp;confirmed=1'>ACCEPT</a>] [<a href='forums.php?action=viewforum&amp;forumid=$forumid'>CANCEL</a>]");
+
+        error_message("warn", "** WARNING! **", "Deleting this Forum with id=$forumid (".$forum.") will also Delete ".$posts." Post".($posts != 1 ? 's' : '').($use_attachment_mod ? ", ".$attachments." attachment".($attachments != 1 ? 's' : '') : "").($use_poll_mod ? " AND ".($polls - $attachments)." poll".(($polls - $attachments) != 1 ? 's' : '') : "")." in ".$topics." topic".($topics != 1 ? 's' : '').".[<a href='forums.php?action=deleteforum&amp;forumid=$forumid&amp;confirmed=1'>ACCEPT</a>] [<a href='forums.php?action=viewforum&amp;forumid=$forumid'>CANCEL</a>]");
     }
 
-    $rt = sql_query("SELECT topics.id ".($use_attachment_mod ? ", attachments.filename " : "")."FROM topics "."LEFT JOIN posts ON topics.id = posts.topicid ".($use_attachment_mod ? "LEFT JOIN attachments ON attachments.postid = posts.id " : "")."WHERE topics.forumid = ".sqlesc($forumid)) or sqlerr(__FILE__, __LINE__);
+    $rt = sql_query("SELECT topics.id ".($use_attachment_mod ? ", attachments.filename " : "")."
+                        FROM topics
+                        LEFT JOIN posts ON topics.id = posts.topicid ".($use_attachment_mod ? "
+                        LEFT JOIN attachments ON attachments.postid = posts.id " : "")."
+                        WHERE topics.forumid = ".sqlesc($forumid)) or sqlerr(__FILE__, __LINE__);
 
     $topics = mysql_num_rows($rt);
 
@@ -964,7 +947,6 @@ else if ($action == 'deleteforum' && $CURUSER['class'] == MAX_CLASS) //-- Action
         exit();
     }
     else
-
     {
         while ($topic = mysql_fetch_assoc($rt))
         {
@@ -982,12 +964,20 @@ else if ($action == 'deleteforum' && $CURUSER['class'] == MAX_CLASS) //-- Action
         }
     }
 
-    sql_query("DELETE posts.*, topics.*, forums.* ".($use_attachment_mod ? ", attachments.*, attachmentdownloads.* " : "").($use_poll_mod ? ", postpolls.*, postpollanswers.* " : "")."FROM posts ".($use_attachment_mod ? "LEFT JOIN attachments ON attachments.postid = posts.id "."LEFT JOIN attachmentdownloads ON attachmentdownloads.fileid = attachments.id " : "")."LEFT JOIN topics ON topics.id = posts.topicid "."LEFT JOIN forums ON forums.id = topics.forumid ".($use_poll_mod ? "LEFT JOIN postpolls ON postpolls.id = topics.pollid "."LEFT JOIN postpollanswers ON postpollanswers.pollid = postpolls.id " : "")."WHERE posts.topicid IN (".join(', ', $tids).")") or sqlerr(__FILE__, __LINE__);
+    sql_query("DELETE posts.*, topics.*, forums.* ".($use_attachment_mod ? ", attachments.*, attachmentdownloads.* " : "").($use_poll_mod ? ", postpolls.*, postpollanswers.* " : "")."
+                FROM posts ".($use_attachment_mod ? "
+                LEFT JOIN attachments ON attachments.postid = posts.id
+                LEFT JOIN attachmentdownloads ON attachmentdownloads.fileid = attachments.id " : "")."
+                LEFT JOIN topics ON topics.id = posts.topicid
+                LEFT JOIN forums ON forums.id = topics.forumid ".($use_poll_mod ? "
+                LEFT JOIN postpolls ON postpolls.id = topics.pollid
+                LEFT JOIN postpollanswers ON postpollanswers.pollid = postpolls.id " : "")."
+                WHERE posts.topicid IN (".join(', ', $tids).")") or sqlerr(__FILE__, __LINE__);
 
     header("Location: {$_SERVER['PHP_SELF']}");
     exit();
 }
-else if ($action == "newtopic") //-- Action: New topic
+else if ($action == "newtopic") //-- Action: New Topic --//
 {
     $forumid = (int) $_GET["forumid"];
 
@@ -1001,7 +991,7 @@ else if ($action == "newtopic") //-- Action: New topic
     site_footer();
     exit();
 }
-else if ($action == "post") //-- Action: Post
+else if ($action == "post") //-- Action: Post --//
 {
     $forumid = (isset($_POST['forumid']) ? (int) $_POST['forumid'] : NULL);
 
@@ -1032,21 +1022,23 @@ else if ($action == "post") //-- Action: Post
 
         if (strlen($subject) > $maxsubjectlength)
         {
-            error_message("error", "Error", "Subject is limited to ".$maxsubjectlength." characters.");
+            error_message("error", "Error", "Subject is Limited to ".$maxsubjectlength." Characters.");
         }
     }
     else
     {
-        $forumid = get_topic_forum($topicid) or die("Bad topic ID");
+        $forumid = get_topic_forum($topicid) or die ("Bad topic ID");
     }
 
-    if ($CURUSER["forumpost"] == 'no')
-    {
-        error_message("warn", "Sorry", "Your are not Allowed to Post.)");
-    }
+    /*
+        if ($CURUSER["forumpost"] == 'no')
+        {
+            error_message("warn", "Sorry", "Your are not Allowed to Post.)");
+        }
+    */
 
-    //-- Make sure sure user has write access in forum
-    $arr = get_forum_access_levels($forumid) or die("Bad Forum ID");
+    //-- Make Sure Sure User Has Write Access In Forum --//
+    $arr = get_forum_access_levels($forumid) or die ("Bad Forum ID");
 
     if ($CURUSER['class'] < $arr["write"] || ($newtopic && $CURUSER['class'] < $arr["create"]))
     {
@@ -1096,14 +1088,14 @@ else if ($action == "post") //-- Action: Post
     }
     else
     {
-        //-- Make sure topic exists and is unlocked
+        //-- Make Sure Topic Exists And Is Unlocked --//
         $res = sql_query("SELECT locked
                             FROM topics
                             WHERE id = ".sqlesc($topicid)) or sqlerr(__FILE__, __LINE__);
 
         if (mysql_num_rows($res) == 0)
         {
-            error_message("error", "Error", "Inexistent Topic!");
+            error_message("error", "Error", "Non-existent Topic!");
         }
 
         $arr = mysql_fetch_assoc($res);
@@ -1113,7 +1105,7 @@ else if ($action == "post") //-- Action: Post
             error_message("info", "", "This Topic is Locked.  No New Posts are Allowed.");
         }
 
-        //-- Check double post
+        //-- Check Double Post --//
         $doublepost = sql_query("SELECT p.id, p.added, p.userid, p.body, t.lastpost, t.id
                                     FROM posts AS p
                                     INNER JOIN topics AS t ON p.id = t.lastpost
@@ -1166,32 +1158,32 @@ else if ($action == "post") //-- Action: Post
         }
 
         foreach ($allowed_file_extensions
-                 as
+                 AS
                  $allowed_file_extension)
-  
+
         if (!preg_match('/^(.+)\.['.join(']|[', $allowed_file_extensions).']$/si', $fname, $matches))
         {
-            $uploaderror = 'Only files with the following extensions are allowed: '.join(', ', $allowed_file_extensions).'.';
+            $uploaderror = 'Only Files With The Following Extensions Are Allowed: '.join(', ', $allowed_file_extensions).'.';
         }
 
         if ($size > $maxfilesize)
         {
-            $uploaderror = error_message("warn", "Sorry", "that file is too large.");
+            $uploaderror = error_message("warn", "Sorry", "That File Is Too Large.");
         }
 
         if ($pp['basename'] != $fname)
         {
-            $uploaderror = error_message("warn", "Sorry", "Bad file name.");
+            $uploaderror = error_message("warn", "Sorry", "Bad File Name.");
         }
 
         if (file_exists($tgtfile))
         {
-            $uploaderror = error_message("warn", "Sorry", "a file with the name already exists.");
+            $uploaderror = error_message("warn", "Sorry", "A File With The Name Already Exists.");
         }
 
         if (!is_uploaded_file($tmpname))
         {
-            $uploaderror = error_message("warn", "Sorry", "Can't upload that file!");
+            $uploaderror = error_message("warn", "Sorry", "Can't Upload That File!");
         }
 
         if (!filesize($tmpname))
@@ -1201,7 +1193,7 @@ else if ($action == "post") //-- Action: Post
 
         if ($error != 0)
         {
-            $uploaderror = error_message("error", "Sorry", "There was an error while uploading that file.");
+            $uploaderror = error_message("error", "Sorry", "There Was An Error While Uploading That File.");
         }
 
         if (empty($uploaderror))
@@ -1218,7 +1210,7 @@ else if ($action == "post") //-- Action: Post
     header($headerstr.($newtopic ? '' : "#$postid"));
     exit();
 }
-else if ($action == "viewtopic") //-- Action: View topic
+else if ($action == "viewtopic") //-- Action: View Topic --//
 {
     $userid = (int) $CURUSER["id"];
 
@@ -1234,7 +1226,7 @@ else if ($action == "viewtopic") //-- Action: View topic
                                 LEFT JOIN postpollanswers AS pa ON pa.pollid = p.id AND pa.userid = ".sqlesc($userid)."
                                 WHERE p.id = ".sqlesc($pollid)) or sqlerr(__FILE__, __LINE__);
 
-            $arr = mysql_fetch_assoc($res) or error_message("error", "Sorry", "Inexistent Poll!");
+            $arr = mysql_fetch_assoc($res) or error_message("error", "Sorry", "Non-existent Poll!");
 
             if (is_valid_id($arr['id']))
             {
@@ -1271,6 +1263,7 @@ else if ($action == "viewtopic") //-- Action: View topic
                         WHERE t.id = ".sqlesc($topicid)) or sqlerr(__FILE__, __LINE__);
 
     $arr = mysql_fetch_assoc($res) or error_message("error", "Error", "Topic NOT Found");
+
     mysql_free_result($res);
 
     ($use_poll_mod ? $pollid = (int) $arr["pollid"] : NULL);
@@ -1288,12 +1281,12 @@ else if ($action == "viewtopic") //-- Action: View topic
         error_message("warn", "Warning", "You are NOT Permitted to View this Topic.");
     }
 
-    //-- Update hits column
+    //-- Update Hits Column --//
     sql_query("UPDATE topics
                 SET views = views + 1
                 WHERE id = $topicid") or sqlerr(__FILE__, __LINE__);
 
-    //-- Make page menu
+    //-- Make Page Menu--//
     $pagemenu1 = "<p align='center'>";
     $perpage   = $postsperpage;
     $pages     = ceil($postcount / $perpage);
@@ -1497,33 +1490,31 @@ else if ($action == "viewtopic") //-- Action: View topic
                                             ?>
 
                                             <tr>
-                                                <td width='1%' style="padding:3px;" class='main<?php echo $c; ?>'>
+                                                <td class='main<?php echo $c; ?>' width='1%' style='padding:3px;' >
                                                     <div style='white-space: nowrap;'><?php echo htmlspecialchars($a[1]); ?></div>
                                                 </td>
-                                                <td width='99%' class='main<?php echo $c; ?>' align="center"><img src='<?php echo $image_dir; ?>bar_left.gif' width='2' height='9' border='0' alt='' title='' /><img src='<?php echo $image_dir; ?>bar.gif' width='<?php echo ($p * 3); ?>' height='9' border='0' alt='' title='' /><img src='<?php echo $image_dir; ?>bar_right.gif' width='2' height='9' border='0' alt='' title='' />&nbsp;<?php echo $p; ?>%
+                                                <td class='main<?php echo $c; ?>' align='center' width='99%' >
+                                                    <img src='<?php echo $image_dir; ?>bar_left.gif' width='2' height='9' border='0' alt='' title='' /><img src='<?php echo $image_dir; ?>bar.gif' width='<?php echo ($p * 3); ?>' height='9' border='0' alt='' title='' /><img src='<?php echo $image_dir; ?>bar_right.gif' width='2' height='9' border='0' alt='' title='' />&nbsp;<?php echo $p; ?>%
                                                 </td>
                                             </tr>
 
                                         <?php
-
                                         }
-
                                         ?>
 
                                     </table>
                                     <p align='center'>Votes: <span style='font-weight:bold;'><?php echo number_format($tvotes); ?></span></p>
 
                                     <?php
-
                                 }
                                 else
                                 {
-
                                     ?>
 
-                                    <form method='post'
-                                          action='forums.php?action=viewtopic&amp;topicid=<?php echo $topicid; ?>'>
-                                        <input type='hidden' name='pollid' value='<?php echo $pollid; ?>' /><?php
+                                    <form method='post' action='forums.php?action=viewtopic&amp;topicid=<?php echo $topicid; ?>'>
+                                        <input type='hidden' name='pollid' value='<?php echo $pollid; ?>' />
+
+                                        <?php
 
                                         for ($i = 0;
                                              $a = $o[$i];
@@ -1618,7 +1609,7 @@ else if ($action == "viewtopic") //-- Action: View topic
         $posterid = (int) $arr['userid'];
         $added    = $arr['added']." GMT <span style='font-size: x-small;'>(".(get_elapsed_time(sql_timestamp_to_unix_timestamp($arr['added']))).")</span>";
 
-        //-- Get poster details
+        //-- Get Poster Details --//
         $uploaded    = mksize($arr['uploaded']);
         $downloaded  = mksize($arr['downloaded']);
         $last_access = $arr['last_access'];
@@ -1660,7 +1651,7 @@ else if ($action == "viewtopic") //-- Action: View topic
 
         $forumposts = (!empty($postername) ? ($arr['posts_count'] != 0 ? $arr['posts_count'] : 'N/A') : 'N/A');
 
-        $by = (!empty($postername) ? "<a class='altlink_user' href='$site_url/userdetails.php?id=$posterid'>".$postername."</a>".($arr['donor'] == "yes" ? "<img src='".$image_dir."star.png' width='16' height='16' border='0' alt='Donor' title='Donor'  />" : '').($arr['enabled'] == 'no' ? "<img src=".$image_dir."disabled.png width='16' height='15' border='0' alt='This account is Disabled' title='This account is Disabled' style='margin-left: 2px' />" : ($arr['warned'] == 'yes' ? "<img src='".$image_dir."warned.png' width='15' height='16' border='0' alt='Warned' title='Warned' />" : '')) : "unknown[".$posterid."]");
+        $by = (!empty($postername) ? "<a class='altlink_user' href='$site_url/userdetails.php?id=$posterid'>".$postername."</a>".($arr['donor'] == "yes" ? "<img src='".$image_dir."star.png' width='16' height='16' border='0' alt='Donor' title='Donor'  />" : '').($arr['enabled'] == 'no' ? "<img src=".$image_dir."disabled.png width='16' height='16' border='0' alt='This Account is Disabled' title='This Account is Disabled' style='margin-left: 2px' />" : ($arr['warned'] == 'yes' ? "<img src='".$image_dir."warned.png' width='16' height='16' border='0' alt='Warned' title='Warned' />" : '')) : "unknown[".$posterid."]");
 
         if (empty($avatar))
         {
@@ -1677,7 +1668,7 @@ else if ($action == "viewtopic") //-- Action: View topic
         <td class='rowhead' width='100%' colspan="2">
             <table class="main">
                 <tr>
-                    <td style="border:none;" width="100%"><a href='forums.php?action=viewtopic&amp;topicid=<?php echo $topicid;?>&amp;page=p<?php echo $postid;?>#<?php echo $postid;?>'>#<?php echo $postid;?></a> by <?php echo $by;?> <?php echo $title;?> at <?php echo $added;
+                    <td width="100%" style="border:none;" ><a href='forums.php?action=viewtopic&amp;topicid=<?php echo $topicid;?>&amp;page=p<?php echo $postid;?>#<?php echo $postid;?>'>#<?php echo $postid;?></a> by <?php echo $by;?> <?php echo $title;?> at <?php echo $added;
                         if (isset($newp))
                         {
                             echo ("$newp");
@@ -1704,7 +1695,7 @@ else if ($action == "viewtopic") //-- Action: View topic
         if ($use_attachment_mod && ((!empty($arr['at_filename']) && is_valid_id($arr['at_id'])) && $arr['at_postid'] == $postid))
         {
             foreach ($allowed_file_extensions
-                     as
+                     AS
                      $allowed_file_extension)
             {
                 if (substr($arr['at_filename'], -3) == $allowed_file_extension)
@@ -1717,8 +1708,9 @@ else if ($action == "viewtopic") //-- Action: View topic
                     <legend>Attached Files</legend><br />
 
                     <img class='inlineimg' src='$image_dir$aimg.gif' width='16' height='16' border='0' alt='Download' title='Download' style='vertical-align:baseline' />&nbsp;
-                    <a href='forums.php?action=attachment&amp;attachmentid=".$arr['at_id']."' target='_blank'>".htmlspecialchars($arr['at_filename'])."</a> (".mksize($arr['at_size']).", ".$arr['at_downloads']." downloads)
-                    &nbsp;&nbsp;<input type='button' class='btn' value=\"See Who's Downloaded\" tabindex='1' onclick=\"window.open('forums.php?action=whodownloaded&amp;fileid=".$arr['at_id']."','whodownloaded','toolbar=no, scrollbars=yes, resizable=yes, width=600, height=250, top=50, left=50'); return false;\" />".($CURUSER['class'] >= UC_MODERATOR ? "&nbsp;&nbsp;<input type='button' class='btn' value='Delete' tabindex='2' onclick=\"window.open('forums.php?action=attachment&amp;subaction=delete&amp;attachmentid=".$arr['at_id']."','attachment','toolbar=no, scrollbars=yes, resizable=yes, width=600, height=250, top=50, left=50'); return false;\" />" : "")."<br /><br />
+                    <a href='forums.php?action=attachment&amp;attachmentid=".$arr['at_id']."' target='_blank'>".htmlspecialchars($arr['at_filename'])."</a> (".mksize($arr['at_size']).", ".$arr['at_downloads']." downloads)&nbsp;&nbsp;
+                    <input type='button' class='btn' value=\"See Who's Downloaded\" tabindex='1' onclick=\"window.open('forums.php?action=whodownloaded&amp;fileid=".$arr['at_id']."','whodownloaded','toolbar=no, scrollbars=yes, resizable=yes, width=600, height=250, top=50, left=50'); return false;\" />".($CURUSER['class'] >= UC_MODERATOR ? "&nbsp;&nbsp;
+                    <input type='button' class='btn' value='Delete' tabindex='2' onclick=\"window.open('forums.php?action=attachment&amp;subaction=delete&amp;attachmentid=".$arr['at_id']."','attachment','toolbar=no, scrollbars=yes, resizable=yes, width=600, height=250, top=50, left=50'); return false;\" />" : "")."<br /><br />
                     </fieldset>
                     </div>";
         }
@@ -1730,8 +1722,8 @@ else if ($action == "viewtopic") //-- Action: View topic
 
         ?>
     <tr valign='top'>
-        <td class='rowhead' width='150' align='center' style='padding: 0px'>
-            <img src="<?php echo $avatar;?>" width='' height='' border='0' alt='' title='' /><br />
+        <td class='rowhead' align='center' width='150' style='padding: 0px'>
+            <img src="<?php echo $avatar;?>" width='125' height='125' border='0' alt='' title='' /><br />
             <fieldset style='text-align:left;border:none;'>
                 <div style='white-space: nowrap;'>
                     <span style='font-weight:bold;'>Posts:</span>&nbsp;&nbsp;&nbsp;<?php echo $forumposts;?><br />
@@ -1745,33 +1737,56 @@ else if ($action == "viewtopic") //-- Action: View topic
     </tr>
     <tr>
         <td class='rowhead'>
-            <input type='submit' class='btn' value='<?php echo ($last_access > get_date_time(gmtime() - 360) || $posterid == $CURUSER['id'] ? 'Online' : 'Offline') ?>' />&nbsp; <a href="<?php echo $site_url; ?>/sendmessage.php?receiver=<?php echo $posterid; ?>"><input type='submit' class='btn' value='PM' /></a>&nbsp; <!--<a href='<?php echo $site_url; ?>/report.php?type=Post&amp;id=<?php echo $postid; ?>&amp;id_2=<?php echo $topicid; ?>&amp;id_3=<?php echo $posterid; ?>'><img src="<?php echo $image_dir.$forum_pics['p_report_btn']; ?>" border="0" alt="Report Post" title='Report Post' /></a>  -->
+            <input type='submit' class='btn' value='<?php echo ($last_access > get_date_time(gmtime() - 360) || $posterid == $CURUSER['id'] ? 'Online' : 'Offline') ?>' />&nbsp;
+
+        <?php
+        if ($posterid != $CURUSER["id"])
+        {
+         echo("<a href='sendmessage.php?receiver=$posterid'>
+                <input type='submit' class='btn' value='PM' /></a>&nbsp;
+                <a href='report.php?type=Post&amp;id=$postid&amp;id_2=$topicid'>
+                <input type='submit' class='btn' value='Report' />
+            </a>");
+        }
+        ?>
+
         </td>
         <td class='rowhead' align='right'>
-            <?php
-            if (!$locked || $CURUSER['class'] >= UC_MODERATOR)
+
+        <?php
+
+            if ($CURUSER['forumpos'] == 'no')
             {
-                ?>
 
-                <a href='forums.php?action=quotepost&amp;topicid=<?php echo $topicid; ?>&amp;postid=<?php echo $postid; ?>'><input type='submit' class='btn' value='Quote' /></a>&nbsp;
-
-                <?php
             }
-
-            if (($CURUSER["id"] == $posterid && !$locked) || $CURUSER['class'] >= UC_MODERATOR)
+            else
             {
-                ?>
+                if (!$locked || $CURUSER['class'] >= UC_MODERATOR)
+                {
+                    ?>
+                    <a href='forums.php?action=quotepost&amp;topicid=<?php echo $topicid; ?>&amp;postid=<?php echo $postid; ?>'>
+                        <input type='submit' class='btn' value='Quote' />
+                    </a>&nbsp;
+                    <?php
+                }
 
-                <a href='forums.php?action=editpost&amp;postid=<?php echo $postid; ?>'><input type='submit' class='btn' value='Edit' /></a>
-
-                <?php
+                if (($CURUSER["id"] == $posterid && !$locked) || $CURUSER['class'] >= UC_MODERATOR)
+                {
+                    ?>
+                    <a href='forums.php?action=editpost&amp;postid=<?php echo $postid; ?>'>
+                        <input type='submit' class='btn' value='Edit' />
+                    </a>
+                    <?php
+                }
             }
 
             if ($CURUSER['class'] >= UC_MODERATOR)
             {
                 ?>
 
-                <a href='forums.php?action=deletepost&amp;postid=<?php echo $postid; ?>'><input type='submit' class='btn' value='Delete' /></a> &nbsp;
+                <a href='forums.php?action=deletepost&amp;postid=<?php echo $postid; ?>'>
+                    <input type='submit' class='btn' value='Delete' />
+                </a> &nbsp;
 
                 <?php
             }
@@ -1795,7 +1810,7 @@ else if ($action == "viewtopic") //-- Action: View topic
     {
         ?>
     <form method='post' action='forums.php'>
-        <table cellpadding="5" width='<?php echo $forum_width; ?>'>
+        <table width='<?php echo $forum_width; ?>' cellpadding="5">
             <tr>
                 <td align="right">
                     <input type='hidden' name='action' value="makepoll" />
@@ -1826,100 +1841,98 @@ else if ($action == "viewtopic") //-- Action: View topic
         }
     }
 
-    //-- Mod options
+    //-- Mod Options --//
     if ($CURUSER['class'] >= UC_MODERATOR)
     {
         ?>
-    <form method='post' action='forums.php'>
-        <input type='hidden' name='action' value='updatetopic' />
-        <input type='hidden' name='topicid' value='<?php echo $topicid; ?>' />
-        <?php
+        <form method='post' action='forums.php'>
+            <input type='hidden' name='action' value='updatetopic' />
+            <input type='hidden' name='topicid' value='<?php echo $topicid; ?>' />
+            <?php
 
-        begin_table();
+            begin_table();
 
-        ?>
-        <tr>
-            <td colspan="2" class='colhead'>Staff Options</td>
-        </tr>
+            ?>
+            <tr>
+                <td class='colhead' colspan="2">Staff Options</td>
+            </tr>
 
-        <tr>
-            <td class="rowhead" width="1%">Sticky</td>
-            <td class='rowhead'>
-                <select name="sticky">
-                    <option value="yes"<?php echo ($sticky ? " selected='selected'" : ''); ?>>Yes</option>
-                    <option value="no"<?php echo (!$sticky ? " selected='selected'" : ''); ?>>No</option>
-                </select>
-            </td>
-        </tr>
+            <tr>
+                <td class="rowhead" width="1%">Sticky</td>
+                <td class='rowhead'>
+                    <select name="sticky">
+                        <option value="yes"<?php echo ($sticky ? " selected='selected'" : ''); ?>>Yes</option>
+                        <option value="no"<?php echo (!$sticky ? " selected='selected'" : ''); ?>>No</option>
+                    </select>
+                </td>
+            </tr>
 
-        <tr>
-            <td class="rowhead">Locked</td>
-            <td class='rowhead'>
-                <select name="locked">
-                    <option value="yes"<?php echo ($locked ? " selected='selected'" : ''); ?>>Yes</option>
-                    <option value="no"<?php echo (!$locked ? " selected='selected'" : ''); ?>>No</option>
-                </select>
-            </td>
-        </tr>
+            <tr>
+                <td class="rowhead">Locked</td>
+                <td class='rowhead'>
+                    <select name="locked">
+                        <option value="yes"<?php echo ($locked ? " selected='selected'" : ''); ?>>Yes</option>
+                        <option value="no"<?php echo (!$locked ? " selected='selected'" : ''); ?>>No</option>
+                    </select>
+                </td>
+            </tr>
 
-        <tr>
-            <td class="rowhead">Topic Name</td>
-            <td class='rowhead'>
-                <input type="text" name="subject" size="60" maxlength="<?php echo $maxsubjectlength; ?>"
-                       value="<?php echo htmlspecialchars($subject); ?>" />
-            </td>
-        </tr>
+            <tr>
+                <td class="rowhead">Topic Name</td>
+                <td class='rowhead'>
+                    <input type="text" name="subject" size="60" maxlength="<?php echo $maxsubjectlength; ?>" value="<?php echo htmlspecialchars($subject); ?>" />
+                </td>
+            </tr>
 
-        <tr>
-            <td class="rowhead">Move Topic</td>
-            <td class='rowhead'>
-                <select name='new_forumid'>
-                    <?php
-                    $res = sql_query("SELECT id, name, minclasswrite
-                                        FROM forums
-                                        ORDER BY name") or sqlerr(__FILE__, __LINE__);
+            <tr>
+                <td class="rowhead">Move Topic</td>
+                <td class='rowhead'>
+                    <select name='new_forumid'>
+                        <?php
+                        $res = sql_query("SELECT id, name, minclasswrite
+                                            FROM forums
+                                            ORDER BY name") or sqlerr(__FILE__, __LINE__);
 
-                    while ($arr = mysql_fetch_assoc($res))
-                    {
-                        if ($CURUSER['class'] >= $arr["minclasswrite"])
+                        while ($arr = mysql_fetch_assoc($res))
                         {
-                            echo '<option value="'.(int) $arr["id"].'"'.($arr["id"] == $forumid ? ' selected="selected"' : '').'>'.htmlspecialchars($arr["name"]).'</option>';
+                            if ($CURUSER['class'] >= $arr["minclasswrite"])
+                            {
+                                echo '<option value="'.(int) $arr["id"].'"'.($arr["id"] == $forumid ? ' selected="selected"' : '').'>'.htmlspecialchars($arr["name"]).'</option>';
+                            }
                         }
-                    }
-                    ?>
+                        ?>
+                    </select>
+                </td>
+            </tr>
 
-                </select>
-            </td>
-        </tr>
+            <tr>
+                <td class="rowhead">
+                    <div style='white-space: nowrap;'>Delete Topic</div>
+                </td>
+                <td class='rowhead'>
+                    <select name="delete">
+                        <option value="no" selected="selected">No</option>
+                        <option value="yes">Yes</option>
+                    </select>
 
-        <tr>
-            <td class="rowhead">
-                <div style='white-space: nowrap;'>Delete Topic</div>
-            </td>
-            <td class='rowhead'>
-                <select name="delete">
-                    <option value="no" selected="selected">No</option>
-                    <option value="yes">Yes</option>
-                </select>
+                    <br />
+                    <span style='font-weight:bold;'>Note:</span> Any changes made to the Topic won't take effect if you select "Yes"
+                </td>
+            </tr>
 
-                <br />
-                <span style='font-weight:bold;'>Note:</span> Any changes made to the Topic won't take effect if you select "Yes"
-            </td>
-        </tr>
+            <tr>
+                <td colspan="2" align="center">
+                    <input type="submit" class='btn' value="Update Topic" />
+                </td>
+            </tr>
 
-        <tr>
-            <td colspan="2" align="center">
-                <input type="submit" class='btn' value="Update Topic" />
-            </td>
-        </tr>
+            <?php
 
-        <?php
+            end_table();
 
-        end_table();
+            ?>
 
-        ?>
-
-    </form>
+        </form>
 
     <?php
     }
@@ -1930,9 +1943,7 @@ else if ($action == "viewtopic") //-- Action: View topic
 
     if ($locked && $CURUSER['class'] < UC_MODERATOR)
     {
-
         display_message("warn", "Sorry", "This Topic is Locked.  No New Posts are Allowed.");
-
     }
     else
     {
@@ -1943,7 +1954,6 @@ else if ($action == "viewtopic") //-- Action: View topic
 
             display_message("warn", "Sorry", "You are Mot Permitted to Post in this Forum.");
 
-
             $maypost = false;
         }
         else
@@ -1952,55 +1962,70 @@ else if ($action == "viewtopic") //-- Action: View topic
         }
     }
 
-    //-- "View unread" / "Add reply" buttons
+    //-- "View Unread" / "Add Reply" Buttons --//
     ?>
 
-<table align="center" class="main" border='0' cellspacing='0' cellpadding='0'>
-    <tr>
-        <td class='embedded'>
-            <form method='get' action='forums.php'><input type='hidden' name='action' value='viewunread' /><input type='submit' class='btn' value='Show New' /></form>
-        </td>
-
-        <?php
-
-        if ($maypost)
-        {
-            ?>
-            <td class='embedded' style='padding-left: 10px'>
+    <table class="main" border='0' align="center" cellspacing='0' cellpadding='0'>
+        <tr>
+            <td class='embedded'>
                 <form method='get' action='forums.php'>
-                    <input type='hidden' name='action' value='reply' /><input type='hidden' name='topicid' value='<?php echo $topicid; ?>' /><input type='submit' class='btn' value='Answer' /></form>
+                    <input type='hidden' name='action' value='viewunread' />
+                    <input type='submit' class='btn' value='Show New' />
+                </form>
             </td>
 
             <?php
-        }
-        ?>
 
-    </tr>
-</table>
-
-<?php
-
-    if ($maypost)
-    {
-        ?>
-    <table style='border:1px solid #000000;' align="center">
-        <tr>
-            <td style='padding:10px;text-align:center;'>
-                <span style='font-weight:bold;'>Quick Reply</span>
-
-                <form name='compose' method='post' action='forums.php'>
-                    <input type='hidden' name='action' value='post' />
-                    <input type='hidden' name='topicid' value='<?php echo $topicid; ?>' />
-                    <textarea name="body" rows="4" cols="70"></textarea><br />
-                    <input type='submit' class='btn' value="Submit" />
-                </form>
-            </td>
+            if ($maypost)
+            {
+                if ($CURUSER['forumpos'] == 'no')
+                {
+                }
+                else
+                {
+                ?>
+                    <td class='embedded' style='padding-left: 10px'>
+                        <form method='get' action='forums.php'>
+                            <input type='hidden' name='action' value='reply' />
+                            <input type='hidden' name='topicid' value='<?php echo $topicid; ?>' />
+                            <input type='submit' class='btn' value='Answer' />
+                        </form>
+                    </td>
+                <?php
+                }
+            }
+            ?>
         </tr>
     </table>
+
     <?php
+
+    if ( $CURUSER['forumpos'] == 'no' )
+    {
+    }
+    else
+    {
+        if ($maypost)
+        {
+            ?>
+            <table align="center" style='border:1px solid #000000;'>
+                <tr>
+                    <td style='padding:10px;text-align:center;'>
+                        <span style='font-weight:bold;'>Quick Reply</span>
+                        <form name='compose' method='post' action='forums.php'>
+                            <input type='hidden' name='action' value='post' />
+                            <input type='hidden' name='topicid' value='<?php echo $topicid; ?>' />
+                            <textarea name="body" rows="4" cols="70"></textarea><br />
+                            <input type='submit' class='btn' value="Submit" />
+                        </form>
+                    </td>
+                </tr>
+            </table>
+            <?php
+        }
     }
 
-    //-- Forum quick jump drop-down
+    //-- Forum Quick Jump Drop-Down --//
     insert_quick_jump_menu($forumid);
 
     site_footer();
@@ -2010,12 +2035,38 @@ else if ($action == "viewtopic") //-- Action: View topic
     if (!empty($uploaderror))
     {
         ?>
-    <script>alert("Upload Failed: <?php echo $uploaderror; ?>\nHowever your Post was Successfully  Saved!\n\nClick 'OK' to Continue.");</script><?php
+        <script>alert("Upload Failed: <?php echo $uploaderror; ?>\nHowever your Post was Successfully Saved!\n\nClick 'OK' to Continue.");</script>
+        <?php
     }
 
     exit();
-}
-else if ($action == "quotepost") //-- Action: Quote
+    }
+    else if ($action == "quotepost") //-- Action: Quote --//
+    {
+        $topicid = (int) $_GET["topicid"];
+
+        if (!is_valid_id($topicid))
+        {
+            error_message("error", "Error", "Invalid ID!");
+        }
+
+        if ( $CURUSER['forumpos'] == 'no' )
+        {
+            site_header("Post Reply");
+            error_message("error", "Error", "Your Forum Privilage Has Been Disabled");
+            site_footer();
+            exit();
+        }
+        else
+        {
+            site_header("Post Reply");
+            insert_compose_frame($topicid, false, true);
+            site_footer();
+            exit();
+        }
+    }
+
+else if ($action == "reply") //-- Action: Reply --//
 {
     $topicid = (int) $_GET["topicid"];
 
@@ -2024,26 +2075,22 @@ else if ($action == "quotepost") //-- Action: Quote
         error_message("error", "Error", "Invalid ID!");
     }
 
-    site_header("Post Reply");
-    insert_compose_frame($topicid, false, true);
-    site_footer();
-    exit();
-}
-else if ($action == "reply") //-- Action: Reply
-{
-    $topicid = (int) $_GET["topicid"];
-
-    if (!is_valid_id($topicid))
+    if ( $CURUSER['forumpos'] == 'no' )
     {
-        error_message("error", "Error", "Invalid ID!");
+        site_header("Post Reply");
+        error_message("error", "Error", "Your Forum Privilage Has Been Disabled");
+        site_footer();
+        exit();
     }
-
-    site_header("Post Reply");
-    insert_compose_frame($topicid, false, false, true);
-    site_footer();
-    exit();
+    else
+    {
+        site_header("Post Reply");
+        insert_compose_frame($topicid, false, false, true);
+        site_footer();
+        exit();
+    }
 }
-else if ($action == "editpost") //-- Action: Edit post
+else if ($action == "editpost") //-- Action: Edit Post --//
 {
     $postid = (int) $_GET["postid"];
 
@@ -2093,11 +2140,18 @@ else if ($action == "editpost") //-- Action: Edit post
 
     site_header();
 
-    ?>
+    if ($CURUSER['forumpos'] == 'no')
+    {
+        error_message("error", "Error", "Your Forum Privilage Has Been Disabled");
+        site_footer();
+        exit();
+    }
+
+?>
 <h3>Edit Post</h3>
 
 <form name='edit' method='post' action='forums.php?action=editpost&amp;postid=<?php echo $postid; ?>'>
-    <table border='1' cellspacing='0' cellpadding='5' width='100%'>
+    <table border='1' width='100%' cellspacing='0' cellpadding='5'>
         <tr>
             <td class='rowhead' width='10%'>Body</td>
             <td align='left' style='padding: 0px'>
@@ -2111,8 +2165,8 @@ else if ($action == "editpost") //-- Action: Edit post
                 }
                 else
                 {
-                    ?>            
-                    <textarea name='body' style='width:99%' rows='7'><?php echo $ebody; ?></textarea>
+                    ?>
+                    <textarea name='body' rows='7' style='width:99%'><?php echo $ebody; ?></textarea>
                     <?php
                 }
                 ?>
@@ -2120,7 +2174,9 @@ else if ($action == "editpost") //-- Action: Edit post
             </td>
         </tr>
         <tr>
-            <td align='center' colspan='2'><input type='submit' class='btn' value='Update post' /></td>
+            <td align='center' colspan='2'>
+                <input type='submit' class='btn' value='Update Post' />
+            </td>
         </tr>
     </table>
 </form>
@@ -2131,7 +2187,7 @@ else if ($action == "editpost") //-- Action: Edit post
     site_footer();
     exit();
 }
-else if ($action == 'deletepost' && $CURUSER['class'] >= UC_MODERATOR) //-- Action: Delete post
+else if ($action == 'deletepost' && $CURUSER['class'] >= UC_MODERATOR) //-- Action: Delete Post --//
 {
     $postid = (int) $_GET['postid'];
 
@@ -2140,7 +2196,8 @@ else if ($action == 'deletepost' && $CURUSER['class'] >= UC_MODERATOR) //-- Acti
         error_message("error", "Error", "Invalid ID");
     }
 
-    $res = sql_query("SELECT p.topicid".($use_attachment_mod ? ", a.filename" : "").", (SELECT COUNT(id) FROM posts WHERE topicid=p.topicid) AS posts_count, (SELECT MAX(id) FROM posts WHERE topicid=p.topicid AND id < p.id) AS p_id FROM posts AS p ".($use_attachment_mod ? "LEFT JOIN attachments AS a ON a.postid = p.id " : "")."WHERE p.id=".sqlesc($postid)) or sqlerr(__FILE__, __LINE__);
+    $res = sql_query("SELECT p.topicid".($use_attachment_mod ? ", a.filename" : "").", (SELECT COUNT(id) FROM posts WHERE topicid=p.topicid) AS posts_count, (SELECT MAX(id) FROM posts WHERE topicid=p.topicid AND id < p.id) AS p_id FROM posts AS p ".($use_attachment_mod ? "LEFT JOIN attachments AS a ON a.postid = p.id " : "")."
+                    WHERE p.id=".sqlesc($postid)) or sqlerr(__FILE__, __LINE__);
 
     $arr = mysql_fetch_assoc($res) or error_message("error", "Error", "Post NOT Found");
 
@@ -2148,7 +2205,7 @@ else if ($action == 'deletepost' && $CURUSER['class'] >= UC_MODERATOR) //-- Acti
 
     if ($arr['posts_count'] < 2)
     {
-        error_message("error", "Error", "<a href='forums.php?action=deletetopic&amp;topicid=$topicid'>You cannot Delete the Post, it's the only Post!  Delete the Topic instead?  Click to Confirm.</a>");
+        error_message_center("error", "Error", "<a href='forums.php?action=deletetopic&amp;topicid=$topicid'>You cannot Delete the Post, it's the only Post!<br />Delete the Topic instead?<br />Click to Confirm.</a>");
     }
 
     $redirtopost = (is_valid_id($arr['p_id']) ? "&page=p".$arr['p_id']."#".$arr['p_id'] : '');
@@ -2173,6 +2230,7 @@ else if ($action == 'deletepost' && $CURUSER['class'] >= UC_MODERATOR) //-- Acti
     }
 
     $headerstr = "Location: forums.php?action=viewtopic&amp;topicid=$topicid".($use_attachment_mod && !empty($uploaderror) ? "&amp;uploaderror=$uploaderror" : "")."&amp;page=last";
+
     update_topic_last_post($topicid);
 
     header("Location: {$_SERVER['PHP_SELF']}?action=viewtopic&topicid=".$topicid.$redirtopost);
@@ -2203,7 +2261,7 @@ else if ($use_poll_mod && ($action == 'deletepoll' && $CURUSER['class'] >= UC_MO
 
     if (!$sure || $sure != 1)
     {
-        error_message("error", "Sanity Check", "<a href='".$_SERVER['PHP_SELF']."?action=".htmlspecialchars($action)."&amp;pollid=".$arr['id']."&amp;sure=1'>You are about to Delete a Poll!  Click here to confirm?</a>");
+        error_message("error", "Sanity Check", "<a href='".$_SERVER['PHP_SELF']."?action=".htmlspecialchars($action)."&amp;pollid=".$arr['id']."&amp;sure=1'>You are about to Delete a Poll!  Click here to Confirm?</a>");
     }
 
     sql_query("DELETE pp.*, ppa.*
@@ -2285,7 +2343,9 @@ else if ($use_poll_mod && $action == 'makepoll')
 
         if ($subaction == "edit" && is_valid_id($pollid))
         {
-            sql_query("UPDATE postpolls SET "."question = ".sqlesc($question).", "."option0  = ".sqlesc($option0).", "."option1  = ".sqlesc($option1).", "."option2  = ".sqlesc($option2).", "."option3  = ".sqlesc($option3).", "."option4  = ".sqlesc($option4).", "."option5  = ".sqlesc($option5).", "."option6  = ".sqlesc($option6).", "."option7  = ".sqlesc($option7).", "."option8  = ".sqlesc($option8).", "."option9  = ".sqlesc($option9).", "."option10 = ".sqlesc($option10).", "."option11 = ".sqlesc($option11).", "."option12 = ".sqlesc($option12).", "."option13 = ".sqlesc($option13).", "."option14 = ".sqlesc($option14).", "."option15 = ".sqlesc($option15).", "."option16 = ".sqlesc($option16).", "."option17 = ".sqlesc($option17).", "."option18 = ".sqlesc($option18).", "."option19 = ".sqlesc($option19).", "."sort     = ".sqlesc($sort)." "."WHERE id = ".sqlesc((int) $poll["id"])) or sqlerr(__FILE__, __LINE__);
+            sql_query("UPDATE postpolls
+                        SET "."question = ".sqlesc($question).", "."option0 = ".sqlesc($option0).", "."option1 = ".sqlesc($option1).", "."option2 = ".sqlesc($option2).", "."option3 = ".sqlesc($option3).", "."option4 = ".sqlesc($option4).", "."option5 = ".sqlesc($option5).", "."option6 = ".sqlesc($option6).", "."option7 = ".sqlesc($option7).", "."option8 = ".sqlesc($option8).", "."option9 = ".sqlesc($option9).", "."option10 = ".sqlesc($option10).", "."option11 = ".sqlesc($option11).", "."option12 = ".sqlesc($option12).", "."option13 = ".sqlesc($option13).", "."option14 = ".sqlesc($option14).", "."option15 = ".sqlesc($option15).", "."option16 = ".sqlesc($option16).", "."option17 = ".sqlesc($option17).", "."option18 = ".sqlesc($option18).", "."option19 = ".sqlesc($option19).", "."sort = ".sqlesc($sort)." "."
+                        WHERE id = ".sqlesc((int) $poll["id"])) or sqlerr(__FILE__, __LINE__);
         }
         else
         {
@@ -2294,7 +2354,8 @@ else if ($use_poll_mod && $action == 'makepoll')
                 error_message("error", "Error", "Invalid Topic ID!");
             }
 
-            sql_query("INSERT INTO postpolls VALUES(id".", ".sqlesc(get_date_time()).", ".sqlesc($question).", ".sqlesc($option0).", ".sqlesc($option1).", ".sqlesc($option2).", ".sqlesc($option3).", ".sqlesc($option4).", ".sqlesc($option5).", ".sqlesc($option6).", ".sqlesc($option7).", ".sqlesc($option8).", ".sqlesc($option9).", ".sqlesc($option10).", ".sqlesc($option11).", ".sqlesc($option12).", ".sqlesc($option13).", ".sqlesc($option14).", ".sqlesc($option15).", ".sqlesc($option16).", ".sqlesc($option17).", ".sqlesc($option18).", ".sqlesc($option19).", ".sqlesc($sort).")") or sqlerr(__FILE__, __LINE__);
+            sql_query("INSERT INTO postpolls
+                        VALUES(id".", ".sqlesc(get_date_time()).", ".sqlesc($question).", ".sqlesc($option0).", ".sqlesc($option1).", ".sqlesc($option2).", ".sqlesc($option3).", ".sqlesc($option4).", ".sqlesc($option5).", ".sqlesc($option6).", ".sqlesc($option7).", ".sqlesc($option8).", ".sqlesc($option9).", ".sqlesc($option10).", ".sqlesc($option11).", ".sqlesc($option12).", ".sqlesc($option13).", ".sqlesc($option14).", ".sqlesc($option15).", ".sqlesc($option16).", ".sqlesc($option17).", ".sqlesc($option18).", ".sqlesc($option19).", ".sqlesc($sort).")") or sqlerr(__FILE__, __LINE__);
 
             $pollnum = mysql_insert_id();
 
@@ -2325,7 +2386,7 @@ else if ($use_poll_mod && $action == 'makepoll')
         <input type='hidden' name='pollid' value='<?php echo (int) $poll["id"]; ?>' /><?php
     }
     ?>
-    <table border='1' cellspacing='0' cellpadding='5' width='100%'>
+    <table border='1' width='100%' cellspacing='0' cellpadding='5'>
         <tr>
             <td class='rowhead'>Question <span style='color : #ff0000;'>*</span></td>
             <td align='left'>
@@ -2353,15 +2414,13 @@ else if ($use_poll_mod && $action == 'makepoll')
 
         <tr>
             <td class='rowhead'>Option 4</td>
-            <td align='left'><input name='option3' size='80' maxlength='40'
-                                    value="<?php echo ($subaction == "edit" ? htmlspecialchars($poll['option3']) : ''); ?>" /><br />
+            <td align='left'><input name='option3' size='80' maxlength='40' value="<?php echo ($subaction == "edit" ? htmlspecialchars($poll['option3']) : ''); ?>" /><br />
             </td>
         </tr>
 
         <tr>
             <td class='rowhead'>Option 5</td>
-            <td align='left'><input name='option4' size='80' maxlength='40'
-                                    value="<?php echo ($subaction == "edit" ? htmlspecialchars($poll['option4']) : ''); ?>" /><br />
+            <td align='left'><input name='option4' size='80' maxlength='40' value="<?php echo ($subaction == "edit" ? htmlspecialchars($poll['option4']) : ''); ?>" /><br />
             </td>
         </tr>
 
@@ -2409,8 +2468,7 @@ else if ($use_poll_mod && $action == 'makepoll')
 
         <tr>
             <td class='rowhead'>Option 13</td>
-            <td align='left'><input name='option12' size='80' maxlength='40'
-                                    value="<?php echo ($subaction == "edit" ? htmlspecialchars($poll['option12']) : ''); ?>" /><br />
+            <td align='left'><input name='option12' size='80' maxlength='40' value="<?php echo ($subaction == "edit" ? htmlspecialchars($poll['option12']) : ''); ?>" /><br />
             </td>
         </tr>
 
@@ -2422,7 +2480,7 @@ else if ($use_poll_mod && $action == 'makepoll')
 
         <tr>
             <td class='rowhead'>Option 15</td>
-            <td align='left'><input name='option14' size='80' maxlength='40' alue="<?php echo ($subaction == "edit" ? htmlspecialchars($poll['option14']) : ''); ?>" /><br />
+            <td align='left'><input name='option14' size='80' maxlength='40' value="<?php echo ($subaction == "edit" ? htmlspecialchars($poll['option14']) : ''); ?>" /><br />
             </td>
         </tr>
 
@@ -2446,8 +2504,7 @@ else if ($use_poll_mod && $action == 'makepoll')
 
         <tr>
             <td class='rowhead'>Option 19</td>
-            <td align='left'><input name='option18' size='80' maxlength='40'
-                                    value="<?php echo ($subaction == "edit" ? htmlspecialchars($poll['option18']) : ''); ?>" /><br />
+            <td align='left'><input name='option18' size='80' maxlength='40' value="<?php echo ($subaction == "edit" ? htmlspecialchars($poll['option18']) : ''); ?>" /><br />
             </td>
         </tr>
 
@@ -2460,16 +2517,16 @@ else if ($use_poll_mod && $action == 'makepoll')
         <tr>
             <td class='rowhead'>Sort</td>
             <td class='rowhead'>
-
                 <input type='radio' name='sort' value='yes' <?php echo ($subaction == "edit" ? ($poll["sort"] != "no" ? " checked='checked'" : "") : ''); ?> />Yes
-
                 <input type='radio' name='sort' value='no' <?php echo ($subaction == "edit" ? ($poll["sort"] == "no" ? " checked='checked'" : "") : ''); ?> /> No
 
             </td>
         </tr>
 
         <tr>
-            <td colspan='2' align='center'><input type='submit' class='btn' value='<?php echo ($pollid ? 'Edit poll' : 'Create poll'); ?>' style='height: 20pt' /></td>
+            <td colspan='2' align='center'>
+                <input type='submit' class='btn' value='<?php echo ($pollid ? 'Edit poll' : 'Create poll'); ?>' style='height: 20pt' />
+            </td>
         </tr>
     </table>
     <p align='center'><span style='color : #ff0000;'>*</span> Required</p>
@@ -2559,7 +2616,7 @@ else if ($use_attachment_mod && $action == "attachment")
     header("Pragma: public");
     header("Expires: 0");
     header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
-    header("Cache-Control: private", false); // required for certain browsers
+    header("Cache-Control: private", false); //-- Required For Certain Browsers --//
     header("Content-Type: ".$arr['type']);
     header("Content-Disposition: attachment; filename=\"".basename($filename)."\";");
     header("Content-Transfer-Encoding: binary");
@@ -2602,7 +2659,7 @@ else if ($use_attachment_mod && $action == "whodownloaded")
         <link rel='stylesheet' href='./stylesheets/default/default.css' type='text/css' />
     </head>
     <body>
-    <table width='100%' cellpadding='5' border='1'>
+    <table border='1' width='100%' cellpadding='5'>
         <tr align='center'>
             <td class='rowhead'><span style='font-weight:bold;'>File Name</span></td>
             <td style='white-space: nowrap;'><span style='font-weight:bold;'>Downloaded by</span></td>
@@ -2617,17 +2674,20 @@ else if ($use_attachment_mod && $action == "whodownloaded")
         while ($arr = mysql_fetch_assoc($res))
         {
             echo "<tr align='center'>
-                <td style='white-space: nowrap;'>".htmlspecialchars($arr['filename'])."</td>
-                <td style='white-space: nowrap;'><span style='cursor:pointer'><a class='pointer' onclick=\"opener.location=('/userdetails.php?id=".(int) $arr['userid']."'); self.close();\">".htmlspecialchars($arr['username'])."</a></span></td>
-                <td style='white-space: nowrap;'>".(int) $arr['downloads']."</td>
-                <td style='white-space: nowrap;'>".$arr['date']." (".get_elapsed_time(sql_timestamp_to_unix_timestamp($arr['date'])).")</td>
+                    <td style='white-space: nowrap;'>".htmlspecialchars($arr['filename'])."</td>
+                    <td style='white-space: nowrap;'><span style='cursor:pointer'><a class='pointer' onclick=\"opener.location=('/userdetails.php?id=".(int) $arr['userid']."'); self.close();\">".htmlspecialchars($arr['username'])."</a></span></td>
+                    <td style='white-space: nowrap;'>".(int) $arr['downloads']."</td>
+                    <td style='white-space: nowrap;'>".$arr['date']." (".get_elapsed_time(sql_timestamp_to_unix_timestamp($arr['date'])).")</td>
             </tr>";
 
             $dls += (int) $arr['downloads'];
         }
         ?>
         <tr>
-            <td colspan='4'><span style='font-weight:bold;'>Total Downloads:</span> <span style='font-weight:bold;'><?php echo number_format($dls); ?></span></td>
+            <td colspan='4'>
+                <span style='font-weight:bold;'>Total Downloads:</span>
+                <span style='font-weight:bold;'><?php echo number_format($dls); ?></span>
+            </td>
         </tr>
     </table>
     </body>
@@ -2635,7 +2695,7 @@ else if ($use_attachment_mod && $action == "whodownloaded")
     <?php
     }
 }
-else if ($action == "viewforum") //-- Action: View forum
+else if ($action == "viewforum") //-- Action: View Forum --//
 {
     $forumid = (int) $_GET['forumid'];
 
@@ -2647,7 +2707,7 @@ else if ($action == "viewforum") //-- Action: View forum
     $page   = (isset($_GET["page"]) ? (int) $_GET["page"] : 0);
     $userid = (int) $CURUSER["id"];
 
-    //--  Get forum details
+    //--  Get Forum Details --//
     $res = sql_query("SELECT f.name AS forum_name, f.minclassread, (SELECT COUNT(id) FROM topics WHERE forumid = f.id) AS t_count FROM forums AS f
                         WHERE f.id = ".sqlesc($forumid)) or sqlerr(__FILE__, __LINE__);
 
@@ -2681,7 +2741,7 @@ else if ($action == "viewforum") //-- Action: View forum
         ++$pages;
     }
 
-    //-- Build menu
+    //-- Build Menu --//
     $menu1 = "<p class='success' align='center'>";
     $menu2 = '';
 
@@ -2744,20 +2804,20 @@ else if ($action == "viewforum") //-- Action: View forum
     site_header("Forum");
 
     ?>
-<h1 align="center"><?php echo htmlspecialchars($arr["forum_name"]); ?></h1>
-<?php
+    <h1 align="center"><?php echo htmlspecialchars($arr["forum_name"]); ?></h1>
+    <?php
 
     if (mysql_num_rows($topics_res) > 0)
     {
         ?>
-            <table border='1' cellspacing='0' cellpadding='5' width='<?php echo $forum_width; ?>'>
-                <tr>
-                    <td class='colhead' align='center'>Topic Title</td>
-                    <td class='colhead' align='center'>Replies</td>
-                    <td class='colhead' align='center'>Views</td>
-                    <td class='colhead' align='center'>Author</td>
-                    <td class='colhead' align='center'>Last&nbsp;post</td>
-                </tr>
+        <table border='1' width='<?php echo $forum_width; ?>' cellspacing='0' cellpadding='5'>
+            <tr>
+                <td class='colhead' align='center'>Topic Title</td>
+                <td class='colhead' align='center'>Replies</td>
+                <td class='colhead' align='center'>Views</td>
+                <td class='colhead' align='center'>Author</td>
+                <td class='colhead' align='center'>Last&nbsp;post</td>
+            </tr>
         <?php
         while ($topic_arr = mysql_fetch_assoc($topics_res))
         {
@@ -2776,7 +2836,7 @@ else if ($action == "viewforum") //-- Action: View forum
 
             if ($tpages > 1)
             {
-                $topicpages = "&nbsp;(<img src='".$image_dir."multipage.gif' width='8' height='10' border='0' alt='Multiple pages' title='Multiple pages' />";
+                $topicpages = "&nbsp;(<img src='".$image_dir."multipage.gif' border='0' width='8' height='10' alt='Multiple pages' title='Multiple pages' />";
 
                 $split = ($tpages > 10) ? true : false;
                 $flag  = false;
@@ -2812,26 +2872,24 @@ else if ($action == "viewforum") //-- Action: View forum
             $topicpic = ($topic_arr['locked'] == "yes" ? ($new ? "lockednew" : "locked") : ($new ? "newpost" : "post"));
 
             ?>
-        <tr>
-            <td class='forum' align='left' width='100%'>
-                <img src='<?php echo $image_dir.$topicpic; ?>.png' width='32' height='32 ' border='0' alt='' title='' />
-                <?php echo ($sticky ? 'Sticky:&nbsp;' : ''); ?><a
-                    href='forums.php?action=viewtopic&amp;topicid=<?php echo $topicid; ?>'>
-                <?php echo htmlspecialchars($topic_arr['subject']); ?></a><?php echo $topicpages; ?>
-            </td>
+            <tr>
+                <td class='forum' align='left' width='100%'>
+                    <img src='<?php echo $image_dir.$topicpic; ?>.png' width='32' height='32' border='0' alt='' title='' />
+                    <?php echo ($sticky ? 'Sticky:&nbsp;' : ''); ?><a href='forums.php?action=viewtopic&amp;topicid=<?php echo $topicid; ?>'>
+                    <?php echo htmlspecialchars($topic_arr['subject']); ?></a><?php echo $topicpages; ?>
+                </td>
 
-            <td class='forum' align='center'><?php echo max(0, $topic_arr['p_count'] - 1); ?></td>
-            <td class='forum' align='center'><?php echo number_format($topic_arr['views']); ?></td>
-            <td class='forum' align='center'>&nbsp;<?php echo $lpauthor; ?>&nbsp;</td>
+                <td class='forum' align='center'><?php echo max(0, $topic_arr['p_count'] - 1); ?></td>
+                <td class='forum' align='center'><?php echo number_format($topic_arr['views']); ?></td>
+                <td class='forum' align='center'>&nbsp;<?php echo $lpauthor; ?>&nbsp;</td>
 
-            <td class='forum' align='center'>
-                <div style='white-space: nowrap;'>
-                    &nbsp;<?php echo $topic_arr["p_added"]; ?>&nbsp;
-                    <br />by - <?php echo $lpusername; ?>
-                </div>
-            </td>
-
-        </tr>
+                <td class='forum' align='center'>
+                    <div style='white-space: nowrap;'>
+                        &nbsp;<?php echo $topic_arr["p_added"]; ?>&nbsp;
+                        <br />by - <?php echo $lpusername; ?>
+                    </div>
+                </td>
+            </tr>
             <?php
         }
 
@@ -2844,14 +2902,18 @@ else if ($action == "viewforum") //-- Action: View forum
 
     echo $menu1.$mlb.$menu2.$mlb.$menu3;
     ?>
-<table class='main' border='0' cellspacing='0' cellpadding='0' align='center'>
-    <tr valign='middle'>
-        <td class='embedded'><img src='<?php echo $image_dir; ?>new-post.png' width='48' height='48' border='0' alt='New Posts' title='New Posts' style='margin-right: 5px' /></td>
-        <td class='embedded'>New Posts</td>
-        <td class='embedded'><img src='<?php echo $image_dir; ?>lock.png' width='48' height='48' border='0' alt='Locked Topic' title='Locked Topic' style='margin-left: 10px; margin-right: 5px' /></td>
-        <td class='embedded'>Locked Topic</td>
-    </tr>
-</table>
+    <table class='main' border='0' align='center' cellspacing='0' cellpadding='0'>
+        <tr valign='middle'>
+            <td class='embedded'>
+                <img src='<?php echo $image_dir; ?>new-post.png' width='48' height='48' border='0' alt='New Posts' title='New Posts' style='margin-right: 5px' />
+            </td>
+            <td class='embedded'>New Posts</td>
+            <td class='embedded'>
+                <img src='<?php echo $image_dir; ?>lock.png' width='48' height='48' border='0' alt='Locked Topic' title='Locked Topic' style='margin-left: 10px; margin-right: 5px' />
+            </td>
+            <td class='embedded'>Locked Topic</td>
+        </tr>
+    </table>
     <?php
     $arr = get_forum_access_levels($forumid) or die();
 
@@ -2859,18 +2921,18 @@ else if ($action == "viewforum") //-- Action: View forum
 
     if (!$maypost)
     {
-        display_message("warn", "Sorry", "You are Not Permitted to start new Topics in this Forum.");
+        display_message("warn", "Sorry", "You are Not Permitted to Start New Topics in this Forum.");
     }
 
     ?>
-<table border='0' class='main' cellspacing='0' cellpadding='0' align='center'>
-    <tr>
-        <td class='embedded'>
-            <form method='get' action='forums.php'>
-                <input type='hidden' name='action' value='viewunread' />
-                <input type='submit' class='btn' value='View Unread' />
-            </form>
-        </td>
+    <table class='main' border='0' align='center' cellspacing='0' cellpadding='0'>
+        <tr>
+            <td class='embedded'>
+                <form method='get' action='forums.php'>
+                    <input type='hidden' name='action' value='viewunread' />
+                    <input type='submit' class='btn' value='View Unread' />
+                </form>
+            </td>
 
         <?php
         if ($maypost)
@@ -2888,9 +2950,9 @@ else if ($action == "viewforum") //-- Action: View forum
         }
 
         ?>
-    </tr>
-</table>
-<br />
+        </tr>
+    </table>
+    <br />
 
     <?php
 
@@ -2899,7 +2961,7 @@ else if ($action == "viewforum") //-- Action: View forum
     site_footer();
     exit();
 }
-else if ($action == 'viewunread') //-- Action: View unread posts
+else if ($action == 'viewunread') //-- Action: View Unread Posts --//
 {
     if ((isset($_POST[$action."_action"]) ? $_POST[$action."_action"] : '') == 'clear')
     {
@@ -2912,7 +2974,7 @@ else if ($action == 'viewunread') //-- Action: View unread posts
         }
 
         foreach ($topic_ids
-                 as
+                 AS
                  $topic_id)
         {
             if (!is_valid_id($topic_id))
@@ -2961,33 +3023,33 @@ else if ($action == 'viewunread') //-- Action: View unread posts
 
             ?>
 
-        <script type='text/javascript'>
-            var checkflag = 'false';
+            <script type='text/javascript'>
+                var checkflag = 'false';
 
-            function check(a)
-            {
-                if (checkflag == 'false')
+                function check(a)
                 {
-                    for (i = 0; i < a.length; i++)
-                        a[i].checked = true;
+                    if (checkflag == 'false')
+                    {
+                        for (i = 0; i < a.length; i++)
+                            a[i].checked = true;
 
-                    checkflag = 'true';
+                        checkflag = 'true';
 
-                    value = 'Uncheck';
+                        value = 'Uncheck';
+                    }
+                    else
+                    {
+                        for (i = 0; i < a.length; i++)
+                            a[i].checked = false;
+
+                        checkflag = 'false';
+
+                        value = 'Check';
+                    }
+
+                    return value + ' All';
                 }
-                else
-                {
-                    for (i = 0; i < a.length; i++)
-                        a[i].checked = false;
-
-                    checkflag = 'false';
-
-                    value = 'Check';
-                }
-
-                return value + ' All';
-            }
-        </script>
+            </script>
 
         <form method="post" action="<?php echo $_SERVER['PHP_SELF'].'?action='.$action; ?>">
             <input type="hidden" name="<?php echo $action.'_action'; ?>" value="clear" />
@@ -3048,7 +3110,8 @@ else if ($action == 'viewunread') //-- Action: View unread posts
                 ?>
                 <tr>
                     <td align="center" colspan="3">
-                        <input type='button' value="Check All" onclick="this.value = check(form);" class='btn' />&nbsp;<input type="submit" class='btn' value="Clear selected" />
+                        <input type='button' class='btn' value="Check All" onclick="this.value = check(form);" />&nbsp;
+                        <input type="submit" class='btn' value="Clear Selected" />
                     </td>
                 </tr>
 
@@ -3058,7 +3121,7 @@ else if ($action == 'viewunread') //-- Action: View unread posts
 
                 ?>
 
-        </form>
+            </form>
 
             <?php
 
@@ -3071,11 +3134,11 @@ else if ($action == 'viewunread') //-- Action: View unread posts
         }
         else
         {
-            error_message("info", "Sorry", "There are NO Unread Posts.<br /><br />Click <a href='forums.php?action=getdaily'>here</a> to get Today's Posts (last 24h).");
+            error_message_center("info", "Sorry", "There are NO Unread Posts.<br /><br />Click <a href='forums.php?action=getdaily'>here</a> to get Today's Posts (last 24h).");
         }
     }
 }
-else 
+else
 {
     if ($action == "getdaily")
     {
@@ -3186,7 +3249,7 @@ else
     }
     else
     {
-        if ($action == "search") //-- Action: Search
+        if ($action == "search") //-- Action: Search --//
         {
             site_header("Forum Search");
 
@@ -3225,7 +3288,7 @@ else
 
                     ?>
 
-            <table border='0' cellspacing='0' cellpadding='5' width='100%'>
+            <table border='0' width='100%' cellspacing='0' cellpadding='5'>
                 <tr align="left">
                     <td class='colhead'>Post</td>
                     <td class='colhead'>Topic</td>
@@ -3249,9 +3312,18 @@ else
 
                         echo "<tr>
                                 <td align='center'>".$post['id']."</td>
-                                <td align='left' width='100%'><a href='forums.php?action=viewtopic&amp;highlight=$keywords&amp;topicid=".$post['topicid']."&amp;page=p".$post['id']."#".$post['id']."'><span style='font-weight:bold;'>".htmlspecialchars($post['subject'])."</span></a></td>
-                                <td align='left' style='white-space: nowrap'>".(empty($post['name']) ? 'unknown['.$post['forumid'].']' : "<a href='forums.php?action=viewforum&amp;forumid=".$post['forumid']."'><span style='font-weight:bold;'>".htmlspecialchars($post['name'])."</span></a>")."</td>
-                                <td align='left' style='white-space: nowrap'>".(empty($post['username']) ? 'unknown['.$post['userid'].']' : "<span style='font-weight:bold;'><a class='altlink_user' href='$site_url/userdetails.php?id=".$post['userid']."'>".$post['username']."</a></span>")."<br />at ".$post['added']."</td>
+
+                                <td align='left' width='100%'>
+                                    <a href='forums.php?action=viewtopic&amp;highlight=$keywords&amp;topicid=".$post['topicid']."&amp;page=p".$post['id']."#".$post['id']."'><span style='font-weight:bold;'>".htmlspecialchars($post['subject'])."</span></a>
+                                </td>
+
+                                <td align='left' style='white-space: nowrap'>".(empty($post['name']) ? 'unknown['.$post['forumid'].']' : "
+                                    <a href='forums.php?action=viewforum&amp;forumid=".$post['forumid']."'><span style='font-weight:bold;'>".htmlspecialchars($post['name'])."</span></a>")."
+                                </td>
+
+                                <td align='left' style='white-space: nowrap'>".(empty($post['username']) ? 'unknown['.$post['userid'].']' : "
+                                    <span style='font-weight:bold;'><a class='altlink_user' href='$site_url/userdetails.php?id=".$post['userid']."'>".$post['username']."</a></span>")."<br />at ".$post['added']."
+                                </td>
                             </tr>";
                     }
                     end_table();
@@ -3269,15 +3341,21 @@ else
                 <div style="margin-left: 53px; margin-top: 13px;">
                     <form method="get" action="forums.php" id="search_form" style="margin: 0pt; padding: 0pt; font-family: Tahoma,Arial,Helvetica,sans-serif; font-size: 11px;">
                         <input type="hidden" name="action" value="search" />
-                        <table border="0" cellpadding="0" cellspacing="0" width="50%">
+                        <table border="0" width="50%" cellpadding="0" cellspacing="0">
                             <tbody>
                             <tr>
-                                <td valign="top"><span style='font-weight:bold;'>By Keyword:</span></td>
+                                <td colspan="2" valign="top"><span style='font-weight:bold;'>By Keyword:</span></td>
                             </tr>
                             <tr>
                                 <td valign="top">
-                                    <input type="text" name="keywords" size="65" value="<?php echo $keywords; ?>" /><br /><span style='font-size: xx-small; font-weight:bold;'>Note: Searches <span style="text-decoration: underline;">Only</span> in Posts.</span></td>
-                                <td valign="top"><input type='submit' class='btn' value='search' /></td>
+                                    <input type="text" name="keywords" size="65" value="<?php echo $keywords; ?>" />
+                                    <input type='submit' class='btn' value='Search' /><br />
+                                    <span style='font-size: xx-small; font-weight:bold;'>Note: Searches
+                                        <span style="text-decoration: underline;">Only</span>
+                                         in Posts.
+                                     </span>
+                                 </td>
+
                             </tr>
                             </tbody>
                         </table>
@@ -3317,9 +3395,9 @@ else
                 ?>
 
                 <h1 align="center"><span style='font-weight:bold;'><a href='forums.php'>Forums</a></span>
-                    -> <?php echo htmlspecialchars($arr["name"]); ?></h1>
+                    <?php echo htmlspecialchars($arr["name"]); ?></h1>
 
-    <table border='1' cellspacing='0' cellpadding='5' width='<?php echo $forum_width; ?>'>
+    <table border='1' width='<?php echo $forum_width; ?>' cellspacing='0' cellpadding='5'>
         <tr>
             <td class='colhead' align='left'>Forums</td>
             <td class='colhead' align='right'>Topics</td>
@@ -3336,7 +3414,7 @@ else
                 site_footer();
                 exit();
             }
-            else //-- Default action: View forums
+            else //-- Default Action: View Forums --//
             {
                 if (isset($_GET["catchup"]))
                 {
@@ -3355,64 +3433,63 @@ else
                 ?>
 
                 <h1 align="center"><span style='font-weight:bold;'><?php echo $site_name; ?> - Forum</span></h1>
-                <br />
 
-    <table border='1' cellspacing='0' cellpadding='5' width='<?php echo $forum_width; ?>'>
+                <table border='1' cellspacing='0' cellpadding='5' width='<?php echo $forum_width; ?>'>
 
-        <?php
+                    <?php
 
-        $ovf_res = sql_query("SELECT id, name, minclassview
-                                FROM overforums
-                                ORDER BY sort ASC") or sqlerr(__FILE__, __LINE__);
+                    $ovf_res = sql_query("SELECT id, name, minclassview
+                                            FROM overforums
+                                            ORDER BY sort ASC") or sqlerr(__FILE__, __LINE__);
 
-        while ($ovf_arr = mysql_fetch_assoc($ovf_res))
-        {
-            if ($CURUSER['class'] < $ovf_arr["minclassview"])
-            {
-                continue;
+                    while ($ovf_arr = mysql_fetch_assoc($ovf_res))
+                    {
+                        if ($CURUSER['class'] < $ovf_arr["minclassview"])
+                        {
+                            continue;
+                        }
+
+                        $ovfid   = (int) $ovf_arr["id"];
+                        $ovfname = $ovf_arr["name"];
+
+                        ?>
+                        <tr>
+                            <td align='left' class='colhead' width="100%">
+                                <a class='altlink_forum' href='forums.php?action=forumview&amp;forid=<?php echo $ovfid; ?>'><span style='font-weight:bold;'><?php echo htmlspecialchars($ovfname); ?></span></a>
+                            </td>
+                            <td align='right' class='colhead'><span style='font-weight:bold;'>Topics</span></td>
+                            <td align='right' class='colhead'><span style='font-weight:bold;'>Posts</span></td>
+                            <td align='left' class='colhead'><span style='font-weight:bold;'>Last post</span></td>
+                        </tr>
+
+                        <?php
+
+                        show_forums($ovfid);
+                    }
+                    end_table();
+
+                    if ($forum_stats_mod)
+                    {
+                        forum_stats();
+                    }
+
+                    ?>
+
+                    <p align='center'>
+                        <a href='forums.php?action=search'><span style='font-weight:bold;'>Search Forums</span></a> |
+                        <a href='forums.php?action=viewunread'><span style='font-weight:bold;'>New Posts</span></a> |
+                        <a href='forums.php?action=getdaily'><span style='font-weight:bold;'>Todays Posts (Last 24 h.)</span></a> |
+                        <a href='forums.php?catchup'><span style='font-weight:bold;'>Mark All as Read</span></a><?php
+                        echo ($CURUSER['class'] == MAX_CLASS ? "" : "");
+
+                    ?>
+
+                    </p><br />
+
+                <?php
+
+                site_footer();
             }
-
-            $ovfid   = (int) $ovf_arr["id"];
-            $ovfname = $ovf_arr["name"];
-
-            ?>
-            <tr>
-                <td align='left' class='colhead' width="100%">
-                    <a class='altlink_forum' href='forums.php?action=forumview&amp;forid=<?php echo $ovfid; ?>'><span style='font-weight:bold;'><?php echo htmlspecialchars($ovfname); ?></span></a>
-                </td>
-                <td align='right' class='colhead'><span style='font-weight:bold;'>Topics</span></td>
-                <td align='right' class='colhead'><span style='font-weight:bold;'>Posts</span></td>
-                <td align='left' class='colhead'><span style='font-weight:bold;'>Last post</span></td>
-            </tr>
-
-            <?php
-
-            show_forums($ovfid);
-        }
-        end_table();
-
-        if ($forum_stats_mod)
-        {
-            forum_stats();
-        }
-
-        ?>
-
-        <p align='center'>
-            <a href='forums.php?action=search'><span style='font-weight:bold;'>Search Forums</span></a> |
-            <a href='forums.php?action=viewunread'><span style='font-weight:bold;'>New Posts</span></a> |
-            <a href='forums.php?action=getdaily'><span style='font-weight:bold;'>Todays Posts (Last 24 h.)</span></a> |
-            <a href='forums.php?catchup'><span style='font-weight:bold;'>Mark all as read</span></a><?php
-            echo ($CURUSER['class'] == MAX_CLASS ? " | <a href='$site_url/forummanage.php#add'><span style='font-weight:bold;'>Forum-Manager</span></a>" : "");
-
-            ?>
-
-        </p><br />
-        
-    <?php
-
-    site_footer();
-}
         }
     }
 }

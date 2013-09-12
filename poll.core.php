@@ -1,48 +1,23 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 //sleep(2);
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
-require_once(INCL_DIR.'function_bbcode.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_bbcode.php');
 
 db_connect();
 
@@ -53,7 +28,7 @@ $userId = 0 + $CURUSER["id"];
 
 if ($do == "load")
 {
-    //check to see if user voted :)
+    //-- Check To See If User Voted :) --//
     $r_check = sql_query("SELECT p.id,p.added,p.question,pa.selection,pa.userid
                             FROM polls AS p
                             LEFT JOIN pollanswers AS pa ON p.id=pa.pollid
@@ -82,22 +57,20 @@ if ($do == "load")
             }
         }
 
-        if (get_user_class() >= UC_MODERATOR)
+        if (get_user_class() >= UC_SYSOP)
         {
-            $modop = "<a href=\"polls.php?action=delete&pollid=".$ar_check["id"]."&returnto=/index.php\">D</a>&nbsp;";
+            $modop = "<a href='controlpanel.php?fileaction=16&amp;action=delete&pollid=".$ar_check["id"]."&returnto=/index.php'><img src='".$image_dir."delete.png' width='16' height='16' border='0' alt='Delete Poll' title='Delete Poll' style='border:none vertical-align:middle;' /></a>&nbsp;";
 
-            $modop .= "<a href=\"makepoll.php?action=edit&pollid=".$ar_check["id"]."&returnto=/index.php\">E</a>";
+            $modop .= "<a href='controlpanel.php?fileaction=15&amp;action=edit&pollid=".$ar_check["id"]."&returnto=/index.php'><img src='".$image_dir."edit.png' width='16' height='16' border='0' alt='Edit Poll' title='Edit Poll' style='border:none vertical-align:middle;' /></a>";
         }
 
         if ($ar_check["userid"] == NULL)
         {
-            print("<div id=\"poll_title\">".format_comment($ar_check["question"])."&nbsp;[".$modop."]&nbsp;</div>\n");
+            print("<div id='poll_title'>".format_comment($ar_check["question"])."&nbsp;".$modop."&nbsp;</div>");
 
             foreach ($options
-                    as
-                     $op_id
-                    =>
-                     $op_val)
+                     AS
+                     $op_id => $op_val)
             {
                 print("<div align=\"left\"><input type=\"radio\" onclick=\"addvote(".$op_id.")\" name=\"choices\" value=\"".$op_id."\" id=\"opt_".$op_id."\" /><label for=\"opt_".$op_id."\">&nbsp;".$op_val."</label></div>\n");
             }
@@ -106,7 +79,7 @@ if ($do == "load")
 
             print("<input type=\"hidden\" value=\"\" name=\"choice\" id=\"choice\"/>");
             print("<input type=\"hidden\" value=\"".$ar_check["id"]."\" name=\"pollId\" id=\"pollId\"/>");
-            print("<div align=\"center\"><input type=\"button\" class='btn' value=\"Vote ->\" style=\"display:none;\" id=\"vote_b\" onclick=\"vote();\"/></div>");
+            print("<div align=\"center\"><input type=\"button\" class=\"btn\" value=\"Vote ->\" style=\"display:none;\" id=\"vote_b\" onclick=\"vote();\"/></div>");
         }
         else
         {
@@ -122,10 +95,8 @@ if ($do == "load")
             }
 
             foreach ($options
-                    as
-                     $k
-                    =>
-                     $op)
+                     AS
+                     $k => $op)
             {
                 $results[] = array(0 + $votes[$k],
                                    $op);
@@ -153,13 +124,13 @@ if ($do == "load")
             $i = 0;
 
             foreach ($results
-                     as
+                     AS
                      $result)
             {
                 print("<tr>
                         <td align=\"left\" width=\"40%\" style=\"border:none;\">".$result[1]."</td>
                         <td class=\"std\" align=\"left\" width=\"60%\" valing=\"middle\">
-                        <div class=\"bar".($i == 0 ? "max" : "")."\"  name=\"".($result[0] / $total * 100)."\" id=\"poll_result\">&nbsp;</div></td>
+                        <div class=\"bar".($i == 0 ? "max" : "")."\" name=\"".($result[0] / $total * 100)."\" id=\"poll_result\">&nbsp;</div></td>
                         <td class=\"std\">&nbsp;<span style=\"font-weight:bold;\">".number_format(($result[0] / $total * 100), 2)."%</span></td>
                     </tr>\n");
 

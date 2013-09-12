@@ -1,41 +1,16 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 function commenttable ($rows)
 {
@@ -46,7 +21,7 @@ function commenttable ($rows)
     //$count = 0;
 
     foreach ($rows
-             as
+             AS
              $row)
     {
         print("<p class='sub'>#".$row["id"]." by ");
@@ -68,16 +43,26 @@ function commenttable ($rows)
         }
         else
         {
-            print("<a name='comm".$row["id"]."'><span style='font-style: italic;'>(orphaned)</span></a>\n");
+            print("<a name='comm".$row["id"]."'><span style='font-style: italic;'>(Orphaned)</span></a>\n");
         }
 
-        print(" at ".$row["added"]." GMT".($row["user"] == $CURUSER["id"] || get_user_class() >= UC_MODERATOR ? "&nbsp;&nbsp;<a class='btn' href='/comment.php?action=edit&amp;cid=$row[id]'>Edit</a>" : "").(get_user_class() >= UC_MODERATOR ? "&nbsp;&nbsp;<a class='btn' href='/comment.php?action=delete&amp;cid=$row[id]'>Delete</a>" : "").($row["editedby"] && get_user_class() >= UC_MODERATOR ? "&nbsp;&nbsp;<a class='btn' href='/comment.php?action=vieworiginal&amp;cid=$row[id]'>View Original</a>" : "")."</p>\n");
+        if ( $CURUSER['torrcompos'] == 'no' )
+        {
+            if ($row["user"] == $CURUSER["id"])
+            {
+                print(" at ".$row["added"]." GMT&nbsp;&nbsp;<a class='btn'>Edit Disabled</a> ");
+            }
+        }
+        else
+        {
+            print(" at ".$row["added"]." GMT&nbsp;&nbsp;".($row["user"] <> $CURUSER["id"] ? "<a class='btn' href='report.php?type=Comment&amp;id=$row[id]'>Report Comment</a>" : "").($row["user"] == $CURUSER["id"] || get_user_class() >= UC_MODERATOR ? "&nbsp;&nbsp;<a class='btn' href='/comment.php?action=edit&amp;cid=$row[id]'>Edit</a>" : "").(get_user_class() >= UC_MODERATOR ? "&nbsp;&nbsp;<a class='btn' href='/comment.php?action=delete&amp;cid=$row[id]'>Delete</a>" : "").($row["editedby"] && get_user_class() >= UC_MODERATOR ? "&nbsp;&nbsp;<a class='btn' href='/comment.php?action=vieworiginal&amp;cid=$row[id]'>View Original</a>" : "")."</p>\n");
+        }
 
         $avatar = ($CURUSER["avatars"] == "yes" ? htmlspecialchars($row["avatar"]) : "");
 
         if (!$avatar)
         {
-            $avatar = "{$image_dir}default_avatar.gif width='125' height='125' border='0' atl='' title='' ";
+            $avatar = "{$image_dir}default_avatar.gif";
         }
 
         $text = format_comment($row["text"]);
@@ -90,7 +75,7 @@ function commenttable ($rows)
         begin_table(true);
 
         print("<tr valign='top'>\n");
-        print("<td align='center' width='150'><img src='{$avatar}' width='' height='' border='' alt='' title='' /></td>\n");
+        print("<td align='center' width='125'><img src='{$avatar}' width='125' height='125' border='0' alt='' title='' /></td>\n");
         print("<td class='text'>$text</td>\n");
         print("</tr>\n");
 

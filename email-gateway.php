@@ -1,45 +1,20 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
 
 db_connect();
 logged_in();
@@ -61,7 +36,7 @@ $username = $arr["username"];
 
 if ($arr["class"] < UC_MODERATOR)
 {
-    error_message("error", "Error", "The Gateway can only be used to e-mail Staff Members.");
+    error_message("error", "Error", "The Gateway can ONLY be used to e-mail Staff Members.");
 }
 
 if ($_SERVER["REQUEST_METHOD"] == "POST")
@@ -84,7 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
     if (!strpos($from_email, "@"))
     {
-        error_message("error", "Error", "The entered e-mail address does not seem to be valid.");
+        error_message("error", "Error", "The entered e-mail address Does Not seem to be Valid.");
     }
 
     $from = "$from <$from_email>";
@@ -111,21 +86,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 
     if ($success)
     {
-        error_message("success", "Success", "E-mail successfully queued for delivery.");
+        error_message("success", "Success", "E-mail Successfully Queued for Delivery.");
     }
     else
     {
-        error_message("error", "Error", "The mail could not be sent. Please try again later.");
+        error_message("error", "Error", "The mail could Not be sent. Please try again later.");
     }
 }
 
 site_header("E-mail Gateway");
 ?>
-<table border='0' class='main' cellspacing='0' cellpadding='0'>
+<table class='main' border='0' cellspacing='0' cellpadding='0'>
     <tr>
-        <td class='embedded'><img src='<?php echo $image_dir?>/email.gif' width='32' height='32' border='0 '
-                                  alt='Send Email' title='Send Email' /></td>
-        <td class='embedded' style='padding-left: 10px'><span style='font-size: small; font-weight:bold;'>Send e-mail to <?php echo $username;?></span></td>
+        <td class='embedded'>
+            <img src='<?php echo $image_dir?>/email.gif' width='32' height='32' border='0' alt='Send Email' title='Send Email' />
+        </td>
+        <td class='embedded' style='padding-left: 10px'>
+            <span style='font-size: small; font-weight:bold;'>Send e-mail to <?php echo $username;?></span>
+        </td>
     </tr>
 </table><br />
 
@@ -152,12 +130,12 @@ site_header("E-mail Gateway");
         <tr>
             <td class='rowhead'><label for='textarea'>Message</label></td>
             <td>
-                <textarea name='message' cols='80' rows='20' id='textarea'></textarea>
+                <textarea name='message' id='textarea' cols='80' rows='20'></textarea>
             </td>
         </tr>
         <tr>
             <td colspan='2' align='center'>
-                <input type='submit' value='Send' class='btn' id='send' />
+                <input type='submit' class='btn' id='send' value='Send' />
             </td>
         </tr>
     </table>

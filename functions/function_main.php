@@ -1,47 +1,22 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
-//==Start execution time
+//-- Start Execution Time --//
 $qtme['start'] = microtime(true);
-//==End
+//-- End --//
 
-/////////Strip slashes by system//////////
+//-- Strip Slashes By System --//
 function cleanquotes (&$in)
 {
     if (is_array($in))
@@ -64,11 +39,46 @@ function local_user ()
     return $_SERVER["SERVER_ADDR"] == $_SERVER["REMOTE_ADDR"];
 }
 
-define('INCL_DIR',dirname(__FILE__).DIRECTORY_SEPARATOR);
-define('ROOT_DIR',realpath(INCL_DIR.'..'.DIRECTORY_SEPARATOR).DIRECTORY_SEPARATOR);
+function illegal_access($page, $class)
+{
+    global $CURUSER;
 
-require_once(INCL_DIR.'function_cleanup.php');
-require_once(INCL_DIR.'function_config.php');
+    $page =  $_SERVER['PHP_SELF'];
+
+    if (get_user_class() < $class)
+    {
+        $added    = sqlesc(get_date_time());
+        $subject  = sqlesc("Illegal Hacking Attempt");
+        $username = $CURUSER['username'];
+        $userid   = $CURUSER['id'];
+        $msg      = sqlesc("Your have been caught making a Illegal Hacking Attempt.\n\nYour attempt has been Reported to the Staff.\n\nYou will be notified in due course, of the consequences regarding this action");
+
+        sql_query("INSERT INTO messages (sender, receiver, added, subject, msg)
+                        VALUES (0, $userid, $added, $subject, $msg)") or sqlerr(__FILE__, __LINE__);
+
+        write_stafflog ("<strong><a href='userdetails.php?id=$userid'>$username.</a></strong> -- Attempted to access $page");
+
+        error_message_center("error","Error", "<strong>$username</strong> This Is A Hacking Attempt!!!");
+    }
+}
+
+require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'function_config.php');
+require_once(FUNC_DIR.'function_cleanup.php');
+
+/*
+function tr($x,$y,$noesc=0)
+{
+    if ($noesc)
+        $a = $y;
+
+    else
+    {
+        $a = htmlspecialchars($y);
+        $a = str_replace("\n", "<br />\n", $a);
+    }
+
+    print("<tr><td class='heading' align='right' valign='top'>$x</td><td valign='top' align='left'>$a</td></tr>\n");
+}
 
 if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN')
 {
@@ -81,11 +91,11 @@ else
     $file_path = str_replace("/functions", "", $file_path);
 }
 
-//define('ROOT_PATH', $file_path);
+define('ROOT_PATH', $file_path);
+*/
 
-//Do not modify -- versioning system
-//This will help identify code for support issues at freetsp.info
-define ('FTSP', 'FreeTSP');
+//-- Do Not Modify -- Versioning System --//
+//-- This Will Help Identify Code For Support Issues At freetsp.info --//
 
 function copyright ()
 {
@@ -94,14 +104,14 @@ function copyright ()
     echo("Powered by <a href='http://www.freetsp.info'>".FTSP." Version ".$curversion."</a> &copy; <a href='http://www.freetsp.info'>".FTSP."</a> ".(date("Y") > 2010 ? "2010-" : "").date("Y"));
 }
 
-/**** validip/getip courtesy of manolete <manolete@myway.com> ****/
-// IP Validation
+//-- validip/getip Curtesy Of Manolete <manolete@myway.com> --//
+//-- IP Validation --//
 function validip ($ip)
 {
     if (!empty($ip) && $ip == long2ip(ip2long($ip)))
     {
-        // reserved IANA IPv4 addresses
-        // http://www.iana.org/assignments/ipv4-address-space
+        //-- Reserved IANA IPv4 Addresses --//
+        //-- http://www.iana.org/assignments/ipv4-address-space --//
         $reserved_ips = array(array('0.0.0.0',
                                     '0.255.255.255'),
                               array('10.0.0.0',
@@ -120,7 +130,7 @@ function validip ($ip)
                                     '255.255.255.255'));
 
         foreach ($reserved_ips
-                 as
+                 AS
                  $r)
         {
             $min = ip2long($r[0]);
@@ -138,7 +148,7 @@ function validip ($ip)
     }
 }
 
-// Patched function to detect REAL IP address if it's valid
+//-- Patched Function To Detect Real IP Address If It's Valid --//
 function getip ()
 {
     if (isset($_SERVER))
@@ -190,11 +200,11 @@ function db_connect ($autoclean = false)
 
                 if ($_SERVER['REQUEST_METHOD'] == "GET")
                 {
-                    die("<html><head><meta http-equiv='refresh' content='5 $_SERVER[REQUEST_URI]'></head><body><table width='100%' height='100%' border='0'><tr><td><h3 align='center'>The server load is very high at the moment. Retrying, please wait...</h3></td></tr></table></body></html>");
+                    die("<html><head><meta http-equiv='refresh' content='5 $_SERVER[REQUEST_URI]'></head><body><table width='100%' height='100%' border='0'><tr><td><h3 align='center'>The Server Load is Very High at the moment. Retrying, please wait...</h3></td></tr></table></body></html>");
                 }
                 else
                 {
-                    die("Too many users. Please press the Refresh button in your browser to retry.");
+                    die("Too many users. Please press the Refresh button in your Browser to retry.");
                 }
             default:
 
@@ -202,7 +212,9 @@ function db_connect ($autoclean = false)
         }
     }
     mysql_select_db($mysql_db)
-            or die('db_connect: mysql_select_db: ' + mysql_error());
+        or die('db_connect: mysql_select_db: ' + mysql_error());
+
+    // mysql_set_charset('utf8');
 
     userlogin();
 
@@ -216,18 +228,19 @@ function userlogin ()
 {
     global $site_online;
     unset($GLOBALS["CURUSER"]);
+    $dt = get_date_time();
 
     $ip  = getip();
     $nip = ip2long($ip);
-    $res = mysql_query("SELECT * 
-                        FROM bans 
-                        WHERE '$nip' >= first 
+    $res = sql_query("SELECT *
+                        FROM bans
+                        WHERE '$nip' >= first
                         AND '$nip' <= last") or sqlerr(__FILE__, __LINE__);
 
     if (mysql_num_rows($res) > 0)
     {
         header("HTTP/1.0 403 Forbidden");
-        print("<html><body><h1>403 Forbidden</h1>Unauthorized IP address.</body></html>\n");
+        print("<html><body><h1>403 Forbidden</h1>Unauthorized IP Address.</body></html>\n");
         die;
     }
 
@@ -243,12 +256,11 @@ function userlogin ()
         return;
     }
 
-    $res = mysql_query("SELECT *
-                        FROM users
-                        WHERE id = $id
-                        AND enabled='yes'
-                        AND status = 'confirmed'");
-    // or die(mysql_error());
+    $res = sql_query("SELECT u.*, ann_main.subject AS curr_ann_subject, ann_main.body AS curr_ann_body, ann_main.expires AS curr_ann_expires "."
+                        FROM users AS u "."
+                        LEFT JOIN announcement_main AS ann_main "."ON ann_main.main_id = u.curr_ann_id "."
+                        WHERE u.id = $id AND u.enabled='yes' AND u.status = 'confirmed'") or sqlerr(__FILE__, __LINE__);
+
 
     $row = mysql_fetch_array($res);
 
@@ -264,6 +276,94 @@ function userlogin ()
         return;
     }
 
+    //-- If curr_ann_id > 0 But curr_ann_body IS NULL, Then Force A Refresh --//
+    if (($row['curr_ann_id'] > 0) AND ($row['curr_ann_body'] == NULL))
+    {
+        $row['curr_ann_id'] = 0;
+        $row['curr_ann_last_check'] = '0';
+    }
+
+    // If Elapsed > 10 Minutes, Force An Announcement Refresh. --//
+    if (($row['curr_ann_last_check'] != '0') AND ($row['curr_ann_last_check']) < (time($dt) - 600))
+    {
+        $row['curr_ann_last_check'] = '0';
+    }
+
+    if (($row['curr_ann_id'] == 0) AND ($row['curr_ann_last_check'] == '0'))
+    { //-- Force An Immediate Check... --//
+        $query = sprintf('SELECT m.*,p.process_id FROM announcement_main AS m '.
+                         'LEFT JOIN announcement_process AS p ON m.main_id = p.main_id '.
+                         'AND p.user_id = %s '.
+                         'WHERE p.process_id IS NULL '.
+                         'OR p.status = 0 '.
+                         'ORDER BY m.main_id ASC '.
+                         'LIMIT 1',
+
+        sqlesc($row['id']));
+
+        $result = sql_query($query);
+
+        if (mysql_num_rows($result))
+        { //-- Main Result Set Exists --//
+            $ann_row = mysql_fetch_assoc($result);
+
+            $query = $ann_row['sql_query'];
+
+            //-- Ensure It Only Selects... --//
+            if (!preg_match('/\\ASELECT.+?FROM.+?WHERE.+?\\z/', $query)) die();
+
+            //-- The Following Line Modifies The Query To Only Return The Current User --//
+            //-- Row If The Existing Query Matches Any Attributes. --//
+            $query .= ' AND u.id = '.sqlesc($row['id']).' LIMIT 1';
+
+            $result = sql_query($query);
+
+            if (mysql_num_rows($result))
+            { //-- Announcement Valid For Member --//
+                $row['curr_ann_id'] = $ann_row['main_id'];
+
+                //-- Create Three Row Elements To Hold Announcement Subject, Body And Expiry Date. --//
+                $row['curr_ann_subject'] = $ann_row['subject'];
+                $row['curr_ann_body']    = $ann_row['body'];
+                $row['curr_ann_expires'] = $ann_row['expires'];
+
+                //-- Create Additional Set For Main UPDATE Query. --//
+                $add_set = ', curr_ann_id = '.sqlesc($ann_row['main_id']);
+                $status  = 2;
+            }
+            else
+            //-- Announcement Not Valid For Member... --//
+            {
+                $add_set = ', curr_ann_last_check = '.sqlesc($dt);
+                $status  = 1;
+            }
+
+            //-- Create Or Set Status Of Process --//
+            if ($ann_row['process_id'] === NULL)
+            {
+                //-- Insert Process Result Set Status = 1 (Ignore) --//
+                $query = sprintf('INSERT INTO announcement_process (main_id, user_id, status)
+                                    VALUES (%s, %s, %s)', sqlesc($ann_row['main_id']), sqlesc($row['id']), sqlesc($status));
+            }
+            else
+            //-- Update Process Result Set Status = 2 (Read) --//
+            {
+                $query = sprintf('UPDATE announcement_process
+                                    SET status = %s
+                                    WHERE process_id = %s', sqlesc($status), sqlesc($ann_row['process_id']));
+            }
+            sql_query($query);
+        }
+        else
+        //-- No Main Result Set. Set Last Update To Now... --//
+        {
+            $add_set = ', curr_ann_last_check = '.sqlesc($dt);
+        }
+
+        unset($result);
+        unset($ann_row);
+    }
+
     $time = time();
 
     if ($time - $row['last_access_numb'] < 300)
@@ -272,28 +372,36 @@ function userlogin ()
         $userupdate[] = "onlinetime = onlinetime + ".sqlesc($onlinetime);
     }
 
-    ///----Hide Staff IP address by Fireknight----///
-
-    if($row['class'] >= 4)
+    //-- Start Hide Staff IP Address by Fireknight --//
+    if ($row['class'] >= UC_MODERATOR)
     {
-       $ip = "127.0.0.1";
+       $ip = '127.0.0.1';
     }
+    //-- End Hide Staff IP Address by Fireknight --//
 
-    ///---End Hide Staff IP address by Fireknight----///
+    $add_set = (isset($add_set))?$add_set:'';
 
     $userupdate[] = "last_access_numb = ".sqlesc($time);
-    $userupdate[] = "last_access = ".sqlesc(get_date_time());
-    $userupdate[] = "ip = ".sqlesc($ip);
+    $userupdate[] = "last_access = ".sqlesc($dt);
+    $userupdate[] = "ip = ".sqlesc($ip).$add_set;
 
     sql_query("UPDATE users
-                  SET ".implode(", ", $userupdate)."
-                  WHERE id=".$row["id"]);
+                SET ".implode(", ", $userupdate)."
+                WHERE id=".$row["id"]);
 
     $row['ip']          = $ip;
+
+    //-- Start Temp Demote By Retro 1 of 3 --//
+    if ($row['override_class'] < $row['class'])
+    {
+        $row['class'] = $row['override_class']; //-- Override Class And Save In Global Array Below. --//
+    }
+    //-- Finish Temp Demote By Retro 1 of 3 --//
+
     $GLOBALS["CURUSER"] = $row;
 }
 
-function autoclean ()
+function autoclean()
 {
     global $autoclean_interval;
 
@@ -301,8 +409,8 @@ function autoclean ()
     $docleanup = 0;
 
     $res = sql_query("SELECT value_u
-                         FROM avps
-                         WHERE arg = 'lastcleantime'");
+                        FROM avps
+                        WHERE arg = 'lastcleantime'");
 
     $row = mysql_fetch_array($res);
 
@@ -310,7 +418,6 @@ function autoclean ()
     {
         sql_query("INSERT INTO avps (arg, value_u)
                     VALUES ('lastcleantime',$now)");
-
         return;
     }
 
@@ -322,9 +429,9 @@ function autoclean ()
     }
 
     sql_query("UPDATE avps
-                  SET value_u = $now
-                  WHERE arg = 'lastcleantime'
-                  AND value_u = $ts");
+                SET value_u = $now
+                WHERE arg = 'lastcleantime'
+                AND value_u = $ts");
 
     if (!mysql_affected_rows())
     {
@@ -344,45 +451,45 @@ function unesc ($x)
     return $x;
 }
 
-function mksize($bytes) 
+function mksize($bytes)
 {
     $bytes = max(0, $bytes);
-    // Kilobytes 1024^1
+    //-- Kilobytes 1024^1 --//
     if ($bytes < 1024000)
     {
         return number_format($bytes / 1024, 2).' KB';
     }
-    // Megabytes 1024^2
+    //-- Megabytes 1024^2 --//
     elseif ($bytes < 1048576000)
     {
         return number_format($bytes / 1048576, 2).' MB';
     }
-    // Gigebytes 1024^3
+    //-- Gigebytes 1024^3 --//
     elseif ($bytes < 1073741824000)
     {
         return number_format($bytes / 1073741824, 2).' GB';
     }
-    // Terabytes 1024^4
+    //-- Terabytes 1024^4 --//
     elseif ($bytes < 1099511627776000)
     {
         return number_format($bytes / 1099511627776, 3).' TB';
     }
-    // Petabytes 1024^5
+    //-- Petabytes 1024^5 --//
     elseif ($bytes < 1125899906842624000)
     {
         return number_format($bytes / 1125899906842624, 3).' PB';
     }
-    // Exabytes 1024^6
+    //-- Exabytes 1024^6 --//
     elseif ($bytes < 1152921504606846976000)
     {
         return number_format($bytes / 1152921504606846976, 3).' EB';
     }
-    // Zettabyres 1024^7
+    //-- Zettabyres 1024^7 --//
     elseif ($bytes < 1180591620717411303424000)
     {
         return number_format($bytes / 1180591620717411303424, 3).' ZB';
     }
-    // Yottabytes 1024^8
+    //-- Yottabytes 1024^8 --//
     else
     {
         return number_format($bytes / 1208925819614629174706176, 3).' YB';
@@ -439,8 +546,8 @@ function mkprettytime ($s)
                    "60:min",
                    "24:hour",
                    "0:day")
-             as
-             $x)
+            AS
+            $x)
     {
         $y = explode(":", $x);
 
@@ -467,7 +574,6 @@ function mkprettytime ($s)
         return sprintf("%d:%02d:%02d", $t["hour"], $t["min"], $t["sec"]);
     }
 
-
     return sprintf("%d:%02d", $t["min"], $t["sec"]);
 }
 
@@ -479,7 +585,7 @@ function mkglobal ($vars)
     }
 
     foreach ($vars
-             as
+             AS
              $v)
     {
         if (isset($_GET[$v]))
@@ -497,6 +603,7 @@ function mkglobal ($vars)
             return 0;
         }
     }
+
     return 1;
 }
 
@@ -546,27 +653,25 @@ function parsedescr ($d, $html)
 
 function site_header ($title = "", $msgalert = true)
 {
-    global $CURUSER, $site_online, $FUNDS, $site_name, $image_dir;
-
-    //header('Content-Type: text/html; charset=utf-8');
+    global $CURUSER, $site_online, $site_name, $image_dir;
 
     if (!$site_online)
     {
-        die("Site is down for Maintenance. Please check back again later. Thank You.<br />");
+        die("Site is Down for Maintenance. Please check back again later. Thank You.<br />");
     }
 
     if ($title == "")
     {
-        $title = $site_name.(isset($_GET['ftsp']) ? " (".FTSPVERSION.")" : '');
+        $title = $site_name.(isset($_GET['ftsp']) ? " (".FTSP." $curversion)" : '');
     }
     else
     {
-        $title = $site_name.(isset($_GET['ftsp']) ? " (".FTSPVERSION.")" : '')." :: ".htmlspecialchars($title);
+        $title = $site_name.(isset($_GET['ftsp']) ? " (".FTSP." $curversion)" : '')." :: ".htmlspecialchars($title);
     }
 
     if ($CURUSER)
     {
-        $ss_a = @mysql_fetch_array(mysql_query("SELECT uri
+        $ss_a = @mysql_fetch_array(sql_query("SELECT uri
                                                 FROM stylesheets
                                                 WHERE id = ".$CURUSER["stylesheet"]));
 
@@ -578,7 +683,7 @@ function site_header ($title = "", $msgalert = true)
 
     if (!$ss_uri)
     {
-        ($r = mysql_query("SELECT uri
+        ($r = sql_query("SELECT uri
                             FROM stylesheets
                             WHERE id = 1")) or die(mysql_error());
 
@@ -589,7 +694,7 @@ function site_header ($title = "", $msgalert = true)
 
     if ($msgalert && $CURUSER)
     {
-        $res = mysql_query("SELECT COUNT(id)
+        $res = sql_query("SELECT COUNT(id)
                            FROM messages
                            WHERE receiver = ".$CURUSER["id"]." && unread = 'yes'") or die("OopppsY!");
 
@@ -598,21 +703,62 @@ function site_header ($title = "", $msgalert = true)
         $unread = $arr[0];
     }
 
-    require_once "stylesheets/".$ss_uri."/site_header.php";
+    require_once(STYLES_DIR.$ss_uri.DIRECTORY_SEPARATOR.'theme_function.php');
+    require_once(STYLES_DIR.$ss_uri.DIRECTORY_SEPARATOR.'site_header.php');
+
+    //-- Start Temp Demote By Retro 2 of 3 --//
+    if ($CURUSER['override_class'] != 255 && $CURUSER) //-- Second Condition Needed So That This Box Is Not Displayed For Non Members/logged Out Members --//
+    {
+        display_message_center("warn", "Warning", "You are Running under a Lower Class. Click <a href='$site_url/restoreclass.php'><strong>HERE</strong></a> to Restore.");
+    }
+    //-- Finish Temp Demote By Retro 2 of 3 --//
 
     if (isset($unread) && !empty($unread))
     {
-        //print("<table cellspacing='0' cellpadding='10' border='0' bgcolor='red'><tr><td style='padding: 10px; background: red'>\n");
-        //print("<a href='messages.php'><span style='color : #ffffff; font-weight:bold;'>You have $unread new message" . ($unread > 1 ? "s" : "") . "!</span></a>");
-        //print("</td></tr></table>\n");
+        /*print("<table border='0' cellspacing='0' cellpadding='10' bgcolor='red'><tr><td style='padding: 10px; background: red'>\n");
+        print("<a href='messages.php'><span style='color : #ffffff; font-weight:bold;'>You have $unread New Message".($unread > 1 ? "s" : "")."!</span></a>");
+        print("</td></tr></table>\n");*/
         print("<div align='center'>");
         print("<div class='silver mail round small inset'>");
         print("<p><strong>You Have Mail</strong>");
         print("<br /><a href='messages.php'>&nbsp;&nbsp;&nbsp;&nbsp;<span class='emphasis'>You have $unread New Message".($unread > 1 ? "s" : "")."</span></a></p>");
         print("<div class='shadow-out'></div>");
         print("</div>");
-        print("</div>");
+        print("</div><br />");
     }
+
+    //-- Start Announcement Message Display --//
+    $res = sql_query("SELECT created
+                        FROM announcement_main
+                        WHERE 1 = 1");
+
+    while ($arr = mysql_fetch_assoc($res))
+
+    if ($arr['created'] >= $CURUSER['added'])
+    {
+        $ann_subject = trim($CURUSER['curr_ann_subject']);
+        $ann_body    = trim($CURUSER['curr_ann_body']);
+        $ann_expires = trim($CURUSER['curr_ann_expires']);
+
+        if ((!empty($ann_subject)) AND (!empty($ann_body)))
+        {
+            print("<table border='1' width='600' cellspacing='0' cellpadding='5'>");
+            print("<tr><td class='colhead' align='center'><strong><font color='#0000FF'>Announcement :- ");
+            print("$ann_subject");
+            print("</font></strong></td></tr>");
+            print("<tr><td class='rowhead'>");
+            print(format_comment($ann_body));
+            print("<br /><hr />");
+            print("Expires :-&nbsp;$ann_expires :-&nbsp;");
+            print(" (".mkprettytime(strtotime($ann_expires) - gmtime())." to go)");
+            print("<br /><hr />");
+            print("Click <a href='clear_announcement.php'><strong>Here</strong></a> To Clear This Announcement.");
+            print("</td></tr></table>");
+            site_footer();
+            die();
+        }
+    }
+//-- Finish Announcement Message Display --//
 }
 
 function site_footer ()
@@ -621,7 +767,7 @@ function site_footer ()
 
     if ($CURUSER)
     {
-        $ss_a = @mysql_fetch_array(mysql_query("SELECT uri
+        $ss_a = @mysql_fetch_array(sql_query("SELECT uri
                                                 FROM stylesheets
                                                 WHERE id=".$CURUSER["stylesheet"]));
 
@@ -633,7 +779,7 @@ function site_footer ()
 
     if (!$ss_uri)
     {
-        ($r = mysql_query("SELECT uri
+        ($r = sql_query("SELECT uri
                             FROM stylesheets
                             WHERE id=1")) or die(mysql_error());
 
@@ -642,7 +788,8 @@ function site_footer ()
         $ss_uri = $a["uri"];
     }
 
-    require_once("stylesheets/".$ss_uri."/site_footer.php");
+    require_once(STYLES_DIR.$ss_uri.DIRECTORY_SEPARATOR.'theme_function.php');
+    require_once(STYLES_DIR.$ss_uri.DIRECTORY_SEPARATOR.'site_footer.php');
 }
 
 function mksecret ($len = 20)
@@ -682,8 +829,8 @@ function logincookie ($id, $passhash, $updatedb = 1, $expires = 0x7fffffff)
     if ($updatedb)
     {
         sql_query("UPDATE users
-              SET last_login = NOW()
-              WHERE id = $id");
+                      SET last_login = NOW()
+                      WHERE id = $id");
     }
 }
 
@@ -696,6 +843,7 @@ function logoutcookie ()
 function logged_in ()
 {
     global $CURUSER, $site_url;
+
     if (!$CURUSER)
     {
         header("Location: $site_url/login.php?returnto=".urlencode($_SERVER["REQUEST_URI"]));
@@ -704,7 +852,21 @@ function logged_in ()
     }
 }
 
-// Returns the current time in GMT in MySQL compatible format.
+function status_change($id)
+{
+    sql_query('UPDATE announcement_process
+                SET status = 0
+                WHERE user_id = '.sqlesc($id).'
+                AND status = 1');
+}
+
+function hashit($var,$addtext="")
+{
+//-- I Would Suggest That You Change The Literal Text To Something That Only You Know (unique For Each Community Installing This Function). --//
+    return md5("This Text ".$addtext.$var.$addtext." is added to muddy the water...");
+}
+
+//-- Returns The Current Time In GMT In MySQL Compatible Format. --//
 function get_date_time ($timestamp = 0)
 {
     if ($timestamp)
@@ -722,77 +884,7 @@ function sqlerr ($file = '', $line = '')
     error_message("error", "SQL Error", "".mysql_error().($file != '' && $line != '' ? "in $file, line $line" : "")."");
 }
 
-function StatusBar ()
-{
-    global $CURUSER, $image_dir;
-
-    if (!$CURUSER)
-    {
-        return "";
-    }
-
-    $upped   = mksize($CURUSER['uploaded']);
-    $downed  = mksize($CURUSER['downloaded']);
-    $ratio   = $CURUSER['downloaded'] > 0 ? $CURUSER['uploaded'] / $CURUSER['downloaded'] : 0;
-    $ratio   = number_format($ratio, 2);
-    $IsDonor = '';
-
-    if ($CURUSER['donor'] == "yes")
-
-    {
-        $IsDonor = "<img src='".$image_dir."star.png' width='16' height='16' border='0' alt='Donor' title='Donor' />";
-    }
-
-    $warn = '';
-
-    if ($CURUSER['warned'] == "yes")
-
-    {
-        $warn = "<img src='".$image_dir."warned.png' width='15' height='16' border='0' alt='Warned' title='Warned' />";
-    }
-
-    $res1 = mysql_query("SELECT COUNT(id)
-                            FROM messages
-                            WHERE receiver=".$CURUSER["id"]."
-                            AND unread='yes'") or print(mysql_error());
-
-    $arr1   = mysql_fetch_row($res1);
-    $unread = $arr1[0];
-    $inbox  = ($unread == 1 ? "$unread&nbsp;New Message" : "$unread&nbsp;New Messages");
-
-
-    $res2 = mysql_query("SELECT seeder, COUNT(id) AS pCount
-                            FROM peers
-                            WHERE userid=".$CURUSER['id']."
-                            GROUP BY seeder") or print(mysql_error());
-
-    $seedleech = array('yes' => '0',
-                       'no'  => '0');
-
-    while ($row = mysql_fetch_assoc($res2))
-    {
-        if ($row['seeder'] == 'yes')
-        {
-            $seedleech['yes'] = $row['pCount'];
-        }
-        else
-        {
-            $seedleech['no'] = $row['pCount'];
-        }
-    }
-
-    $StatusBar = '';
-
-    $StatusBar = "<tr>"."<td colspan='2' style='padding: 2px;'>"."<div id='statusbar'>"."<p class='home'>Welcome back, <a class='altlink_user' href='userdetails.php?id=".$CURUSER['id']."'><span style='color : #".get_user_class_color($CURUSER['class'])."'> ".htmlspecialchars($CURUSER['username'])."</span></a>"."$IsDonor$warn&nbsp; [<a href='logout.php'>Logout</a>] Reputation Points  : ".$CURUSER['reputation']."</p>"."<p>".date(DATE_RFC822)."</p><p>";
-
-    $StatusBar .= ""."</p><p class='home'>Ratio:$ratio"."&nbsp;&nbsp;Uploaded:$upped"."&nbsp;&nbsp;Downloaded:$downed"."&nbsp;&nbsp;Active Torrents:&nbsp;<img src='".$image_dir."up.png' width='9' height='7' border='0' alt='Torrents Seeding' title='Torrents Seeding' />&nbsp;{$seedleech['yes']}"."&nbsp;&nbsp;<img src='".$image_dir."dl.png' width='9' height='7' border='0' alt='Torrents Leeching' title='Torrents Leeching' />&nbsp;{$seedleech['no']}</p>";
-
-    $StatusBar .= "<p>"."<a href='messages.php'>$inbox</a>"."</p></div></td></tr>";
-
-    return $StatusBar;
-}
-
-//==Sql query count
+//-- SQL Query Count --//
 $qtme['querytime'] = 0;
 
 function sql_query ($querytme)
@@ -803,9 +895,9 @@ function sql_query ($querytme)
     $qtme['query_stat'] = isset($qtme['query_stat']) && is_array($qtme['query_stat']) ? $qtme['query_stat'] : array();
 
     $queries++;
-    $query_start_time     = microtime(true); // Start time
+    $query_start_time     = microtime(true); //-- Start Time --//
     $result               = mysql_query($querytme);
-    $query_end_time       = microtime(true); // End time
+    $query_end_time       = microtime(true); //-- End Time --//
     $query_time           = ($query_end_time - $query_start_time);
     $querytime            = $querytime + $query_time;
     $qtme['querytime']    = (isset($qtme['querytime']) ? $qtme['querytime'] : 0) + $query_time;
@@ -815,5 +907,18 @@ function sql_query ($querytme)
     return $result;
 }
 
-require_once(INCL_DIR.'function_global.php');
+if (file_exists(ROOT_DIR."install/index.php")) {
+    echo("<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
+    \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
+        <html xmlns='http://www.w3.org/1999/xhtml'>
+        <head>
+            <title>Warning</title>
+        </head>
+        <body>
+            <div style='font-size:33px;color:white;background-color:red;text-align:center;'>Delete the Install Directory</div>
+        </body>
+    </html>");
+    exit();
+}
+
 ?>

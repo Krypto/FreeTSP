@@ -1,47 +1,22 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
-require_once(INCL_DIR.'function_commenttable.php');
-require_once(INCL_DIR.'function_bbcode.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_commenttable.php');
+require_once(FUNC_DIR.'function_bbcode.php');
 
 $action = isset($_GET["action"]) ? $_GET["action"] : '';
 
@@ -106,6 +81,11 @@ if ($action == "add")
     if (!$arr)
     {
         error_message("error", "Error", "No torrent with ID.");
+    }
+
+    if ($CURUSER['torrcompos'] == 'no')
+    {
+        error_message_center("error", "Error", "Your Torrent Comment Privilage Has Been Removed.");
     }
 
     site_header("Add a Comment to '".$arr["name"]."'");
@@ -190,8 +170,13 @@ elseif ($action == "edit")
         else
         {
             header("Location: $site_url/");
-        } // change later
+        } //-- Change Later --//
         die;
+    }
+
+    if ($CURUSER['torrcompos'] == 'no')
+    {
+        error_message_center("error", "Error", "Your Torrent Comment Privilage Has Been Removed.");
     }
 
     site_header("Edit Comment to '".htmlspecialchars($arr["name"])."'");
@@ -261,7 +246,7 @@ elseif ($action == "delete")
     else
     {
         header("Location: $site_url/");
-    } // change later
+    } //-- Change Later
     die;
 }
 elseif ($action == "vieworiginal")
@@ -291,8 +276,9 @@ elseif ($action == "vieworiginal")
     }
 
     site_header("Original Comment");
+
     print("<h1>Original contents of comment #$commentid</h1>\n");
-    print("<table width='100%' border='1' cellspacing='0' cellpadding='5'>");
+    print("<table border='1' width='100%' cellspacing='0' cellpadding='5'>");
     print("<tr>");
     print("<td class='comment'>\n");
     print htmlspecialchars($arr["ori_text"]);

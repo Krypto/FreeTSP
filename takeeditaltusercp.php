@@ -1,47 +1,22 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
-require_once(INCL_DIR.'function_bbcode.php');
-require_once(INCL_DIR.'function_page_verify.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_bbcode.php');
+require_once(FUNC_DIR.'function_page_verify.php');
 
 db_connect();
 logged_in();
@@ -93,12 +68,12 @@ else {
             {
                 if (strlen($chpassword) > 40)
                 {
-                    error_message("error", "Update Failed!", "Sorry, Password is too long (max is 40 chars)");
+                    error_message("error", "Update Failed!", "Sorry, Password is Too Long (max is 40 chars)");
                 }
 
                 if ($chpassword != $passagain)
                 {
-                    error_message("error", "Update Failed!", "The Passwords didn't match. Try again.");
+                    error_message("error", "Update Failed!", "The Passwords Didn't Match. Try again.");
                 }
 
                 $sec      = mksecret();
@@ -114,7 +89,7 @@ else {
             {
                 if (!validemail($email))
                 {
-                    error_message("error", "Update Failed!", "That doesn't look like a valid email address.");
+                    error_message("error", "Update Failed!", "That Doesn't Look Like A Valid Email Address.");
                 }
 
                 $r = sql_query("SELECT id
@@ -124,7 +99,7 @@ else {
                 if (mysql_num_rows($r) > 0)
 
                 {
-                    error_message("error", "Update Failed!", "The e-mail address is already in use.");
+                    error_message("error", "Update Failed!", "The E-mail Address Is Already In Use.");
                 }
 
                 $changedemail = 1;
@@ -158,29 +133,29 @@ else {
                 $thisdomain = preg_replace('/^www\./is', "", $thishost);
 
 $body = <<<EOD
-You have requested that your user profile (username {$CURUSER["username"]})
-on $thisdomain should be updated with this email address ($email) as
+You have Requested that your User Profile (Username {$CURUSER["username"]})
+on $thisdomain should be Updated with this Email Address ($email) as
 user contact.
 
-If you did not do this, please ignore this email. The person who entered your
-email address had the IP address {$_SERVER["REMOTE_ADDR"]}. Please do not reply.
+If you did not do this, please Ignore this Email. The person who entered your
+Email Address had the IP Address {$_SERVER["REMOTE_ADDR"]}. Please Do Not reply.
 
-To complete the update of your user profile, please follow this link:
+To Complete the Update of your User Profile, please follow this link:
 
 $site_url/confirmemail.php/{$CURUSER["id"]}/$hash/$obemail
 
-Your new email address will appear in your profile after you do this. Otherwise
-your profile will remain unchanged.
+Your New Email Address will appear in your Profile after you do this. Otherwise
+your Profile will remain unchanged.
 EOD;
 
-                mail($email, "$thisdomain profile change confirmation", $body, "From: $site_email", "-f$site_email");
+                mail($email, "$thisdomain Profile Change Confirmation", $body, "From: $site_email", "-f$site_email");
 
                 $urladd .= "&mailsent=1";
             }
             $action = "security";
         }
 
-        //== Torrent stuffs
+        //-- Torrent Stuffs --//
         elseif ($action == "torrents")
         {
             $pmnotif    = $_POST["pmnotif"];
@@ -228,17 +203,14 @@ EOD;
             if ($action == "personal")
             {
                 $stylesheet = $_POST["stylesheet"];
-                $dropmenu   = $_POST["dropmenu"];
-                $stdmenu    = $_POST["stdmenu"];
+                $parked     = $_POST["parked"];
+                $pcoff      = $_POST["pcoff"];
+                $menu       = $_POST["menu"];
                 $country    = $_POST["country"];
 
-                if ($dropmenu == 'no' && $stdmenu == 'no' || $dropmenu == 'yes' && $stdmenu == 'yes')
-                {
-                    error_message("error", "Update Failed!", "You must have either the Top Menu or Side Menu!");
-                }
-
-                $updateset[] = "dropmenu =  ".sqlesc($dropmenu);
-                $updateset[] = "stdmenu =  ".sqlesc($stdmenu);
+                $updateset[] = "parked = ".sqlesc($parked);
+                $updateset[] = "pcoff = ".sqlesc($pcoff);
+                $updateset[] = "menu = ".sqlesc($menu);
                 $updateset[] = "torrentsperpage = ".min(100, 0 + $_POST["torrentsperpage"]);
                 $updateset[] = "topicsperpage = ".min(100, 0 + $_POST["topicsperpage"]);
                 $updateset[] = "postsperpage = ".min(100, 0 + $_POST["postsperpage"]);

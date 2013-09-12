@@ -1,46 +1,21 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify    --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
-require_once(INCL_DIR.'function_page_verify.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_page_verify.php');
 
 db_connect();
 logged_in();
@@ -85,6 +60,11 @@ $shortfname = $matches[1];
 $dname      = $row['save_as'];
 $nfoaction  = $_POST['nfoaction'];
 
+if (!empty($_POST['poster']))
+{
+    $poster = unesc($_POST['poster']);
+}
+
 if ($nfoaction == 'update')
 {
     $nfofile = $_FILES['nfo'];
@@ -106,13 +86,16 @@ if ($nfoaction == 'update')
         $updateset[] = "nfo = ".sqlesc(str_replace("\x0d\x0d\x0a", "\x0d\x0a", file_get_contents($nfofilename)));
     }
 }
-else {
+else
+{
     if ($nfoaction == 'remove')
     {
         $updateset[] = 'nfo = ""';
     }
 }
+
 $updateset[] = "name = ".sqlesc($name);
+$updateset[] = "anonymous = '".($_POST["anonymous"] ? "yes" : "no")."'";
 $updateset[] = "search_text = ".sqlesc(searchfield("$shortfname $dname $torrent"));
 $updateset[] = "descr = ".sqlesc($descr);
 $updateset[] = "ori_descr = ".sqlesc($descr);
@@ -129,15 +112,26 @@ if (get_user_class() >= UC_MODERATOR)
     {
         $updateset[] = 'banned = "no"';
     }
+
+    if ($_POST["sticky"] == "yes")
+    {
+        $updateset[] = "sticky = 'yes'";
+    }
+    else
+    {
+        $updateset[] = "sticky = 'no'";
+    }
 }
 
+$updateset[] = "freeleech = '".( isset($_POST['freeleech']) ? 'yes' : 'no')."'";
 $updateset[] = "visible = '".(isset($_POST['visible']) ? 'yes' : 'no')."'";
+$updateset[] = "poster = ".sqlesc($poster);
 
 sql_query("UPDATE torrents
             SET ".join(",", $updateset)."
-            WHERE id =  $id");
+            WHERE id = $id");
 
-write_log(htmlspecialchars($name).' was edited by   '.htmlspecialchars($CURUSER['username']));
+write_log(htmlspecialchars($name).' was edited by '.htmlspecialchars($CURUSER['username']));
 
 $returl = "details.php?id=$id&edited=1";
 

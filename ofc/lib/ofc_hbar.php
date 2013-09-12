@@ -43,7 +43,7 @@ class hbar
     function set_values ($v)
     {
         foreach ($v
-                 as
+                 AS
                  $val)
         {
             $this->append_value(new hbar_value($val));

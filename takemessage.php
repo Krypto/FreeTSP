@@ -1,46 +1,21 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
-require_once(INCL_DIR.'function_page_verify.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_page_verify.php');
 
 if ($_SERVER["REQUEST_METHOD"] != "POST")
 {
@@ -66,7 +41,7 @@ if ($n_pms)
 
     if (!$msg)
     {
-        error_message("error", "Error", "Please enter something!");
+        error_message("error", "Error", "Please Enter Something!");
     }
 
     $subject   = trim($_POST['subject']);
@@ -84,7 +59,7 @@ if ($n_pms)
     $comment  = isset($_POST['comment']) ? $_POST['comment'] : '';
     $snapshot = isset($_POST['snap']) ? $_POST['snap'] : '';
 
-    // add a custom text or stats snapshot to comments in profile
+    //-- Add A Custom Text Or Stats Snapshot To Comments In Profile --//
     if ($comment || $snapshot)
     {
         $res = sql_query("SELECT u.id, u.uploaded, u.downloaded, u.modcomment ".$from_is) or sqlerr(__FILE__, __LINE__);
@@ -145,12 +120,12 @@ else
 
     if (!$msg)
     {
-        error_message("error", "Error", "Please enter something!");
+        error_message("error", "Error", "Please Enter Something!");
     }
 
     $save = ($save == 'yes') ? "yes" : "no";
 
-    $res = sql_query("SELECT acceptpms, email, notifs, UNIX_TIMESTAMP(last_access) as la
+    $res = sql_query("SELECT acceptpms, email, notifs, parked, UNIX_TIMESTAMP(last_access) AS la
                         FROM users
                         WHERE id=$receiver") or sqlerr(__FILE__, __LINE__);
 
@@ -164,6 +139,11 @@ else
     //Make sure recipient wants this message
     if (get_user_class() < UC_MODERATOR)
     {
+        if ($user["parked"] == "yes")
+        {
+            error_message("warn","Refused, This Account Is Parked.");
+        }
+
         if ($user["acceptpms"] == "yes")
         {
             $res2 = sql_query("SELECT *
@@ -173,7 +153,7 @@ else
 
             if (mysql_num_rows($res2) == 1)
             {
-                error_message("info", "Refused", "This User has Blocked PMs from you.");
+                error_message("info", "Refused", "This User has Blocked PMs From You.");
             }
         }
         elseif ($user["acceptpms"] == "friends")
@@ -185,16 +165,17 @@ else
 
             if (mysql_num_rows($res2) != 1)
             {
-                error_message("info", "Refused", "This User ONLY accepts PMs from Users in their Friends List.");
+                error_message("info", "Refused", "This User ONLY Accepts PMs from Users in their Friends List.");
             }
         }
         elseif ($user["acceptpms"] == "no")
         {
-            error_message("info", "Refused", "This User does NOT accept PMs.");
+            error_message("info", "Refused", "This User Does NOT Accept PMs.");
         }
     }
 
     $subject = trim($_POST['subject']);
+
     sql_query("INSERT INTO messages (poster, sender, receiver, added, msg, subject, saved, location)
                 VALUES(".$CURUSER["id"].", ".$CURUSER["id"].", $receiver, '".get_date_time()."', ".sqlesc($msg).", ".sqlesc($subject).", ".sqlesc($save).", 1)") or sqlerr(__FILE__, __LINE__);
 
@@ -207,14 +188,15 @@ else
 $body = <<<EOD
 You have received a PM from $username!
 
-You can use the URL below to view the message (you may have to login).
+You can use the URL below to View The Message (you may have to login).
 
 $site_url/messages.php
 
 --
 $site_name
 EOD;
-            @mail($user["email"], "You have received a PM from ".$username."!", $body, "From: $site_email", "-f$site_email");
+            //@sendmail($user["email"], "You have Received a PM from ".$username."!", $body, "From: $site_email", "-f$site_email");
+            sendMail($site_email,$site_name.' '."You have received a PM from ".$username."!", $body, "From: $site_email", "-f$site_email");
         }
     }
     $delete = isset($_POST["delete"]) ? $_POST["delete"] : '';
@@ -223,7 +205,7 @@ EOD;
     {
         if ($delete == "yes")
         {
-            // Make sure receiver of $origmsg is current user
+            //-- Make Sure Receiver Of $origmsg Is Current User --//
             $res = sql_query("SELECT *
                                 FROM messages
                                 WHERE id=$origmsg") or sqlerr(__FILE__, __LINE__);
@@ -234,7 +216,7 @@ EOD;
 
                 if ($arr["receiver"] != $CURUSER["id"])
                 {
-                    error_message("error", "Error", "This shouldn't happen.");
+                    error_message("error", "Error", "This Shouldn't Happen.");
                 }
 
                 if ($arr["saved"] == "no")
@@ -266,7 +248,7 @@ EOD;
     site_header();
 
     //header("refresh:1; $site_url/index.php");
-    display_message("success", "Succeeded", "Message was successfully sent!");
+    display_message("success", "Succeeded", "Message Was Successfully Sent!");
 
 }
 

@@ -1,46 +1,21 @@
 <?php
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP RC 3.0   -------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*--------           Developed By: Krypto, Fireknight, Subzero           --------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
 
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
-require_once(INCL_DIR.'function_torrenttable.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_torrenttable.php');
 
 db_connect(false);
 logged_in();
@@ -54,7 +29,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
 {
     if ($_POST["username"] == "" || $_POST["uploaded"] == "" || $_POST["downloaded"] == "")
     {
-        error_message("error", "Error", "Missing form data.");
+        error_message("error", "Error", "Missing Form Data.");
     }
 
     $username = sqlesc($_POST["username"]);
@@ -85,9 +60,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         $uploaded   = $arr["uploaded"] + $uploaded;
         $downloaded = $arr["downloaded"] + $downloaded;
 
-        mysql_query("UPDATE users
-                        SET uploaded=$uploaded, downloaded=$downloaded
-                        WHERE username=$username") or sqlerr(__FILE__, __LINE__);
+        sql_query("UPDATE users
+                    SET uploaded=$uploaded, downloaded=$downloaded
+                    WHERE username=$username") or sqlerr(__FILE__, __LINE__);
     }
     elseif ($_POST["action"] == '2')
     {
@@ -100,15 +75,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST")
         $downloaded = $arr["downloaded"] - $downloaded;
 
         sql_query("UPDATE users
-                        SET uploaded=$uploaded, downloaded=$downloaded
-                        WHERE username=$username") or sqlerr(__FILE__, __LINE__);
+                    SET uploaded=$uploaded, downloaded=$downloaded
+                    WHERE username=$username") or sqlerr(__FILE__, __LINE__);
     }
     elseif ($_POST["action"] == '3')
 
     {
         sql_query("UPDATE users
-                        SET uploaded=$uploaded, downloaded=$downloaded
-                        WHERE username=$username") or sqlerr(__FILE__, __LINE__);
+                    SET uploaded=$uploaded, downloaded=$downloaded
+                    WHERE username=$username") or sqlerr(__FILE__, __LINE__);
     }
 
     $result = sql_query("SELECT id

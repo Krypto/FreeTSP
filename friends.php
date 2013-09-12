@@ -1,45 +1,20 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
 
 db_connect(false);
 logged_in();
@@ -57,8 +32,7 @@ if ($userid != $CURUSER["id"])
     error_message("warn", "Warning", "Access Denied.");
 }
 
-// action: add -------------------------------------------------------------
-
+//-- Action: Add --//
 if ($action == 'add')
 {
     $targetid = 0 + $_GET['targetid'];
@@ -100,8 +74,7 @@ if ($action == 'add')
     die;
 }
 
-// action: delete
-
+//-- Action: Delete --//
 if ($action == 'delete')
 {
     $targetid = (int) $_GET['targetid'];
@@ -115,7 +88,7 @@ if ($action == 'delete')
 
     if (!$sure)
     {
-        error_message("warn", "Delete $type", "Do you really want to Delete a $type? Click\n"."<a href='?id=$userid&amp;action=delete&amp;type=$type&amp;targetid=$targetid&amp;sure=1'>here</a> if you are sure.");
+        error_message("warn", "Delete $type", "Do you really want to Delete a $type? Click\n"."<a href='?id=$userid&amp;action=delete&amp;type=$type&amp;targetid=$targetid&amp;sure=1'>HERE</a> if you are sure?");
     }
 
     if ($type == 'friend')
@@ -155,8 +128,7 @@ if ($action == 'delete')
     die;
 }
 
-// main body
-
+//-- Main Body --//
 site_header("Personal Lists for ".$user['username']);
 
 if ($user["donor"] == "yes")
@@ -175,14 +147,14 @@ print("<table class='main' border='0' cellspacing='0' cellpadding='0'>
         </tr>
     </table>\n");
 
-print("<table class='main' width='100%' border='0' cellspacing='0' cellpadding='0'>
+print("<table class='main' border='0' width='100%' cellspacing='0' cellpadding='0'>
         <tr>
             <td class='embedded'>");
 
 print("<br />");
 print("<h2 align='left'><a name='friends'>Friends List</a></h2>\n");
 
-echo("<table width='100%' border='1' cellspacing='0' cellpadding='5'>
+echo("<table border='1' width='100%' cellspacing='0' cellpadding='5'>
         <tr>
             <td>");
 
@@ -211,29 +183,32 @@ else
 
         $body1 = "<a href='userdetails.php?id={$friend['id']}'><span style='font-weight:bold;'>".htmlentities($friend['name'], ENT_QUOTES)."</span></a>".get_user_icons($friend)." ($title)<br /><br />last seen on ".$friend['last_access']."<br />(".get_elapsed_time(sql_timestamp_to_unix_timestamp($friend[last_access]))." ago)";
 
-        $body2 = "<br /><a href='friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid={$friend['id']}'><input type='submit' class='btn' value='Remove' /></a><br /><br /><a href='sendmessage.php?receiver={$friend['id']}'><input type='submit' class='btn' value='Send PM' /></a>";
+        $body2 = "<br /><a href='friends.php?id=$userid&amp;action=delete&amp;type=friend&amp;targetid={$friend['id']}'>
+                        <input type='submit' class='btn' value='Remove' /></a><br /><br />
+                        <a href='sendmessage.php?receiver={$friend['id']}'>
+                        <input type='submit' class='btn' value='Send PM' /></a>";
 
         $avatar = ($CURUSER["avatars"] == "yes" ? htmlspecialchars($friend["avatar"]) : "");
 
         if (!$avatar)
         {
-            $avatar = "{$image_dir}default_avatar.gif width='125' height='125' border='0' atl='' title='' ";
+            $avatar = "{$image_dir}default_avatar.gif";
         }
 
         if ($i % 2 == 0)
         {
-            print("<table width='100%' style='padding: 0px'><tr><td class='bottom' style='padding: 5px' width='50%' align='center'>");
+            print("<table width='100%' style='padding: 0px'><tr><td class='bottom' align='center' width='50%' style='padding: 5px'>");
         }
         else
         {
-            print("<td class='bottom' style='padding: 5px' width='50%' align='center'>");
+            print("<td class='bottom' align='center' width='50%' style='padding: 5px'>");
         }
-        print("<table class='main' style='width: 100%;height: 75'>");
-        print("<tr valign='top'><td width='75' align='center' style='padding: 0px'>".($avatar ? "<div style='width:75;height:75;overflow: hidden'><img src='$avatar' width='' height='' border='0' alt='' title='' /></div>" : "")."</td><td>\n");
+        print("<table class='main' style='width:100%; height:75'>");
+        print("<tr valign='top'><td align='center' width='75' style='padding: 0px'>".($avatar ? "<div style='width:75;height:75;overflow: hidden'><img src='$avatar' width='125' height='125' border='0' alt='' title='' /></div>" : "")."</td><td>\n");
 
         print("<table class='main'>");
-        print("<tr><td class='embedded' style='padding: 5px' width='80%'>$body1</td>\n");
-        print("<td class='embedded' style='padding: 5px' width='20%'>$body2</td></tr>\n");
+        print("<tr><td class='embedded' width='80%' style='padding: 5px'>$body1</td>\n");
+        print("<td class='embedded' width='20%' style='padding: 5px'>$body2</td></tr>\n");
         print("</table>");
 
         echo("</td></tr></table>\n");
@@ -280,7 +255,7 @@ else
 }
 
 print("<br /><br />");
-print("<table class='main' width='100%' border='0' cellspacing='0' cellpadding='10'><tr><td class='embedded'>");
+print("<table class='main' border='0' width='100%' cellspacing='0' cellpadding='10'><tr><td class='embedded'>");
 print("<h2 align='left'><a name='blocks'>Blocked Users List</a></h2></td></tr>");
 print("<tr><td style='padding: 10px;background-color: #ECE9D8'>");
 print("$blocks\n");

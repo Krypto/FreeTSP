@@ -1,43 +1,18 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
-require_once(INCL_DIR.'function_main.php');
+require_once(FUNC_DIR.'function_main.php');
 
 function get_row_count ($table, $suffix = "")
 {
@@ -117,7 +92,7 @@ function docleanup ()
         $delids = array();
 
         foreach (array_keys($ar)
-                 as
+                 AS
                  $k)
         {
             if (isset($ar2[$k]) && $ar2[$k])
@@ -189,17 +164,20 @@ function docleanup ()
     while (0);
 
     $deadtime = deadtime();
+
     sql_query("DELETE
                 FROM peers
                 WHERE last_action < FROM_UNIXTIME($deadtime)");
 
     $deadtime -= $max_dead_torrent_time;
+
     sql_query("UPDATE torrents
                 SET visible='no'
                 WHERE visible='yes'
                 AND last_action < FROM_UNIXTIME($deadtime)");
 
     $deadtime = time() - $signup_timeout;
+
     sql_query("DELETE
                 FROM users
                 WHERE status = 'pending'
@@ -246,7 +224,7 @@ function docleanup ()
         $torr = $torrents[$id];
 
         foreach ($fields
-                 as
+                 AS
                  $field)
         {
             if (!isset($torr[$field]))
@@ -257,7 +235,7 @@ function docleanup ()
         $update = array();
 
         foreach ($fields
-                 as
+                 AS
                  $field)
         {
             if ($torr[$field] != $row[$field])
@@ -274,27 +252,40 @@ function docleanup ()
         }
     }
 
-    //delete inactive user accounts
+    //-- Delete Parked User Accounts --//
+    $secs     = 175 * 86400; //-- Set At 175 Days - Change The Time To Fit Your Needs --//
+    $dt       = (time() - $secs);
+    $maxclass = UC_POWER_USER;
+
+    sql_query("DELETE
+                FROM users
+                WHERE parked='yes'
+                AND status='confirmed'
+                AND class <= $maxclass
+                AND last_access < $dt");
+
+    //-- Delete Inactive User Accounts --//
     $secs     = 42 * 86400;
     $dt       = sqlesc(get_date_time(gmtime() - $secs));
     $maxclass = UC_POWER_USER;
 
     sql_query("DELETE
                 FROM users
-                WHERE status='confirmed'
+                WHERE parked='yes'
+                AND status='confirmed'
                 AND class <= $maxclass
                 AND last_access < $dt");
 
-    //delete old login attempts
-    $secs = 1 * 86400; //   Delete failed login attempts per one day.
-    $dt   = sqlesc(get_date_time(gmtime() - $secs)); // calculate date.
+    //-- Delete Old Login Attempts --//
+    $secs = 1 * 86400; //--  Delete Failed Login Attempts Per One Day. --//
+    $dt   = sqlesc(get_date_time(gmtime() - $secs)); //-- Calculate Date. --//
 
     sql_query("DELETE
                 FROM loginattempts
                 WHERE banned='no'
                 AND added < $dt");
 
-    //remove expired warnings
+    //-- Remove Expired Warnings --//
     $res = sql_query("SELECT id
                         FROM users
                         WHERE warned='yes'
@@ -304,7 +295,7 @@ function docleanup ()
     if (mysql_num_rows($res) > 0)
     {
         $dt  = sqlesc(get_date_time());
-        $msg = sqlesc("Your warning has been removed. Please keep in your best behaviour from now on.\n");
+        $msg = sqlesc("Your Warning has been Removed. Please keep in your best behaviour from now on.\n");
 
         while ($arr = mysql_fetch_assoc($res))
         {
@@ -313,11 +304,73 @@ function docleanup ()
                         WHERE id = $arr[id]") or sqlerr(__FILE__, __LINE__);
 
             sql_query("INSERT INTO messages (sender, receiver, added, msg, poster)
-                        VALUES(0, $arr[id], $dt, $msg, 0)")    or sqlerr(__FILE__, __LINE__);
+                        VALUES(0, $arr[id], $dt, $msg, 0)") or sqlerr(__FILE__, __LINE__);
         }
     }
 
-    // promote power users
+    //-- Delete Old Help Desk Questions --//
+    $secs = 7 * 86400; //-- Delete Old Questions After 7 Days
+    $dt   = sqlesc(get_date_time(gmtime() - $secs)); //-- Calculate Date & Time Based On GMT.
+
+    sql_query("DELETE
+                FROM helpdesk
+                WHERE added < $dt");
+
+    //-- Remove Disabled Offer Comment Status Time Based --//
+    $res = sql_query("SELECT id, username
+                        FROM users
+                        WHERE offercompos='no'
+                        AND offercomposuntil < NOW()
+                        AND offercomposuntil <> '0000-00-00 00:00:00'") or sqlerr(__FILE__, __LINE__);
+
+    if (mysql_num_rows($res) > 0)
+    {
+         $dt      = sqlesc(get_date_time());
+         $msg     = sqlesc("Your Offer Comment Privilege has been returned to you. \n Please be more careful in the future.");
+         $subject = sqlesc("Your Offer Comment Status");
+
+         while ($arr = mysql_fetch_assoc($res))
+         {
+             sql_query("UPDATE users
+                        SET offercompos = 'yes', offercomposuntil = '0000-00-00 00:00:00'
+                        WHERE id = $arr[id]") or sqlerr(__FILE__, __LINE__);
+
+             sql_query("INSERT INTO messages (sender, receiver, added, subject, msg, poster)
+                        VALUES(0, $arr[id], $dt, $subject, $msg, 0)") or sqlerr(__FILE__, __LINE__);
+
+             write_stafflog("<a href=userdetails.php?id=$arr[id]><strong>$arr[username]</strong></a> - had their Offer Comment Privilage returned by - <strong>Clean Up System</strong>");
+
+         }
+    }
+
+    //-- Remove Disabled Request Comment Status Time Based --//
+    $res = sql_query("SELECT id, username
+                        FROM users
+                        WHERE requestcompos='no'
+                        AND requestcomposuntil < NOW()
+                        AND requestcomposuntil <> '0000-00-00 00:00:00'") or sqlerr(__FILE__, __LINE__);
+
+    if (mysql_num_rows($res) > 0)
+    {
+         $dt = sqlesc(get_date_time());
+         $msg    = sqlesc("Your Request Comment Privilege has been returned to you. \n Please be more careful in the future.");
+         $subject = sqlesc("Your Request Comment Status");
+
+         while ($arr = mysql_fetch_assoc($res))
+         {
+             sql_query("UPDATE users
+                        SET requestcompos = 'yes', requestcomposuntil = '0000-00-00 00:00:00'
+                        WHERE id = $arr[id]") or sqlerr(__FILE__, __LINE__);
+
+             sql_query("INSERT INTO messages (sender, receiver, added, subject, msg, poster)
+                        VALUES(0, $arr[id], $dt, $subject, $msg, 0)") or sqlerr(__FILE__, __LINE__);
+
+             write_stafflog("<a href=userdetails.php?id=$arr[id]><strong>$arr[username]</strong></a> - had their request comment privilage returned by - <strong>Clean Up System</strong>");
+
+         }
+    }
+
+    //-- Promote Power Users --//
     $limit    = 25 * 1024 * 1024 * 1024;
     $minratio = 1.05;
     $maxdt    = sqlesc(get_date_time(gmtime() - 86400 * 28));
@@ -327,12 +380,12 @@ function docleanup ()
                         WHERE class = 0
                         AND uploaded >= $limit
                         AND uploaded / downloaded >= $minratio
-                        AND added < $maxdt") or    sqlerr(__FILE__, __LINE__);
+                        AND added < $maxdt") or sqlerr(__FILE__, __LINE__);
 
     if (mysql_num_rows($res) > 0)
     {
         $dt  = sqlesc(get_date_time());
-        $msg = sqlesc("Congratulations, you have been auto-promoted to [b]Power User[/b]. :)\nYou can now download dox over 1 meg and view torrent NFOs.\n");
+        $msg = sqlesc("Congratulations, you have been Auto-Promoted to [b]Power User[/b]. :)\n");
 
         while ($arr = mysql_fetch_assoc($res))
         {
@@ -341,22 +394,24 @@ function docleanup ()
                         WHERE id = $arr[id]") or sqlerr(__FILE__, __LINE__);
 
             sql_query("INSERT INTO messages (sender, receiver, added, msg, poster)
-                        VALUES(0, $arr[id], $dt, $msg, 0)")    or sqlerr(__FILE__, __LINE__);
+                        VALUES(0, $arr[id], $dt, $msg, 0)") or sqlerr(__FILE__, __LINE__);
+
+            status_change($arr['id']);
         }
     }
 
-    // demote power users
+    //-- Demote Power Users --//
     $minratio = 0.95;
 
     $res = sql_query("SELECT id
                         FROM users
                         WHERE class = 1
-                        AND uploaded / downloaded < $minratio")    or sqlerr(__FILE__, __LINE__);
+                        AND uploaded / downloaded < $minratio") or sqlerr(__FILE__, __LINE__);
 
     if (mysql_num_rows($res) > 0)
     {
         $dt  = sqlesc(get_date_time());
-        $msg = sqlesc("You have been auto-demoted from [b]Power User[/b] to [b]User[/b] because your share ratio has dropped below $minratio.\n");
+        $msg = sqlesc("You have been Auto-Demoted from [b]Power User[/b] to [b]User[/b] because your Share Ratio has dropped below $minratio.\n");
 
         while ($arr = mysql_fetch_assoc($res))
         {
@@ -365,25 +420,51 @@ function docleanup ()
                         WHERE id = $arr[id]") or sqlerr(__FILE__, __LINE__);
 
             sql_query("INSERT INTO messages (sender, receiver, added, msg, poster)
-                        VALUES(0, $arr[id], $dt, $msg, 0)")    or sqlerr(__FILE__, __LINE__);
+                        VALUES(0, $arr[id], $dt, $msg, 0)") or sqlerr(__FILE__, __LINE__);
+
+            status_change($arr['id']);
         }
     }
+
+    //-- Delete Orphaned Announcement Processors --//
+    sql_query("DELETE announcement_process
+                FROM announcement_process
+                LEFT JOIN users ON announcement_process.user_id = users.id
+                WHERE users.id IS NULL");
+
+    //-- Delete Expired Announcements And Processors --//
+    sql_query("DELETE FROM announcement_main
+                WHERE expires < ".sqlesc(time()));
+
+    sql_query("DELETE announcement_process
+                FROM announcement_process
+                LEFT JOIN announcement_main ON announcement_process.main_id = announcement_main.main_id
+                WHERE announcement_main.main_id IS NULL");
+
 
     $registered     = get_row_count('users');
     $unverified     = get_row_count('users', "WHERE status='pending'");
     $torrents       = get_row_count('torrents');
     $seeders        = get_row_count('peers', "WHERE seeder='yes'");
     $leechers       = get_row_count('peers', "WHERE seeder='no'");
-    $torrentstoday  = get_row_count('torrents', 'WHERE added    > DATE_SUB(NOW(), INTERVAL 1 DAY)');
+    $torrentstoday  = get_row_count('torrents', 'WHERE added > DATE_SUB(NOW(), INTERVAL 1 DAY)');
     $donors         = get_row_count('users', "WHERE donor='yes'");
-    $unconnectables = get_row_count("peers", " WHERE connectable='no'");
-    $forumposts     = get_row_count("posts");
-    $forumtopics    = get_row_count("topics");
-    $dt             = sqlesc(get_date_time(gmtime() - 300)); // Active users last 5 minutes
-    $numactive      = get_row_count("users", "WHERE last_access >= $dt");
+    $unconnectables = get_row_count('peers', "WHERE connectable='no'");
+    $forumposts     = get_row_count('posts');
+    $forumtopics    = get_row_count('topics');
+    $dt             = sqlesc(get_date_time(gmtime() - 300)); //-- Active Users Last 5 Minutes --//
+    $numactive      = get_row_count('users', "WHERE last_access >= $dt");
+    $Users          = get_row_count('users', "WHERE class='0'");
+    $Poweruser      = get_row_count('users', "WHERE class='1'");
+    $Vip            = get_row_count('users', "WHERE class='2'");
+    $Uploaders      = get_row_count('users', "WHERE class = '3'");
+    $Moderator      = get_row_count('users', "WHERE class = '4'");
+    $Adminisitrator = get_row_count('users', "WHERE class = '5'");
+    $Sysop          = get_row_count('users', "WHERE class = '6'");
+    $Manager        = get_row_count('users', "WHERE class = '7'");
 
     sql_query("UPDATE stats
-                SET regusers = '$registered', unconusers = '$unverified', torrents = '$torrents', seeders = '$seeders', leechers = '$leechers', unconnectables = '$unconnectables', torrentstoday = '$torrentstoday', donors = '$donors', forumposts = '$forumposts', forumtopics = '$forumtopics', numactive = '$numactive'
+                SET regusers = '$registered', unconusers = '$unverified', torrents = '$torrents', seeders = '$seeders', leechers = '$leechers', unconnectables = '$unconnectables', torrentstoday = '$torrentstoday', donors = '$donors', forumposts = '$forumposts', forumtopics = '$forumtopics', numactive = '$numactive', Users = '$Users', Poweruser = '$Poweruser', Vip = '$Vip', Uploaders = '$Uploaders', Moderator = '$Moderator', Adminisitrator = '$Adminisitrator', Sysop ='$Sysop', Manager = '$Manager'
                 WHERE id = '1'
                 LIMIT 1");
 
@@ -414,7 +495,11 @@ function docleanup ()
                         FROM files
                         WHERE torrent=$arr[id]");
 
-            write_log("Torrent $arr[id] ($arr[name]) was deleted by system (older than $days days)");
+            sql_query("DELETE
+                        FROM thanks
+                        WHERE torrentid=$arr[id]");
+
+            write_log("Torrent $arr[id] ($arr[name]) was Deleted by System (Older than $days days)");
         }
     }
 }

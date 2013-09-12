@@ -1,46 +1,21 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify    --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
-require_once(INCL_DIR.'function_bbcode.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_bbcode.php');
 
 db_connect(false);
 logged_in();
@@ -309,7 +284,7 @@ function code ($ibm_437, $swedishmagic = false)
 
     $s = htmlspecialchars($ibm_437);
 
-    // 0-9, 11-12, 14-31, 127 (decimalt)
+    //-- 0-9, 11-12, 14-31, 127 (decimalt) --//
     $control = array("\000",
                      "\001",
                      "\002",
@@ -344,36 +319,26 @@ function code ($ibm_437, $swedishmagic = false)
                      "\037",
                      "\177");
 
-    /* Code control characters to control pictures.
-    [url="http://www.unicode.org/charts/PDF/U2400.pdf"]http://www.unicode.org/charts/PDF/U2400.pdf[/url]
-    (This is somewhat the Right Thing, but looks crappy with Courier New.)
-    $controlpict = array("&#x2423;","&#x2404;");
-    $s = str_replace($control,$controlpict,$s); */
-
-    // replace control chars with space - feel free to fix the regexp :)
-    /*echo "[a\\x00-\\x1F]";
-    //$s = ereg_replace("[ \\x00-\\x1F]", " ", $s);
-    $s = ereg_replace("[ \000-\037]", " ", $s); */
-
     $s = str_replace($control, "  ", $s);
 
     if ($swedishmagic)
     {
-        $s = str_replace("\345", "\206", $s); // Code windows "?" to dos.
-        $s = str_replace("\344", "\204", $s); // Code windows "?" to dos.
-        $s = str_replace("\366", "\224", $s); // Code windows "?" to dos.
-        //$s = str_replace("\304","\216",$s); // Code windows "?" to dos.
+        $s = str_replace("\345", "\206", $s); //-- Code Windows "?" To Dos. --//
+        $s = str_replace("\344", "\204", $s); //-- Code Windows "?" To Dos. --//
+        $s = str_replace("\366", "\224", $s); //-- Code Windows "?" To Dos. --//
+        //$s = str_replace("\304","\216",$s); //-- Code Windows "?" To Dos. --//
         //$s = "[ -~]\\xC4[a-za-z]";
-        // couldn't get ^ and $ to work, even through I read the man-pages,
-        // i'm probably too tired and too unfamiliar with posix regexps right now
-        $s = str_replace("([ -~])\305([ -~])", "\\1\217\\2", $s); // ?
-        $s = str_replace("([ -~])\304([ -~])", "\\1\216\\2", $s); // ?
-        $s = str_replace("([ -~])\326([ -~])", "\\1\231\\2", $s); // ?
+        //-- Couldn't Get ^ And $ To Work, Even Through I Read The Man-pages, --//
+        //-- I'm Probably Too Tired And Too Unfamiliar With Posix Regexps Right Now --//
+        $s = str_replace("([ -~])\305([ -~])", "\\1\217\\2", $s); //-- ? --//
+        $s = str_replace("([ -~])\304([ -~])", "\\1\216\\2", $s); //-- ? --//
+        $s = str_replace("([ -~])\326([ -~])", "\\1\231\\2", $s); //-- ? --//
         $s = str_replace("\311", "\220", $s); // ?
         $s = str_replace("\351", "\202", $s); // ?
     }
 
     $s = str_replace($table437, $tablehtml, $s);
+
     return $s;
 }
 
@@ -390,7 +355,7 @@ $r = sql_query("SELECT name,nfo
 
 $a = mysql_fetch_assoc($r) or die("Puke");
 
-// view might be one of: "magic", "latin-1", "strict" or "fonthack"
+//-- View Might Be One Of: "magic", "latin-1", "strict" Or "fonthack" --//
 $view = "";
 
 if (isset($_GET["view"]))
@@ -399,29 +364,29 @@ if (isset($_GET["view"]))
 }
 else
 {
-    $view = "magic"; // default behavior
+    $view = "magic"; //-- Default Behavior --//
 }
 
 $nfo = "";
 
 if ($view == "latin-1" || $view == "fonthack")
 {
-    // Do not convert from ibm-437, read bytes as is.
-    // NOTICE: TBSource specifies Latin-1 encoding in include/bittorrent.php:
-    // site_header()
+    //-- Do Not Convert From ibm-437, Read Bytes As Is. --//
+    //-- NOTICE: TBSource Specifies Latin-1 Encoding In functions/function_main.php: --//
+    //-- site_header() --//
     $nfo = htmlentities(($a["nfo"]));
 }
 else
 {
-    // Convert from ibm-437 to html unicode entities.
-    // take special care of Swedish letters if in magic view.
+    //-- Convert From ibm-437 To Html Unicode Entities. --//
+    //-- Take Special Care Of Swedish Letters If In Magic View. --//
     $nfo = code($a["nfo"], $view == "magic");
 }
 
 site_header();
 
-echo("<h1>nfo for <a href='details.php?id=$id'>".htmlentities($a["name"])."</a></h1>
-<table border='1' cellspacing='0' cellpadding='10' align='center'>
+echo("<h1>NFO for <a href='details.php?id=$id'>".htmlentities($a["name"])."</a></h1>
+<table border='1' align='center' cellspacing='0' cellpadding='10'>
   <tr>
     <td align='center' width='50%'>
       <a href='viewnfo.php?id=".$id."&amp;view=magic' title='Magisk IBM-437'>
@@ -434,24 +399,24 @@ echo("<h1>nfo for <a href='details.php?id=$id'>".htmlentities($a["name"])."</a><
       <table border='1' cellspacing='0' cellpadding='5'><tr>
         <td class='text'>");
 
-// -- About to output NFO data
+//-- About To Output NFO Data --//
 if ($view == "fonthack")
 {
-    // Please notice: MS LineDraw's glyphs are included in the Courier New font
-    // as of Courier New version 2.0, but uses the correct mappings instead.
-    // [url="http://support.microsoft.com/kb/q179422/"]http://support.microsoft.com/kb/q179422/[/url]
+    //-- Please Notice: Ms Linedraw's Glyphs Are Included In The Courier New Font --//
+    //-- As Of Courier New Version 2.0, But Uses The Correct Mappings Instead. --//
+    //-- [url="http://support.microsoft.com/kb/q179422/"]http://support.microsoft.com/kb/q179422/[/url] --//
     echo("<pre style=\"font-size:10pt; font-family: 'MS LineDraw', 'Terminal', monospace;\">");
 }
 else
 {
-    // IE6.0 need to know which font to use, Mozilla can figure it out in its own
-    // (windows firefox at least)
-    // Anything else than 'Courier New' looks pretty broken.
-    // 'Lucida Console', 'FixedSys'
+    //-- Ie6.0 Need To Know Which Font To Use, Mozilla Can Figure It Out In Its Own --//
+    //-- (windows Firefox At Least) --//
+    //-- Anything Else Than 'courier New' Looks Pretty Broken. --//
+    //-- 'Lucida Console', 'Fixedsys' --//
     echo("<pre style=\"font-size:10pt; font-family: 'Courier New', monospace;\">");
 }
 
-// Writes the (eventually modified) NFO data to output, first formating urls.
+//-- Writes The (Eventually Modified) NFO Data To Output, First Formating Urls. --//
 echo format_urls($nfo);
 echo("</pre>\n");
 echo("</td></tr></table></td></tr></table>");

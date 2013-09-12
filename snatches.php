@@ -1,45 +1,20 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and / or modify  --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
 
 db_connect();
 logged_in();
@@ -80,14 +55,14 @@ list($pagertop, $pagerbottom, $limit) = pager($perpage, $count, "?id=$id&");
 
 site_header("Snatches");
 
-print("<h1>Snatches for torrent <a href='details.php?id=$arr[id]'>$arr[name]</a></h1>\n");
+print("<h1>Snatches for Torrent <a href='details.php?id=$arr[id]'>$arr[name]</a></h1>\n");
 print("<h2>Currently $row[0] Snatch".($row[0] == 1 ? "" : "es")."</h2>\n");
 
 if ($count > $perpage)
-
 {
     print("$pagertop");
 }
+
 print("<table border='0' cellspacing='0' cellpadding='5'>\n");
 print("<tr>\n");
 print("<td class='colhead' align='left'>Username</td>\n");
@@ -105,7 +80,7 @@ print("<td class='colhead' align='center'>Port</td>\n");
 print("<td class='colhead' align='center'>Seeding</td>\n");
 print("</tr>\n");
 
-$res = sql_query("SELECT s.*, size, username, warned, enabled, donor
+$res = sql_query("SELECT s.*, size, username, warned, enabled, donor, class
                     FROM snatched AS s
                     INNER JOIN users ON s.userid = users.id
                     INNER JOIN torrents ON s.torrentid = torrents.id
@@ -131,8 +106,8 @@ while ($arr = mysql_fetch_assoc($res))
     $arr1 = mysql_fetch_assoc($res1);
 
     print("<tr>\n");
-    print("<td class='rowhead' align='left'><a href='userdetails.php?id=$arr[userid]'>$arr[username]</a>".get_user_icons($arr)."</td>\n");
-    print("<td class='rowhead' align='center'>".($arr["connectable"] == "yes" ? "<span style='color : #00ff00;'>Yes</span>" : "<span style='color : #ff0000;'>No</span>")."</td>\n");
+    print("<td class='rowhead' align='left'>".format_username($arr)."</td>\n");
+    print("<td class='rowhead' align='center'>".($arr["connectable"] == "yes" ? "<span style='color : #006600;'>Yes</span>" : "<span style='color : #ff0000;'>No</span>")."</td>\n");
     print("<td class='rowhead' align='right'>".mksize($arr["uploaded"])."</td>\n");
     print("<td class='rowhead' align='right'>".mksize($arr["downloaded"])."</td>\n");
     print("<td class='rowhead' align='right'>$ratio</td>\n");
@@ -143,7 +118,7 @@ while ($arr = mysql_fetch_assoc($res))
     print("<td class='rowhead' align='center'>".($arr["complete_date"] == "0000-00-00 00:00:00" ? "Not completed" : $arr["complete_date"])."</td>\n");
     print("<td class='rowhead' align='center'>$arr[agent]</td>\n");
     print("<td class='rowhead' align='center'>$arr[port]</td>\n");
-    print("<td class='rowhead' align='center'>".($arr1["seeder"] == "yes" ? "<span style='color : #00ff00; font-weight:bold;'>Yes</span>" : "<span style='color : #ff0000; font-weight:bold;'>No</span>")."</td>\n");
+    print("<td class='rowhead' align='center'>".($arr1["seeder"] == "yes" ? "<span style='color : green; font-weight:bold;'>Yes</span>" : "<span style='color : #ff0000; font-weight:bold;'>No</span>")."</td>\n");
     print("</tr>\n");
 }
 print("</table><br />\n");

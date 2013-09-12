@@ -1,53 +1,26 @@
 <?php
 
-/*
-*-------------------------------------------------------------------------------*
-*----------------    |  ____|        |__   __/ ____|  __ \        --------------*
-*----------------    | |__ _ __ ___  ___| | | (___ | |__) |       --------------*
-*----------------    |  __| '__/ _ \/ _ \ |  \___ \|  ___/        --------------*
-*----------------    | |  | | |  __/  __/ |  ____) | |            --------------*
-*----------------    |_|  |_|  \___|\___|_| |_____/|_|            --------------*
-*-------------------------------------------------------------------------------*
-*---------------------------    FreeTSP  v1.0   --------------------------------*
-*-------------------   The Alternate BitTorrent Source   -----------------------*
-*-------------------------------------------------------------------------------*
-*-------------------------------------------------------------------------------*
-*--   This program is free software; you can redistribute it and /or modify    --*
-*--   it under the terms of the GNU General Public License as published by    --*
-*--   the Free Software Foundation; either version 2 of the License, or       --*
-*--   (at your option) any later version.                                     --*
-*--                                                                           --*
-*--   This program is distributed in the hope that it will be useful,         --*
-*--   but WITHOUT ANY WARRANTY; without even the implied warranty of          --*
-*--   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the           --*
-*--   GNU General Public License for more details.                            --*
-*--                                                                           --*
-*--   You should have received a copy of the GNU General Public License       --*
-*--   along with this program; if not, write to the Free Software             --*
-*-- Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307 USA  --*
-*--                                                                           --*
-*-------------------------------------------------------------------------------*
-*------------   Original Credits to tbSource, Bytemonsoon, TBDev   -------------*
-*-------------------------------------------------------------------------------*
-*-------------      Developed By: Krypto, Fireknight, Subzero       ------------*
-*-------------------------------------------------------------------------------*
-*-----------------       First Release Date August 2010      -------------------*
-*-----------                 http://www.freetsp.info                 -----------*
-*------                    2010 FreeTSP Development Team                  ------*
-*-------------------------------------------------------------------------------*
-*/
+/**
+**************************
+** FreeTSP Version: 1.0 **
+**************************
+** http://www.freetsp.info
+** https://github.com/Krypto/FreeTSP
+** Licence Info: GPL
+** Copyright (C) 2010 FreeTSP v1.0
+** A bittorrent tracker source based on TBDev.net/tbsource/bytemonsoon.
+** Project Leaders: Krypto, Fireknight.
+**/
 
 require_once(dirname(__FILE__).DIRECTORY_SEPARATOR.'functions'.DIRECTORY_SEPARATOR.'function_main.php');
-require_once(INCL_DIR.'function_user.php');
-require_once(INCL_DIR.'function_vfunctions.php');
-require_once(INCL_DIR.'function_page_verify.php');
+require_once(FUNC_DIR.'function_user.php');
+require_once(FUNC_DIR.'function_vfunctions.php');
+require_once(FUNC_DIR.'function_page_verify.php');
 
 $newpage = new page_verify();
 $newpage->create('_login_');
 
 db_connect();
-
-//site_header("Login");
 
 ?>
 
@@ -57,7 +30,7 @@ db_connect();
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-    <title><? echo $site_name ?></title>
+    <title><?php echo $site_name ?></title>
 
     <!-- Style Sheet General -->
     <link href="css/reset.css" rel="stylesheet" type="text/css" />
@@ -66,6 +39,7 @@ db_connect();
 
     <!-- jQuery -->
     <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/password.js"></script>
 
     <!-- Custom js -->
     <script type="text/javascript" src="js/custom.min.js"></script>
@@ -96,6 +70,10 @@ db_connect();
         <div class="box radius">
 
             <form action="takelogin.php" id="login" class="active">
+                <?php
+                    $value = array('...','...','...','...','...','...');
+                    $value[rand(1,count($value)-1)] = 'X';
+                ?>
 
                 <h1>Log in</h1>
 
@@ -116,16 +94,29 @@ db_connect();
                         <input type="password" name="password" id="password" />
                     </p>
 
-                    <input type="submit" class="button button-orange float_right" value="Log in" />
+                    <p>
+                        Now Click The Button Marked <strong>X</strong>
+                    </p>
+
+                    <p>
+                        <?php
+                        for ($i=0; $i < count($value); $i++)
+                        {
+                            echo("<input type='submit' class='btn' name='submitme' value='".$value[$i]."' />");
+                        }
+                        ?>
+                    </p>
+
                     <br />
                     <p><a href="#" class="link" rel="registration">Create your Account Here!</a></p>
                     <p><a href="#" class="link" rel="lost_password">Forgot your Password?</a></p>
+                    <p><a href="loginhelp.php">Login Help</a></p>
 
                 </fieldset>
 
             </form>
 
-            <form action="recover.php" id="lost_password">
+            <form method='post' action='recover.php' id='lost_password'>
 
                 <h1>Forgot Password</h1>
 
@@ -157,12 +148,16 @@ db_connect();
 
                 $arr = mysql_fetch_row($res);
 
-                if ($arr[0] >= $max_users)
+                if ($arr[0] >= $max_users_then_invite)
                 {
-                    display_message("info", "<span style='color : #ff0000;'>Sorry</span>", "<span style='color : #00ff00;'>The current user account limit (".number_format($max_users).") has been reached. Inactive accounts are pruned all the time, please check back again later...</span>");
+                    display_message("info", "<span style='color : #ff0000;'>Sorry</span>", "<span style='color : #00ff00;'>The Current User Account Limit (".number_format($max_users).") Has Been Reached. Inactive Accounts Are Pruned All The Time, Please Check Back Again Later...</span>");
+
+                    echo('<p><a href="#" class="link" rel="invited_user"><font color="#FFFFFF">I Have An Invite</font></a></p>');
                 }
 
-                ?>
+                else
+
+                { ?>
 
                 <fieldset class="radius">
 
@@ -174,8 +169,8 @@ db_connect();
 
                     <p>
                         <label class="required" for="registration_password">Pick a Password</label>
-                        <br />
-                        <input type="password" name="wantpassword" id="registration_password" />
+                        <br /><img src="<?php echo $image_dir?>password/tooshort.gif" width="240" height="27" border="0" id="strength" alt="" title="" /><br />
+                        <input type="password" name="wantpassword" id="registration_password" maxlength="15" onkeyup="updatestrength( this.value );" />
                     </p>
 
                     <p>
@@ -195,10 +190,62 @@ db_connect();
                         <input type="checkbox" name="faqverify" value="yes" /> I agree to read the FAQ.<br />
                         <input type="checkbox" name="ageverify" value="yes" /> I am at least 13 years old.<br /><br />
 
-                        <input type="submit" value="Create Account" class="button button-orange float_right" /><br />
+                        <input type="submit" class="button button-orange float_right" value="Create Account" /><br />
                     </p>
 
                     <p><a href="#" class="link" rel="login">Log in Here!</a></p>
+
+                </fieldset>
+
+
+
+            <?php } ?>
+            </form>
+
+
+            <form method="post" action="take_invite_signup.php" id="invited_user">
+
+                <h1>Invited Membership</h1>
+
+                <fieldset class="radius">
+
+                    <p>
+                        <label class="required" for="invited_user_username">Desired Username</label>
+                        <br />
+                        <input type="text" name="wantusername" id="invited_user_username" />
+                    </p>
+
+                    <p>
+                        <label class="required" for="invited_user_password">Pick a Password</label>
+                        <br /><img src="<?php echo $image_dir?>password/tooshort.gif" width="240" height="27" border="0"  id="strength1" alt="" title="" /><br />
+                        <input type="password" name="wantpassword" id="invited_user_password" maxlength="15" onkeyup="updatestrength( this.value );" />
+                    </p>
+
+                    <p>
+                        <label class="required" for="invited_user_password_repeat">Enter Password Again</label>
+                        <br />
+                        <input type="password" name="passagain" id="invited_user_password_repeat" />
+                    </p>
+
+                    <p>
+                        <label class="required" for="invited_user_invited_user">Enter Invite Code</label>
+                        <br />
+                        <input type="password" name="invite" id="invited_user_invited_user" />
+                    </p>
+
+                    <p>
+                        <label class="required" for="invited_user_email">Email Address</label>
+                        <br />
+                        <input type="text" name="email" id="invited_user_email" />
+                    </p>
+
+                    <p>
+                        <input type="checkbox" name="rulesverify" value="yes" /> I have read the Site Rules.<br />
+                        <input type="checkbox" name="faqverify" value="yes" /> I agree to read the FAQ.<br />
+                        <input type="checkbox" name="ageverify" value="yes" /> I am at least 13 years old.<br /><br />
+
+                        <input type="submit" class="button button-orange float_right" value="Sign up! (PRESS ONLY ONCE)" /><br />
+                    </p>
 
                 </fieldset>
 
@@ -214,9 +261,3 @@ db_connect();
 
 </body>
 </html>
-
-<?
-
-//site_footer();
-
-?>

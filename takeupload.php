@@ -237,7 +237,7 @@ list($dname, $plen, $pieces) = dict_check($info, "name(string):piece length(inte
 
 if (!in_array($ann, $announce_urls, 1))
 {
-    error_message("error", "Upload Failed!", "Invalid Announce URL! Must be <span style='font-weight:bold;'>".$announce_urls[0]."</span>");
+    error_message("error", "Upload Failed!", "Invalid Announce URL! Must be <strong>".$announce_urls[0]."</strong>");
 }
 
 if (strlen($pieces) % 20 != 0)

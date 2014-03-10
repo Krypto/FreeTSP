@@ -260,7 +260,9 @@ else
 
             //if ($returnto)
         {
-            echo error_message("success", "Success", "Rating Added!");
+           $redirectid = $row["id"];
+            echo error_message("success", "Success", "Rating Added! <a href='/details.php?id=$redirectid'>Click here</a> to go back to the torrent");
+        
         }
 
         $s = $row["name"];
